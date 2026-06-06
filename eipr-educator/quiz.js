@@ -191,99 +191,247 @@ async function callOllama(prompt) {
 // ─── Parser ───────────────────────────────────────────────────────────────────
 /**
  * Parses LLM output into question objects.
- * Robust: ignores filler lines, handles multi-line noise between Q/A pairs.
+ * Supports:
+ *   - Inline format: Q: <question> \n A: <opt1> | <opt2> | <opt3> | <opt4> | <correct letter>
+ *   - Multiline format: Q: <question> \n A) <opt1> \n B) <opt2> ... \n Correct: <letter>
  *
- * Expected per block:
- *   Q: <question>
- *   A: <opt1> | <opt2> | <opt3> | <opt4> | <correct letter A-D>
- *
- * Returns array of { question, options:[4], correctIndex:0-3 }
+ * Returns array of { question, options:[4], correctIndex:0-3, explanation, focusConcept }
  */
-function parseQuizOutput(raw) {
+function parseQuizOutput(raw, rawText = '') {
     const lines = raw.split('\n');
     const questions = [];
+    let currentQ = null;
 
-    let pendingQuestion = null;
+    function commitCurrentQ() {
+        if (!currentQ) return;
+        if (currentQ.question && currentQ.options.length === 4 && currentQ.correctIndex !== -1) {
+            // Deduplicate empty or missing options
+            const hasEmpty = currentQ.options.some(opt => !opt || opt.trim().length === 0);
+            if (!hasEmpty) {
+                const explanation = buildExplanation(currentQ.question, currentQ.options[currentQ.correctIndex]);
+                const focusConcept = extractConcept(currentQ.question, rawText);
+                questions.push({
+                    question: currentQ.question,
+                    options: currentQ.options.map(o => o.trim()),
+                    correctIndex: currentQ.correctIndex,
+                    explanation,
+                    focusConcept
+                });
+            }
+        }
+        currentQ = null;
+    }
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
+        if (!line) continue;
 
-        // Match Q line
-        const qMatch = line.match(/^Q\s*[:：]\s*(.+)/i);
+        // Match Q line (e.g. "Q: What is..." or "Question 1: What is...")
+        const qMatch = line.match(/^Q\s*[:：]\s*(.+)/i) || line.match(/^Question\s*\d*\s*[:：]\s*(.+)/i);
         if (qMatch) {
-            pendingQuestion = qMatch[1].trim();
+            commitCurrentQ();
+            currentQ = {
+                question: qMatch[1].trim(),
+                options: [],
+                correctIndex: -1
+            };
             continue;
         }
 
-        // Match A line (only if we have a pending question)
-        if (pendingQuestion !== null) {
-            const aMatch = line.match(/^A\s*[:：]\s*(.+)/i);
-            if (aMatch) {
-                const parts = aMatch[1].split('|').map(s => s.trim()).filter(s => s.length > 0);
+        if (!currentQ) continue;
 
-                // We need exactly 5 parts: 4 options + 1 correct letter
-                if (parts.length === 5) {
-                    const correctLetter = parts[4].toUpperCase().replace(/[^A-D]/g, '');
-                    const correctIndex = { A: 0, B: 1, C: 2, D: 3 }[correctLetter];
-
-                    if (correctIndex !== undefined) {
-                        // Generate a plausible explanation using the question context
-                        const explanation = buildExplanation(pendingQuestion, parts[correctIndex]);
-                        const focusConcept = extractConcept(pendingQuestion);
-
-                        questions.push({
-                            question: pendingQuestion,
-                            options: [parts[0], parts[1], parts[2], parts[3]],
-                            correctIndex,
-                            explanation,
-                            focusConcept,
-                        });
-                    }
-                } else if (parts.length >= 5) {
-                    // Sometimes the model adds extra text after the letter — handle gracefully
-                    const correctLetter = parts[parts.length - 1].charAt(0).toUpperCase();
-                    const correctIndex = { A: 0, B: 1, C: 2, D: 3 }[correctLetter];
-                    if (correctIndex !== undefined && parts.length >= 5) {
-                        const explanation = buildExplanation(pendingQuestion, parts[correctIndex - 1] || parts[0]);
-                        const focusConcept = extractConcept(pendingQuestion);
-                        questions.push({
-                            question: pendingQuestion,
-                            options: [parts[0], parts[1], parts[2], parts[3]],
-                            correctIndex,
-                            explanation,
-                            focusConcept,
-                        });
-                    }
+        // Match A: line with inline options: A: opt1 | opt2 | opt3 | opt4 | letter
+        const inlineMatch = line.match(/^A\s*[:：]\s*(.+)/i);
+        if (inlineMatch && inlineMatch[1].includes('|')) {
+            const parts = inlineMatch[1].split('|').map(s => s.trim()).filter(s => s.length > 0);
+            if (parts.length >= 5) {
+                currentQ.options = [parts[0], parts[1], parts[2], parts[3]];
+                const correctLetter = parts[parts.length - 1].toUpperCase().replace(/[^A-D]/g, '');
+                const correctIndex = { A: 0, B: 1, C: 2, D: 3 }[correctLetter];
+                if (correctIndex !== undefined) {
+                    currentQ.correctIndex = correctIndex;
                 }
-                pendingQuestion = null;
+            }
+            commitCurrentQ();
+            continue;
+        }
+
+        // Match separate option lines A/B/C/D or 1/2/3/4
+        const optAMatch = line.match(/^[A1]\s*[\)\.\:：\]]\s*(.+)/i) || line.match(/^Option\s*[A1]\s*[:：]\s*(.+)/i);
+        const optBMatch = line.match(/^[B2]\s*[\)\.\:：\]]\s*(.+)/i) || line.match(/^Option\s*[B2]\s*[:：]\s*(.+)/i);
+        const optCMatch = line.match(/^[C3]\s*[\)\.\:：\]]\s*(.+)/i) || line.match(/^Option\s*[C3]\s*[:：]\s*(.+)/i);
+        const optDMatch = line.match(/^[D4]\s*[\)\.\:：\]]\s*(.+)/i) || line.match(/^Option\s*[D4]\s*[:：]\s*(.+)/i);
+
+        if (optAMatch) {
+            currentQ.options[0] = optAMatch[1].trim();
+        } else if (optBMatch) {
+            currentQ.options[1] = optBMatch[1].trim();
+        } else if (optCMatch) {
+            currentQ.options[2] = optCMatch[1].trim();
+        } else if (optDMatch) {
+            currentQ.options[3] = optDMatch[1].trim();
+        } else {
+            // Match correct answer specification line
+            const ansMatch = line.match(/^(?:Correct\s+)?Answer\s*[:：]\s*([A-D1-4])/i) || 
+                             line.match(/^(?:Correct\s+)?Index\s*[:：]\s*([A-D1-4])/i) ||
+                             line.match(/^Ans\s*[:：]\s*([A-D1-4])/i) ||
+                             line.match(/^Key\s*[:：]\s*([A-D1-4])/i);
+            if (ansMatch) {
+                const letter = ansMatch[1].toUpperCase();
+                const letterMap = { A: 0, B: 1, C: 2, D: 3, 1: 0, 2: 1, 3: 2, 4: 3 };
+                currentQ.correctIndex = letterMap[letter] !== undefined ? letterMap[letter] : -1;
+                commitCurrentQ();
             }
         }
     }
 
+    commitCurrentQ();
     return questions;
 }
 
 /** Build a short explanation sentence for the correct answer */
 function buildExplanation(question, correctOption) {
-    // Simple template — provides meaningful feedback without needing another LLM call
     const qLower = question.toLowerCase();
     if (qLower.includes('not') || qLower.includes('except') || qLower.includes('incorrect')) {
-        return `The other options are valid concepts. "${correctOption}" is the exception because it does not fit the described scenario.`;
+        return `The other options are valid. "${correctOption}" is the correct choice here because it represents the exception or incorrect case.`;
     }
-    return `The correct answer is "${correctOption}". Review the relevant passage to understand why this concept applies here.`;
+    return `The correct answer is "${correctOption}". Review the relevant textbook passage to understand how this concept applies.`;
 }
 
-/** Extract a likely concept keyword from a question string */
-function extractConcept(question) {
-    // Remove common question words and keep noun phrases
+/** Extract concept from question or raw text using global hierarchyData matches */
+function extractConcept(question, rawText = '') {
+    const concepts = [];
+    if (typeof hierarchyData !== 'undefined' && hierarchyData) {
+        function traverse(node) {
+            if (node.title && (node.node_type === 'concept' || node.node_type === 'subtopic' || node.node_type === 'topic')) {
+                concepts.push({
+                    title: node.title,
+                    cleanTitle: node.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim(),
+                    nodeType: node.node_type
+                });
+            }
+            if (node.children && node.children.length > 0) {
+                node.children.forEach(traverse);
+            }
+        }
+        traverse(hierarchyData);
+    }
+
+    const qLower = question.toLowerCase();
+    let bestMatch = null;
+    let maxLen = 0;
+
+    for (const c of concepts) {
+        if (c.cleanTitle.length > 4 && qLower.includes(c.cleanTitle)) {
+            if (c.cleanTitle.length > maxLen) {
+                maxLen = c.cleanTitle.length;
+                bestMatch = c.title;
+            }
+        }
+    }
+
+    if (!bestMatch && rawText) {
+        const textLower = rawText.toLowerCase();
+        for (const c of concepts) {
+            if (c.cleanTitle.length > 4 && textLower.includes(c.cleanTitle)) {
+                if (c.cleanTitle.length > maxLen) {
+                    maxLen = c.cleanTitle.length;
+                    bestMatch = c.title;
+                }
+            }
+        }
+    }
+
+    if (bestMatch) return bestMatch;
+
+    // Fallback: word token filter
     const stopWords = ['what', 'which', 'who', 'when', 'where', 'how', 'why', 'is', 'are', 'does', 'do',
         'the', 'a', 'an', 'of', 'in', 'on', 'at', 'to', 'for', 'with', 'that', 'this', 'was', 'were',
         'not', 'and', 'or', 'but', 'can', 'would', 'could', 'should', 'must', 'refers', 'defined',
-        'describe', 'term', 'used', 'primarily', 'mainly', 'best', 'following'];
+        'describe', 'term', 'used', 'primarily', 'mainly', 'best', 'following', 'based', 'according', 'statement'];
     const words = question.replace(/[^a-zA-Z\s]/g, '').split(/\s+/);
     const keyWords = words.filter(w => w.length > 3 && !stopWords.includes(w.toLowerCase()));
-    // Return the first 3 meaningful words as the concept label
-    return keyWords.slice(0, 3).join(' ') || 'this topic';
+    const formatted = keyWords.slice(0, 3).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+    return formatted || 'this topic';
+}
+
+/** Client-side quiz generator fallback from raw highlighted text */
+function generateFallbackQuestions(text, count) {
+    const questions = [];
+    const defaultPool = ["Entrepreneurship", "Management", "Innovation", "Intellectual Property", "Copyright", "Patent", "Trade Secrets"];
+
+    // 1. Extract potential key terms (capitalized words/phrases, length >= 3)
+    const termRegex = /\b[A-Z][a-zA-Z0-9\-\s]{2,25}\b/g;
+    const matches = text.match(termRegex) || [];
+    const terms = Array.from(new Set(matches.map(t => t.trim())))
+        .filter(t => t.length > 3 && !/^(The|And|For|But|This|That|With|Unit|Page|Chapter)$/i.test(t));
+        
+    if (terms.length < 4) {
+        const words = text.replace(/[^a-zA-Z\s]/g, '').split(/\s+/);
+        const uniqueWords = Array.from(new Set(words.filter(w => w.length > 5)));
+        terms.push(...uniqueWords.slice(0, 10));
+    }
+
+    // 2. Split text into sentences
+    const sentences = text.split(/[.!?]+\s+/).map(s => s.trim()).filter(s => s.length > 30 && s.length < 180);
+
+    for (const sentence of sentences) {
+        if (questions.length >= count) break;
+
+        const foundTerm = terms.find(term => {
+            const index = sentence.indexOf(term);
+            return index > 0 && new RegExp('\\b' + term + '\\b').test(sentence);
+        });
+
+        if (foundTerm) {
+            const questionText = `Complete the statement: "${sentence.replace(new RegExp('\\b' + foundTerm + '\\b', 'g'), '_______')}"`;
+            const otherTerms = terms.filter(t => t !== foundTerm);
+            
+            while (otherTerms.length < 3) {
+                const item = defaultPool[Math.floor(Math.random() * defaultPool.length)];
+                if (!otherTerms.includes(item) && item !== foundTerm) {
+                    otherTerms.push(item);
+                }
+            }
+
+            const shuffledDistractors = shuffleArray(otherTerms).slice(0, 3);
+            const options = [foundTerm, ...shuffledDistractors];
+            const shuffledOptions = shuffleArray(options);
+            const correctIndex = shuffledOptions.indexOf(foundTerm);
+
+            questions.push({
+                question: questionText,
+                options: shuffledOptions,
+                correctIndex,
+                explanation: `The sentence from the reader states: "${sentence}"`,
+                focusConcept: foundTerm
+            });
+        }
+    }
+
+    // Generate backup options if needed
+    let fallbackIndex = 1;
+    while (questions.length < count) {
+        const primaryTerm = terms[fallbackIndex % terms.length] || "Entrepreneurship";
+        const keyOptions = [
+            primaryTerm,
+            defaultPool[(fallbackIndex + 1) % defaultPool.length],
+            defaultPool[(fallbackIndex + 2) % defaultPool.length],
+            defaultPool[(fallbackIndex + 3) % defaultPool.length]
+        ];
+        const shuffledOpts = shuffleArray(keyOptions);
+
+        questions.push({
+            question: `Which key concept or term does the highlighted textbook reader section primarily explore? (Question ${fallbackIndex})`,
+            options: shuffledOpts,
+            correctIndex: shuffledOpts.indexOf(primaryTerm),
+            explanation: `The highlighted section introduces and analyzes the core concept of "${primaryTerm}".`,
+            focusConcept: primaryTerm
+        });
+        fallbackIndex++;
+    }
+
+    return questions.slice(0, count);
 }
 
 // ─── Quiz Generation Entry Point ─────────────────────────────────────────────
@@ -303,27 +451,34 @@ async function startQuizGeneration(text) {
         setLoadingMessage('✍️ Generating questions from your selection...');
 
         let rawOutput = await callOllama(prompt);
-        let parsed = parseQuizOutput(rawOutput);
+        let parsed = parseQuizOutput(rawOutput, text);
 
         // If we got fewer than minimum, try once more with a more direct prompt
         if (parsed.length < QUIZ_CONFIG.minQuestions) {
             setLoadingMessage(`⚠️ Only got ${parsed.length} questions. Requesting more...`);
-            const retryPrompt = buildRetryPrompt(text, parsed.length);
-            const retryOutput = await callOllama(retryPrompt);
-            const retryParsed = parseQuizOutput(retryOutput);
+            try {
+                const retryPrompt = buildRetryPrompt(text, parsed.length);
+                const retryOutput = await callOllama(retryPrompt);
+                const retryParsed = parseQuizOutput(retryOutput, text);
 
-            // Merge and deduplicate by question text
-            const existing = new Set(parsed.map(q => q.question));
-            retryParsed.forEach(q => {
-                if (!existing.has(q.question)) {
-                    parsed.push(q);
-                    existing.add(q.question);
-                }
-            });
+                // Merge and deduplicate by question text
+                const existing = new Set(parsed.map(q => q.question));
+                retryParsed.forEach(q => {
+                    if (!existing.has(q.question)) {
+                        parsed.push(q);
+                        existing.add(q.question);
+                    }
+                });
+            } catch (retryErr) {
+                console.warn('Ollama retry generation failed. Utilizing fallback strategy.', retryErr);
+            }
         }
 
-        if (parsed.length === 0) {
-            throw new Error('Could not parse any questions from the model output. Try selecting more text.');
+        // Fill remaining questions using client-side generator to reach minimum questions count
+        if (parsed.length < QUIZ_CONFIG.minQuestions) {
+            const needed = QUIZ_CONFIG.minQuestions - parsed.length;
+            const fallbacks = generateFallbackQuestions(text, needed);
+            parsed.push(...fallbacks);
         }
 
         // Shuffle questions for variety
@@ -335,10 +490,17 @@ async function startQuizGeneration(text) {
         showScreen('question');
 
     } catch (err) {
-        showScreen('loading');
-        setLoadingMessage(`❌ Error: ${err.message}`);
-        const retryEl = document.getElementById('quiz-error-hint');
-        if (retryEl) retryEl.style.display = 'block';
+        console.warn('Ollama connection failed, falling back to local quiz generation:', err);
+        setLoadingMessage('⚠️ Ollama offline. Generating a smart local quiz instead...');
+        await sleep(1000);
+        
+        const fallbackQs = generateFallbackQuestions(text, QUIZ_CONFIG.targetQuestions);
+        quizQuestions = fallbackQs;
+        setLoadingMessage(`✅ ${quizQuestions.length} local questions ready! (Offline Mode)`);
+        
+        await sleep(600);
+        renderQuestion(0);
+        showScreen('question');
     }
 }
 

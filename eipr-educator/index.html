@@ -204,7 +204,10 @@
                 </div>
                 <p id="quiz-loading-msg" class="quiz-loading-msg">Connecting to Ollama...</p>
                 <p id="quiz-error-hint" class="quiz-error-hint" style="display:none;">
-                    Make sure Ollama is running: <code>ollama serve</code>
+                    Make sure Ollama is running: <code>ollama serve</code><br>
+                    <span style="font-size: 11px; margin-top: 4px; display: block; opacity: 0.85;">
+                        If you face CORS block errors, start Ollama with: <code>OLLAMA_ORIGINS="*" ollama serve</code>
+                    </span>
                 </p>
             </div>
 
