@@ -1,0 +1,2107 @@
+{
+  "course": [
+    101.59841918945312,
+    242.8636474609375,
+    -301.25042724609375
+  ],
+  "unit1": [
+    -200.9636688232422,
+    244.56195068359375,
+    -225.68899536132812
+  ],
+  "unit1.introduction": [
+    -209.74754333496094,
+    331.2789306640625,
+    -306.9150390625
+  ],
+  "unit1.introduction.what_is_the_importance_of_entrepreneurship": [
+    -179.19009399414062,
+    182.97052001953125,
+    -303.8031005859375
+  ],
+  "unit1.introduction.what_is_the_importance_of_entrepreneurship.creation_of_job_opportunities": [
+    -227.3385009765625,
+    284.07867431640625,
+    -255.82510375976562
+  ],
+  "unit1.introduction.what_is_the_importance_of_entrepreneurship.creation_of_new_businesses": [
+    -196.3658447265625,
+    298.2952880859375,
+    -259.6294860839844
+  ],
+  "unit1.introduction.difference_between_management_and_entrepreneurship_list": [
+    -183.1874542236328,
+    119.44735717773438,
+    -239.91424560546875
+  ],
+  "unit1.introduction.difference_between_management_and_entrepreneurship_list.innovation": [
+    -111.26983642578125,
+    313.015869140625,
+    -169.80267333984375
+  ],
+  "unit1.introduction.difference_between_management_and_entrepreneurship_list.leads_to_better_standards_of_living": [
+    -170.40589904785156,
+    216.133056640625,
+    -151.57113647460938
+  ],
+  "unit1.introduction.difference_between_management_and_entrepreneurship_list.supports_research_and_development": [
+    -168.38250732421875,
+    212.0364990234375,
+    -137.7047119140625
+  ],
+  "unit1.introduction.difference_between_management_and_entrepreneurship_list.promotes_community_development": [
+    -237.83251953125,
+    232.11468505859375,
+    -196.59170532226562
+  ],
+  "unit1.introduction.difference_between_management_and_entrepreneurship_list.leads_to_increased_productivity": [
+    -251.66232299804688,
+    245.65771484375,
+    -121.21530151367188
+  ],
+  "unit1.introduction.difference_between_management_and_entrepreneurship_list.creation_of_national_wealth": [
+    -140.61395263671875,
+    211.00457763671875,
+    -301.0488586425781
+  ],
+  "unit1.introduction.difference_between_management_and_entrepreneurship_list.contributes_to_social_welfare": [
+    -133.00119018554688,
+    268.39923095703125,
+    -219.48167419433594
+  ],
+  "unit1.the_4_types_of_entrepreneurs": [
+    -203.4541778564453,
+    232.6873779296875,
+    -260.6409912109375
+  ],
+  "unit1.the_4_types_of_entrepreneurs.the_inventor": [
+    37.19134521484375,
+    201.85467529296875,
+    -81.18008422851562
+  ],
+  "unit1.the_4_types_of_entrepreneurs.the_small_business_owner": [
+    -172.84121704101562,
+    206.458251953125,
+    -257.8770751953125
+  ],
+  "unit1.the_4_types_of_entrepreneurs.the_online_entrepreneur": [
+    -123.76451110839844,
+    262.94012451171875,
+    -96.11668395996094
+  ],
+  "unit1.the_4_types_of_entrepreneurs.the_home_business_owner": [
+    -94.38417053222656,
+    108.01861572265625,
+    -91.17584228515625
+  ],
+  "unit1.the_4_types_of_entrepreneurs.what_are_the_qualities_of_a_successful_entrepreneur": [
+    -246.56088256835938,
+    201.8831787109375,
+    -261.1796569824219
+  ],
+  "unit1.the_4_types_of_entrepreneurs.here_are_some_skills_you_need_to_become_a_successful_entrepreneur": [
+    -215.69754028320312,
+    296.19427490234375,
+    -212.4296417236328
+  ],
+  "unit1.10_of_the_most_common_entrepreneurship_myths": [
+    -208.58274841308594,
+    192.82122802734375,
+    -210.75729370117188
+  ],
+  "unit1.10_of_the_most_common_entrepreneurship_myths.myth_1_entrepreneurs_are_born_that_way": [
+    -212.1166534423828,
+    350.0,
+    -248.188720703125
+  ],
+  "unit1.10_of_the_most_common_entrepreneurship_myths.myth_2_the_only_requirement_is_a_good_idea": [
+    -123.33953857421875,
+    146.70346069335938,
+    -76.24307250976562
+  ],
+  "unit1.10_of_the_most_common_entrepreneurship_myths.myth_3_starting_a_new_business_guarantees_freedom": [
+    -130.64993286132812,
+    189.0985107421875,
+    -209.0751495361328
+  ],
+  "unit1.10_of_the_most_common_entrepreneurship_myths.myth_4_launching_a_company_quickly_leads_to_wealth": [
+    -267.0411071777344,
+    228.9141845703125,
+    -146.2481689453125
+  ],
+  "unit1.10_of_the_most_common_entrepreneurship_myths.myth_5_only_money_motivates_employees": [
+    -214.28018188476562,
+    197.313232421875,
+    -158.7834014892578
+  ],
+  "unit1.10_of_the_most_common_entrepreneurship_myths.myth_6_businesses_either_flourish_or_fail": [
+    -287.44561767578125,
+    291.4764404296875,
+    -173.25119018554688
+  ],
+  "unit1.10_of_the_most_common_entrepreneurship_myths.myth_7_all_responsibility_falls_on_the_entrepreneur": [
+    -139.31906127929688,
+    161.5792236328125,
+    -247.8375244140625
+  ],
+  "unit1.10_of_the_most_common_entrepreneurship_myths.myth_8_theres_a_secret_silver_bullet_key_to_success": [
+    -251.34881591796875,
+    232.0732421875,
+    -142.7525177001953
+  ],
+  "unit1.10_of_the_most_common_entrepreneurship_myths.myth_9_businesses_need_someone_with_an_mba_at_the_helm": [
+    -202.9249267578125,
+    188.75042724609375,
+    -245.81564331054688
+  ],
+  "unit1.10_of_the_most_common_entrepreneurship_myths.myth_10_quitting_is_for_losers": [
+    -183.85609436035156,
+    191.29931640625,
+    -145.0105438232422
+  ],
+  "unit1.entrepreneurial_development_models": [
+    -232.92599487304688,
+    228.73004150390625,
+    -220.42434692382812
+  ],
+  "unit1.entrepreneurial_development_models.large_business_entrepreneurship": [
+    -217.34852600097656,
+    243.75543212890625,
+    -154.28134155273438
+  ],
+  "unit1.entrepreneurial_development_models.small_business_entrepreneurship": [
+    -276.4155578613281,
+    297.734130859375,
+    -227.48348999023438
+  ],
+  "unit1.entrepreneurial_development_models.social_entrepreneurship": [
+    -164.58700561523438,
+    260.15814208984375,
+    -179.13717651367188
+  ],
+  "unit1.entrepreneurial_development_models.scalable_startup_entrepreneurship": [
+    -250.41720581054688,
+    285.5091552734375,
+    -104.93283081054688
+  ],
+  "unit1.entrepreneurial_development_models.innovation_entrepreneurship": [
+    -147.75921630859375,
+    342.75128173828125,
+    -125.28446960449219
+  ],
+  "unit1.problems_faced_by_entrepreneurs": [
+    -271.40472412109375,
+    188.263427734375,
+    -234.1925506591797
+  ],
+  "unit1.capacity_building_for_entrepreneurship": [
+    -228.61024475097656,
+    226.87066650390625,
+    -263.235595703125
+  ],
+  "unit1.here_are_7_examples_of_entrepreneurs_who_brought_change_and_shaped_the_world_according_to_their_vision": [
+    -2.5137939453125,
+    212.05615234375,
+    -115.94953918457031
+  ],
+  "unit1.e-cells_on_campus": [
+    -131.92677307128906,
+    186.94781494140625,
+    -81.54864501953125
+  ],
+  "unit1.e-cell": [
+    -163.43338012695312,
+    185.7470703125,
+    -49.839935302734375
+  ],
+  "unit1.common_characteristics_of_successful_entrepreneurs": [
+    -298.95623779296875,
+    215.28570556640625,
+    -239.97787475585938
+  ],
+  "unit1.different_types_of_entrepreneurial_styles": [
+    -221.00546264648438,
+    143.66683959960938,
+    -198.18890380859375
+  ],
+  "unit1.getting_to_know_your_business": [
+    -314.07879638671875,
+    6.650360107421875,
+    179.49981689453125
+  ],
+  "unit1.understanding_your_businesss_ecosystem_and_environment_is_essential_for_successful_entrepreneurship_in_todays_interconnected_world_heres_how_you_can_delve_into_this_aspect": [
+    -243.83897399902344,
+    125.38760375976562,
+    -103.96405029296875
+  ],
+  "unit1.its_eco-system_and_environment": [
+    -92.03884887695312,
+    -50.508575439453125,
+    -20.461944580078125
+  ],
+  "unit1.understanding_your_businesss_ecosystem_and_environment_is_essential_for_successful_entrepreneurship_in_todays_interconnected_world_heres_how_you_can_delve_into_this_aspect_1": [
+    -243.83897399902344,
+    125.38760375976562,
+    -103.96405029296875
+  ],
+  "unit1.passion_and_values_are_fundamental_drivers_of_entrepreneurship_shaping_the_vision_culture_and_actions_of_businesses_heres_how_they_influence_entrepreneurship": [
+    -261.5525817871094,
+    234.15771484375,
+    -202.46954345703125
+  ],
+  "unit1.building_and_growing_family_businesses": [
+    -252.25064086914062,
+    112.0120849609375,
+    -148.97743225097656
+  ],
+  "unit1.challenges_are_inevitable_in_any_business_and_family_businesses_face_a_unique_set_of_challenges_due_to_the_intertwining_of_family_dynamics_with_business_operations_here_are_some_common_challenges_and_suggested_management_approaches_for_family_businesses": [
+    -253.16387939453125,
+    -2.858428955078125,
+    -118.45233154296875
+  ],
+  "unit1.role_of_entrepreneurship_in_economic_development": [
+    -220.73025512695312,
+    263.14129638671875,
+    -309.2274475097656
+  ],
+  "unit1.emerging_trends_in_entrepreneurship": [
+    -208.10008239746094,
+    250.51470947265625,
+    -196.0734100341797
+  ],
+  "unit1.entrepreneur_and_entrepreneurship": [
+    -198.755126953125,
+    231.17236328125,
+    -328.32867431640625
+  ],
+  "unit1.characteristics_of_an_entrepreneur": [
+    -299.6506042480469,
+    232.011962890625,
+    -249.91098022460938
+  ],
+  "unit1.myths_about_entrepreneurship": [
+    -233.23123168945312,
+    263.006591796875,
+    -258.9774475097656
+  ],
+  "unit1.entrepreneur_vs_intrapreneur": [
+    -157.70106506347656,
+    253.64044189453125,
+    -218.02993774414062
+  ],
+  "unit1.role_of_entrepreneurial_teams": [
+    -282.39312744140625,
+    156.2154541015625,
+    -199.79673767089844
+  ],
+  "unit2": [
+    -249.69161987304688,
+    62.237701416015625,
+    -63.632110595703125
+  ],
+  "unit2.identifying_market_opportunities_and_trends": [
+    -239.28610229492188,
+    145.52752685546875,
+    -121.75552368164062
+  ],
+  "unit2.identifying_market_opportunities_and_trends.imarket_potential_of_business_opportunity": [
+    -175.02796936035156,
+    39.605560302734375,
+    -25.06243896484375
+  ],
+  "unit2.identifying_market_opportunities_and_trends.ii_return_on_investment_of_business_opportunity": [
+    -174.27818298339844,
+    117.27447509765625,
+    -106.91159057617188
+  ],
+  "unit2.integration_of_engineering_principles_in_ideation_process": [
+    -117.75247192382812,
+    65.38101196289062,
+    -40.568603515625
+  ],
+  "unit2.integration_of_engineering_principles_in_ideation_process.stages_of_an_ideation_process": [
+    -91.12637329101562,
+    -18.433319091796875,
+    -35.4827880859375
+  ],
+  "unit2.integration_of_engineering_principles_in_ideation_process.problem_identification": [
+    -122.91546630859375,
+    -61.735137939453125,
+    38.292755126953125
+  ],
+  "unit2.integration_of_engineering_principles_in_ideation_process.idea_generation": [
+    -157.9607696533203,
+    85.10162353515625,
+    -39.996490478515625
+  ],
+  "unit2.integration_of_engineering_principles_in_ideation_process.idea_evaluation": [
+    -206.853271484375,
+    -32.663726806640625,
+    44.7667236328125
+  ],
+  "unit2.integration_of_engineering_principles_in_ideation_process.implementation_planning": [
+    -196.35182189941406,
+    -104.95657348632812,
+    -67.51974487304688
+  ],
+  "unit2.integration_of_engineering_principles_in_ideation_process.successful_ideation_process": [
+    -240.77403259277344,
+    47.7435302734375,
+    -34.384033203125
+  ],
+  "unit2.cross-disciplinary_collaboration_for_technological_innovation": [
+    -9.198394775390625,
+    100.78189086914062,
+    -32.60345458984375
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation": [
+    -267.98583984375,
+    54.90997314453125,
+    -114.08049011230469
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.preliminary_analysis": [
+    -217.25271606445312,
+    -104.63198852539062,
+    -25.58355712890625
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.preliminary_analysis_in_market_feasibility_studies": [
+    -177.60182189941406,
+    -63.934356689453125,
+    0.942413330078125
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.i_objectives_of_preliminary_analysis": [
+    -218.8779296875,
+    -114.89051818847656,
+    -33.646514892578125
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.ii_key_components_of_preliminary_analysis": [
+    -104.87078857421875,
+    -146.6702117919922,
+    -38.5220947265625
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.stakeholder_engagement": [
+    -192.2334747314453,
+    18.31524658203125,
+    72.78094482421875
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.market_demand_assessment": [
+    -195.7337646484375,
+    -137.84844970703125,
+    218.225341796875
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.documentation_review": [
+    -187.0369110107422,
+    -109.941162109375,
+    -46.9769287109375
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.iii_questions_to_guide_preliminary_analysis": [
+    -219.6110382080078,
+    -58.248138427734375,
+    -69.64089965820312
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.iv_initial_decision-making": [
+    -177.32681274414062,
+    -62.867919921875,
+    12.955352783203125
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.v_importance_of_preliminary_analysis": [
+    -135.19287109375,
+    -129.76644897460938,
+    -75.14886474609375
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.market_research": [
+    -230.18621826171875,
+    -0.833221435546875,
+    251.10430908203125
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.importance_of_market_research": [
+    -255.3072509765625,
+    13.772552490234375,
+    282.70416259765625
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.types_of_market_research": [
+    -197.70443725585938,
+    26.535064697265625,
+    255.08367919921875
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.steps_in_conducting_market_research": [
+    -245.71734619140625,
+    -35.742706298828125,
+    142.68505859375
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.financial_feasibility": [
+    -260.43719482421875,
+    -159.42831420898438,
+    -257.66131591796875
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.financial_feasibility_analysis": [
+    -245.24545288085938,
+    -175.254150390625,
+    -245.556396484375
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.key_components_of_financial_feasibility_analysis": [
+    -202.6147918701172,
+    -161.75180053710938,
+    -173.51524353027344
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.initial_investment_assessment": [
+    -190.35797119140625,
+    -122.24665832519531,
+    -251.28878784179688
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.operating_costs_evaluation": [
+    -167.53721618652344,
+    -236.3297882080078,
+    -56.989593505859375
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.revenue_projections": [
+    -279.5161437988281,
+    -221.0338592529297,
+    -1.739105224609375
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.cash_flow_analysis": [
+    -280.8733825683594,
+    -248.34619140625,
+    -229.28573608398438
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.profitability_analysis": [
+    -300.856689453125,
+    -176.42478942871094,
+    -121.62069702148438
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.break-even_analysis": [
+    -190.434326171875,
+    -202.5391082763672,
+    -81.49755859375
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.risk_assessment": [
+    -234.5167694091797,
+    -123.53067016601562,
+    -182.16970825195312
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.funding_options": [
+    -241.8853759765625,
+    -69.07406616210938,
+    -237.85169982910156
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.steps_in_conducting_financial_feasibility_analysis": [
+    -350.0,
+    -56.42333984375,
+    -233.01016235351562
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.risk_assessment_1": [
+    -208.33021545410156,
+    -154.59576416015625,
+    -89.76763916015625
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.scalability_and_growth_potential": [
+    -213.80584716796875,
+    69.95986938476562,
+    6.189849853515625
+  ],
+  "unit2.assessing_market_feasibility_and_demand_for_entrepreneurial_opportunity_evaluation.continuous_monitoring_and_adaptation": [
+    -239.7136993408203,
+    103.88497924804688,
+    -7.669708251953125
+  ],
+  "unit2.evaluating_technical_feasibility_prototype_development_and_proof_of_concept": [
+    -39.563873291015625,
+    46.52801513671875,
+    -30.562103271484375
+  ],
+  "unit2.evaluating_technical_feasibility_prototype_development_and_proof_of_concept.proof_of_concept_poc": [
+    -107.36679077148438,
+    -23.9527587890625,
+    -106.69438171386719
+  ],
+  "unit2.evaluating_technical_feasibility_prototype_development_and_proof_of_concept.prototype_development": [
+    -93.3935546875,
+    26.98919677734375,
+    18.976470947265625
+  ],
+  "unit2.evaluating_technical_feasibility_prototype_development_and_proof_of_concept.best_practices_in_prototype_development": [
+    -84.21368408203125,
+    -4.069366455078125,
+    64.53359985351562
+  ],
+  "unit2.financial_feasibility_analysis_cost_estimation_revenue_projection_and_break-even_analysis": [
+    -233.22625732421875,
+    -201.57965087890625,
+    -194.00616455078125
+  ],
+  "unit2.financial_feasibility_analysis_cost_estimation_revenue_projection_and_break-even_analysis.cost_estimation": [
+    -126.19822692871094,
+    -181.54591369628906,
+    39.50689697265625
+  ],
+  "unit2.financial_feasibility_analysis_cost_estimation_revenue_projection_and_break-even_analysis.definition_and_importance": [
+    -139.30104064941406,
+    -156.19845581054688,
+    -68.77691650390625
+  ],
+  "unit2.financial_feasibility_analysis_cost_estimation_revenue_projection_and_break-even_analysis.components_of_cost_estimation": [
+    -112.98115539550781,
+    -240.7136688232422,
+    -49.8863525390625
+  ],
+  "unit2.elements_of_a_business_plan": [
+    -171.75184631347656,
+    -101.91557312011719,
+    -74.09442138671875
+  ],
+  "unit2.elements_of_a_business_plan.market": [
+    -291.8968200683594,
+    -21.028961181640625,
+    151.66201782226562
+  ],
+  "unit2.elements_of_a_business_plan.market_share_projection": [
+    -238.56484985351562,
+    -113.47099304199219,
+    89.19158935546875
+  ],
+  "unit2.elements_of_a_business_plan.positioning_your_business": [
+    -206.98870849609375,
+    1.805694580078125,
+    123.02325439453125
+  ],
+  "unit2.elements_of_a_business_plan.pricing": [
+    -206.68592834472656,
+    -138.04612731933594,
+    223.67718505859375
+  ],
+  "unit2.elements_of_a_business_plan.distribution": [
+    -104.95175170898438,
+    1.752655029296875,
+    269.406494140625
+  ],
+  "unit2.elements_of_a_business_plan.sales_potential": [
+    -156.37484741210938,
+    -77.659423828125,
+    173.95904541015625
+  ],
+  "unit2.elements_of_a_business_plan.competitive_analysis": [
+    -238.123046875,
+    -48.08392333984375,
+    138.4375
+  ],
+  "unit2.elements_of_a_business_plan.design_and_development_plan": [
+    -189.4898681640625,
+    -70.36370849609375,
+    51.423736572265625
+  ],
+  "unit2.elements_of_a_business_plan.scheduling_and_costs": [
+    -193.81512451171875,
+    -220.0798797607422,
+    -110.866455078125
+  ],
+  "unit2.elements_of_a_business_plan.development_budget": [
+    -173.87796020507812,
+    -181.78805541992188,
+    -140.27809143066406
+  ],
+  "unit2.elements_of_a_business_plan.personnel": [
+    -267.8570556640625,
+    -6.59088134765625,
+    -134.63755798339844
+  ],
+  "unit2.elements_of_a_business_plan.operations_management": [
+    -265.78192138671875,
+    -185.9624786376953,
+    -145.16188049316406
+  ],
+  "unit2.elements_of_a_business_plan.organizational_structure": [
+    -261.11419677734375,
+    -102.5849609375,
+    7.22161865234375
+  ],
+  "unit2.elements_of_a_business_plan.overhead_expenses": [
+    -113.19233703613281,
+    -178.55422973632812,
+    -108.35394287109375
+  ],
+  "unit2.elements_of_a_business_plan.capital_requirements_table": [
+    -117.60334777832031,
+    -204.06333923339844,
+    -174.65614318847656
+  ],
+  "unit2.elements_of_a_business_plan.cost_of_goods_table": [
+    -116.60928344726562,
+    -177.08937072753906,
+    31.114044189453125
+  ],
+  "unit2.elements_of_a_business_plan.financial_components": [
+    -231.52085876464844,
+    -267.89898681640625,
+    -190.2934112548828
+  ],
+  "unit2.elements_of_a_business_plan.income_statement": [
+    -180.57554626464844,
+    -163.56527709960938,
+    -146.30467224121094
+  ],
+  "unit2.elements_of_a_business_plan.cash_flow_statement": [
+    -186.24502563476562,
+    -255.07400512695312,
+    -189.88218688964844
+  ],
+  "unit2.elements_of_a_business_plan.the_balance_sheet": [
+    -178.7145538330078,
+    -250.21722412109375,
+    -208.1189727783203
+  ],
+  "unit2.elements_of_a_business_plan.assets": [
+    -82.48873901367188,
+    -59.663177490234375,
+    -124.4442138671875
+  ],
+  "unit2.elements_of_a_business_plan.liabilities": [
+    -60.5372314453125,
+    -187.55857849121094,
+    -224.58432006835938
+  ],
+  "unit2.elements_of_a_business_plan.equity": [
+    -243.31695556640625,
+    -192.2196807861328,
+    -267.8634948730469
+  ],
+  "unit2.elements_of_a_business_plan.assets_1": [
+    -167.79794311523438,
+    -168.37718200683594,
+    -254.23770141601562
+  ],
+  "unit2.elements_of_a_business_plan.liabilities_1": [
+    -143.692138671875,
+    -233.38052368164062,
+    -275.42547607421875
+  ],
+  "unit2.elements_of_a_business_plan.equity_1": [
+    -118.49041748046875,
+    -103.53303527832031,
+    -268.4683837890625
+  ],
+  "unit2.business_plan_overview": [
+    -338.3790283203125,
+    6.469573974609375,
+    -142.80079650878906
+  ],
+  "unit2.strategic_planning": [
+    -307.5125427246094,
+    -66.41854858398438,
+    -18.370025634765625
+  ],
+  "unit2.strategic_planning.vision": [
+    -176.41441345214844,
+    -35.31304931640625,
+    -39.377593994140625
+  ],
+  "unit2.strategic_planning.mission": [
+    -210.74127197265625,
+    -24.41021728515625,
+    -21.3485107421875
+  ],
+  "unit2.strategic_planning.goals": [
+    -237.12255859375,
+    -64.81649780273438,
+    -49.63323974609375
+  ],
+  "unit2.strategic_planning.objectives": [
+    -201.35726928710938,
+    -136.48330688476562,
+    -41.66339111328125
+  ],
+  "unit2.strategic_planning.swoc_analysis_strengths_weaknesses_opportunities_and_challenges": [
+    -234.24502563476562,
+    -82.72540283203125,
+    9.850189208984375
+  ],
+  "unit2.strategic_planning.how_swoc_analysis_helps": [
+    -247.73733520507812,
+    -78.53182983398438,
+    21.004638671875
+  ],
+  "unit2.porters_generic_strategies": [
+    -226.8325958251953,
+    23.321807861328125,
+    86.49844360351562
+  ],
+  "unit2.porters_generic_strategies.differentiation": [
+    -113.10716247558594,
+    64.07272338867188,
+    299.2841796875
+  ],
+  "unit2.porters_generic_strategies.cost_leadership": [
+    -255.22256469726562,
+    -24.747528076171875,
+    122.6627197265625
+  ],
+  "unit2.porters_generic_strategies.focus": [
+    -255.41598510742188,
+    -1.589324951171875,
+    142.701904296875
+  ],
+  "unit2.growth_strategies": [
+    -266.77484130859375,
+    42.469818115234375,
+    -3.717193603515625
+  ],
+  "unit2.growth_strategies.organic": [
+    -162.02267456054688,
+    68.140869140625,
+    -117.05281066894531
+  ],
+  "unit2.growth_strategies.mergers_and_acquisitions": [
+    -232.4566192626953,
+    43.444305419921875,
+    -61.884521484375
+  ],
+  "unit2.growth_strategies.strategic_alliances": [
+    -219.8280487060547,
+    87.54718017578125,
+    -26.6043701171875
+  ],
+  "unit2.writing_a_business_plan_on_given_templates": [
+    -228.42166137695312,
+    -99.23699951171875,
+    -230.83261108398438
+  ],
+  "unit2.writing_a_business_plan_on_given_templates.title_page": [
+    -18.25628662109375,
+    -104.37809753417969,
+    -71.29995727539062
+  ],
+  "unit2.writing_a_business_plan_on_given_templates.executive_summary": [
+    -233.37258911132812,
+    -194.7563934326172,
+    -144.36952209472656
+  ],
+  "unit2.writing_a_business_plan_on_given_templates.industry_overview": [
+    -123.62069702148438,
+    -77.12490844726562,
+    1.427215576171875
+  ],
+  "unit2.writing_a_business_plan_on_given_templates.market_analysis_and_competition": [
+    -163.8119659423828,
+    -78.5537109375,
+    214.2847900390625
+  ],
+  "unit2.writing_a_business_plan_on_given_templates.sales_and_marketing_plan": [
+    -196.1570281982422,
+    -97.74391174316406,
+    167.69598388671875
+  ],
+  "unit2.writing_a_business_plan_on_given_templates.management_plan": [
+    -234.99642944335938,
+    -159.80413818359375,
+    -227.26473999023438
+  ],
+  "unit2.writing_a_business_plan_on_given_templates.operating_plan": [
+    -155.37066650390625,
+    -152.99337768554688,
+    -67.86947631835938
+  ],
+  "unit2.writing_a_business_plan_on_given_templates.financial_plan": [
+    -305.5579833984375,
+    -230.37376403808594,
+    -289.7594299316406
+  ],
+  "unit2.writing_a_business_plan_on_given_templates.appendices_and_exhibits": [
+    -79.03860473632812,
+    -194.1736297607422,
+    -80.63943481445312
+  ],
+  "unit2.developing_business_models_and_prototypes_based_on_generated_ideas": [
+    -224.0321807861328,
+    31.07916259765625,
+    -50.3621826171875
+  ],
+  "unit2.developing_business_models_and_prototypes_based_on_generated_ideas.conduct_market_research_analysis": [
+    -228.55880737304688,
+    -29.9287109375,
+    226.12213134765625
+  ],
+  "unit2.developing_business_models_and_prototypes_based_on_generated_ideas.define_your_value_proposition": [
+    -120.77462768554688,
+    -37.409820556640625,
+    139.05459594726562
+  ],
+  "unit2.developing_business_models_and_prototypes_based_on_generated_ideas.choose_your_revenue_model": [
+    -205.25828552246094,
+    -74.277099609375,
+    -0.547882080078125
+  ],
+  "unit2.developing_business_models_and_prototypes_based_on_generated_ideas.4_design_your_distribution_channels": [
+    -175.31060791015625,
+    -27.001129150390625,
+    184.0833740234375
+  ],
+  "unit2.developing_business_models_and_prototypes_based_on_generated_ideas.build_strategic_partnerships": [
+    -272.7964782714844,
+    126.74554443359375,
+    -39.346466064453125
+  ],
+  "unit2.developing_business_models_and_prototypes_based_on_generated_ideas.foster_innovation_and_adaptability": [
+    -128.13717651367188,
+    189.5150146484375,
+    -1.421661376953125
+  ],
+  "unit3.unit_iii": [
+    -255.4091796875,
+    117.313720703125,
+    -17.86865234375
+  ],
+  "unit3.unit_iii.entrepreneurial_marketing_and_sales": [
+    -220.6388397216797,
+    168.258056640625,
+    15.810943603515625
+  ],
+  "unit3.unit_iii.overview": [
+    -318.9444885253906,
+    172.69915771484375,
+    134.0703125
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together": [
+    -205.06185913085938,
+    12.257659912109375,
+    340.87042236328125
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.product": [
+    1.6131591796875,
+    8.98822021484375,
+    138.0694580078125
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.product_lifecycle_plc": [
+    -91.31280517578125,
+    29.079986572265625,
+    87.04046630859375
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.introduction_stage": [
+    -163.7166748046875,
+    84.24691772460938,
+    180.90618896484375
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.growth_stage": [
+    -184.06004333496094,
+    91.23382568359375,
+    161.05746459960938
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.maturity_stage": [
+    -162.7606964111328,
+    -14.118072509765625,
+    168.39837646484375
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.decline_stage": [
+    -137.3269500732422,
+    -37.717376708984375,
+    126.71405029296875
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.price": [
+    -115.16348266601562,
+    -127.70555114746094,
+    149.86349487304688
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.pricing_strategies": [
+    -250.96640014648438,
+    -90.53292846679688,
+    293.0084228515625
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.place_distribution": [
+    -32.175048828125,
+    2.329254150390625,
+    117.9720458984375
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.distribution_channels": [
+    -130.15284729003906,
+    -3.539642333984375,
+    203.631591796875
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.promotion": [
+    -149.3102569580078,
+    1.285736083984375,
+    194.122314453125
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.promotional_tools": [
+    -119.12176513671875,
+    6.350067138671875,
+    303.6148681640625
+  ],
+  "unit3.unit_iii.how_the_4ps_work_together.promotional_strategy": [
+    -205.9392547607422,
+    16.660888671875,
+    286.39849853515625
+  ],
+  "unit3.unit_iii.case_studies_on_4ps": [
+    -165.2544708251953,
+    42.70684814453125,
+    143.71176147460938
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.product_apple_iphone": [
+    -83.46157836914062,
+    43.8028564453125,
+    265.0108642578125
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.price_walmart": [
+    -261.6368713378906,
+    -32.212066650390625,
+    238.1934814453125
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.place_starbucks": [
+    -185.53216552734375,
+    89.28692626953125,
+    246.587890625
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.promotion_coca-cola": [
+    -229.77969360351562,
+    100.14956665039062,
+    284.87078857421875
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.product_boat": [
+    -64.06802368164062,
+    60.408599853515625,
+    144.66030883789062
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.price_jio": [
+    -145.06849670410156,
+    16.520599365234375,
+    128.3760986328125
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.place_flipkart": [
+    -102.71893310546875,
+    61.058441162109375,
+    230.32861328125
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.promotion_zomato": [
+    -194.09254455566406,
+    20.911224365234375,
+    345.0045166015625
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.introduction_to_stp": [
+    -210.34548950195312,
+    16.821258544921875,
+    335.261474609375
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.market_segmentation": [
+    -221.60643005371094,
+    -53.985137939453125,
+    272.91448974609375
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.targeting": [
+    -273.79840087890625,
+    8.038238525390625,
+    294.2694091796875
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.positioning": [
+    -161.54566955566406,
+    33.96148681640625,
+    319.71539306640625
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.differentiation_strategies": [
+    -130.78860473632812,
+    25.00726318359375,
+    319.07513427734375
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.positioning_maps": [
+    -154.34304809570312,
+    19.919647216796875,
+    228.21148681640625
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.integration_of_stp_into_marketing_strategy": [
+    -298.9329528808594,
+    -7.428070068359375,
+    319.73101806640625
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.case_study": [
+    -64.88311767578125,
+    -51.50018310546875,
+    68.85250854492188
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.starbucks": [
+    -223.3328857421875,
+    83.80923461914062,
+    315.25469970703125
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.importance_of_stp_in_effective_marketing": [
+    -261.5373229980469,
+    7.5782470703125,
+    229.780029296875
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.maruti_suzuki_india_ltd": [
+    -199.62225341796875,
+    0.076019287109375,
+    200.37664794921875
+  ],
+  "unit3.unit_iii.case_studies_on_4ps.hindustan_unilever_limited_hul": [
+    -145.1204376220703,
+    31.549713134765625,
+    301.68804931640625
+  ],
+  "unit3.unit_iii.branding_and_product_development_strategies": [
+    -181.42367553710938,
+    74.74832153320312,
+    158.77566528320312
+  ],
+  "unit3.unit_iii.branding_and_product_development_strategies.branding_crafting_a_unique_market_identity": [
+    -156.91741943359375,
+    148.42416381835938,
+    234.310546875
+  ],
+  "unit3.unit_iii.branding_and_product_development_strategies.product_development_bringing_ideas_to_market": [
+    -175.92164611816406,
+    36.494293212890625,
+    176.10491943359375
+  ],
+  "unit3.unit_iii.branding_and_product_development_strategies.integrating_branding_and_product_development_strategies": [
+    -175.65980529785156,
+    130.10504150390625,
+    249.16851806640625
+  ],
+  "unit3.unit_iii.unique_value_proposition_uvp": [
+    -58.288177490234375,
+    -48.407470703125,
+    130.7730712890625
+  ],
+  "unit3.unit_iii.unique_value_proposition_uvp.understanding_the_components_of_a_uvp": [
+    -103.9544677734375,
+    -103.86875915527344,
+    191.3028564453125
+  ],
+  "unit3.unit_iii.unique_value_proposition_uvp.steps_to_crafting_a_uvp": [
+    -188.6868896484375,
+    -60.87811279296875,
+    155.7196044921875
+  ],
+  "unit3.unit_iii.unique_value_proposition_uvp.common_uvp_formats": [
+    -130.5272979736328,
+    -42.813507080078125,
+    261.39251708984375
+  ],
+  "unit3.unit_iii.unique_value_proposition_uvp.examples_of_effective_uvps": [
+    -169.37197875976562,
+    -33.532073974609375,
+    200.79876708984375
+  ],
+  "unit3.unit_iii.digital_marketing": [
+    -159.92904663085938,
+    78.39981079101562,
+    259.83172607421875
+  ],
+  "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing": [
+    -77.32485961914062,
+    1.92315673828125,
+    230.1280517578125
+  ],
+  "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.amul_leveraging_social_media_for_brand_engagement": [
+    -101.57728576660156,
+    109.39071655273438,
+    261.09674072265625
+  ],
+  "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.zomato_creative_content_and_meme_marketing": [
+    -129.6815948486328,
+    96.63314819335938,
+    257.5821533203125
+  ],
+  "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.nykaa_content-driven_digital_strategy_and_influencer_marketing": [
+    -119.04969787597656,
+    72.61569213867188,
+    301.65582275390625
+  ],
+  "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.flipkart_data-driven_marketing_and_customer-centric_campaigns": [
+    -185.00509643554688,
+    7.962371826171875,
+    341.183837890625
+  ],
+  "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.swiggy_personalization_and_customer_engagement_on_digital_platforms": [
+    -143.53060913085938,
+    79.61492919921875,
+    350.0
+  ],
+  "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.cadbury_dairy_milk_hyperlocal_and_personalized_digital_campaigns": [
+    -107.15316772460938,
+    70.1339111328125,
+    320.6513671875
+  ],
+  "unit3.unit_iii.entrepreneurial_finance_and_resource_management": [
+    -241.72265625,
+    161.14300537109375,
+    -268.6312255859375
+  ],
+  "unit3.unit_iii.sources_of_financing": [
+    -155.17147827148438,
+    -69.63223266601562,
+    -144.92367553710938
+  ],
+  "unit3.unit_iii.sources_of_financing.equity_financing": [
+    -195.12982177734375,
+    40.212646484375,
+    -350.0
+  ],
+  "unit3.unit_iii.sources_of_financing.debt_financing": [
+    -211.1571502685547,
+    -70.64065551757812,
+    -319.0681457519531
+  ],
+  "unit3.unit_iii.sources_of_financing.venture_capital_vc": [
+    -216.4099578857422,
+    92.94842529296875,
+    -278.41033935546875
+  ],
+  "unit3.unit_iii.sources_of_financing.angel_investors": [
+    -221.5204620361328,
+    156.6746826171875,
+    -309.95489501953125
+  ],
+  "unit3.unit_iii.sources_of_financing.crowdfunding": [
+    -212.61399841308594,
+    132.11856079101562,
+    -63.41668701171875
+  ],
+  "unit3.unit_iii.few_case_studies": [
+    -70.70999145507812,
+    -63.608489990234375,
+    -15.20599365234375
+  ],
+  "unit3.unit_iii.few_case_studies.ola_cabs_venture_capital_vc_funding": [
+    -213.10240173339844,
+    82.79415893554688,
+    -75.219970703125
+  ],
+  "unit3.unit_iii.few_case_studies.zomato_angel_investors_and_venture_capital": [
+    -138.56613159179688,
+    100.33059692382812,
+    -16.947723388671875
+  ],
+  "unit3.unit_iii.few_case_studies.bira_91_equity_financing": [
+    -156.63307189941406,
+    57.754547119140625,
+    41.2879638671875
+  ],
+  "unit3.unit_iii.few_case_studies.dream11_private_equity_and_venture_capital": [
+    -157.5502471923828,
+    80.12246704101562,
+    -58.932037353515625
+  ],
+  "unit3.unit_iii.few_case_studies.ketto_crowdfunding": [
+    -168.03311157226562,
+    102.46774291992188,
+    -23.26519775390625
+  ],
+  "unit3.unit_iii.human_resource_management_hrm": [
+    -186.5376434326172,
+    -10.684173583984375,
+    -52.796112060546875
+  ],
+  "unit3.unit_iii.human_resource_management_hrm.recruitment_in_entrepreneurship": [
+    -220.07945251464844,
+    179.4300537109375,
+    -16.450469970703125
+  ],
+  "unit3.unit_iii.human_resource_management_hrm.training_in_entrepreneurship": [
+    -200.41526794433594,
+    161.2685546875,
+    -198.48988342285156
+  ],
+  "unit3.unit_iii.human_resource_management_hrm.performance_evaluation_in_entrepreneurship": [
+    -259.3583984375,
+    88.16265869140625,
+    -127.33892822265625
+  ],
+  "unit3.unit_iii.human_resource_management_hrm.legal_and_ethical_issues_in_entrepreneurship": [
+    -25.372314453125,
+    154.07583618164062,
+    -238.6178741455078
+  ],
+  "unit3.unit_iii.human_resource_management_hrm_case_studies": [
+    -122.55166625976562,
+    -60.530120849609375,
+    7.542510986328125
+  ],
+  "unit3.unit_iii.human_resource_management_hrm_case_studies.zappos_building_a_unique_corporate_culture": [
+    -176.140869140625,
+    83.61215209960938,
+    147.58319091796875
+  ],
+  "unit3.unit_iii.human_resource_management_hrm_case_studies.google_people_operations_for_innovation": [
+    -216.3953857421875,
+    52.8507080078125,
+    38.250152587890625
+  ],
+  "unit3.unit_iii.human_resource_management_hrm_case_studies.southwest_airlines_employee-centered_hrm": [
+    -232.48947143554688,
+    52.646026611328125,
+    68.27041625976562
+  ],
+  "unit3.unit_iii.human_resource_management_hrm_case_studies.toyota_the_toyota_way_and_hrm": [
+    -214.01101684570312,
+    38.8734130859375,
+    48.712860107421875
+  ],
+  "unit3.unit_iii.human_resource_management_hrm_case_studies.ikea_employee_motivation_and_development": [
+    -187.88107299804688,
+    55.6046142578125,
+    47.9620361328125
+  ],
+  "unit3.unit_iii.financial_management": [
+    -330.62347412109375,
+    -237.12152099609375,
+    -292.7774963378906
+  ],
+  "unit3.unit_iii.financial_management.objectives_of_financial_management": [
+    -332.6933288574219,
+    -232.35369873046875,
+    -255.456298828125
+  ],
+  "unit3.unit_iii.financial_management.key_functions_of_financial_management": [
+    -323.9712829589844,
+    -267.4137268066406,
+    -306.458984375
+  ],
+  "unit3.unit_iii.financial_management.principles_of_financial_management": [
+    -319.71221923828125,
+    -217.92864990234375,
+    -241.14605712890625
+  ],
+  "unit3.unit_iii.financial_management.importance_of_financial_management": [
+    -324.4862060546875,
+    -221.63882446289062,
+    -252.74256896972656
+  ],
+  "unit3.unit_iii.financial_management.financial_management_tools_and_techniques": [
+    -321.2743835449219,
+    -251.96759033203125,
+    -246.6984100341797
+  ],
+  "unit3.unit_iii.financial_management.challenges_in_financial_management": [
+    -245.16714477539062,
+    -217.9855194091797,
+    -179.7288055419922
+  ],
+  "unit3.unit_iii.budgeting": [
+    -257.73907470703125,
+    -297.9986877441406,
+    -195.3106689453125
+  ],
+  "unit3.unit_iii.budgeting.objectives_of_budgeting": [
+    -300.62603759765625,
+    -274.1344299316406,
+    -196.69859313964844
+  ],
+  "unit3.unit_iii.budgeting.types_of_budgeting": [
+    -269.77703857421875,
+    -291.790771484375,
+    -187.75729370117188
+  ],
+  "unit3.unit_iii.capital_budgeting": [
+    -238.12802124023438,
+    -169.5666046142578,
+    -278.541015625
+  ],
+  "unit3.unit_iii.capital_budgeting.case_study_of_the_indian_entrepreneur_and_the_cunning_npv": [
+    -79.6875,
+    153.28546142578125,
+    -112.76786804199219
+  ],
+  "unit3.unit_iii.capital_budgeting.steps_in_the_budgeting_process": [
+    -291.0015563964844,
+    -350.0,
+    -201.02734375
+  ],
+  "unit3.unit_iii.capital_budgeting.advantages_of_budgeting": [
+    -256.77703857421875,
+    -255.20269775390625,
+    -190.08139038085938
+  ],
+  "unit3.unit_iii.capital_budgeting.disadvantages_of_budgeting": [
+    -197.33706665039062,
+    -237.00836181640625,
+    -132.69406127929688
+  ],
+  "unit3.unit_iii.capital_budgeting.budgeting_techniques_and_tools": [
+    -298.6528015136719,
+    -291.5600280761719,
+    -77.89584350585938
+  ],
+  "unit3.unit_iii.capital_budgeting.importance_of_budgeting": [
+    -321.6177978515625,
+    -266.3956298828125,
+    -207.96337890625
+  ],
+  "unit3.unit_iii.cash_flow_management": [
+    -255.50413513183594,
+    -214.0826416015625,
+    -160.71856689453125
+  ],
+  "unit3.unit_iii.cash_flow_management.importance_of_cash_flow_management": [
+    -261.3220520019531,
+    -194.4302978515625,
+    -197.07119750976562
+  ],
+  "unit3.unit_iii.cash_flow_management.types_of_cash_flow": [
+    -227.26986694335938,
+    -136.85092163085938,
+    -246.17202758789062
+  ],
+  "unit3.unit_iii.cash_flow_management.cash_flow_management_techniques": [
+    -275.4918518066406,
+    -259.3380432128906,
+    -147.6449432373047
+  ],
+  "unit3.unit_iii.cash_flow_management.cash_flow_management_strategies": [
+    -293.5801696777344,
+    -256.3375244140625,
+    -110.11488342285156
+  ],
+  "unit3.unit_iii.cash_flow_management.challenges_in_cash_flow_management": [
+    -277.8585205078125,
+    -173.10260009765625,
+    -150.41464233398438
+  ],
+  "unit3.unit_iii.cash_flow_management.cash_flow_management_in_personal_finance": [
+    -306.85491943359375,
+    -206.47518920898438,
+    -265.7733154296875
+  ],
+  "unit3.unit_iii.financial_statements_analysis": [
+    -282.8053283691406,
+    -245.548095703125,
+    -190.4762420654297
+  ],
+  "unit3.unit_iii.financial_statements_analysis.objectives_of_financial_statement_analysis": [
+    -310.2006530761719,
+    -296.6573486328125,
+    -180.10337829589844
+  ],
+  "unit3.unit_iii.financial_statements_analysis.key_financial_statements": [
+    -237.67466735839844,
+    -250.17807006835938,
+    -205.34889221191406
+  ],
+  "unit3.unit_iii.financial_statements_analysis.techniques_of_financial_statement_analysis": [
+    -256.4798583984375,
+    -209.51806640625,
+    -113.98765563964844
+  ],
+  "unit3.unit_iii.financial_statements_analysis.steps_in_financial_statement_analysis": [
+    -328.5943298339844,
+    -209.89990234375,
+    -94.3172607421875
+  ],
+  "unit3.unit_iii.financial_statements_analysis.limitations_of_financial_statement_analysis": [
+    -249.83358764648438,
+    -241.61767578125,
+    -128.42376708984375
+  ],
+  "unit3.unit_iii.risk_management_and_insurance": [
+    -212.5166778564453,
+    -234.76107788085938,
+    -108.53031921386719
+  ],
+  "unit3.unit_iii.risk_management_and_insurance.key_concepts_in_risk_management_and_insurance": [
+    -167.2217254638672,
+    -203.10440063476562,
+    -116.35018920898438
+  ],
+  "unit3.unit_iii.risk_management_and_insurance.goals_of_risk_management": [
+    -211.0806121826172,
+    -162.7474822998047,
+    -153.26644897460938
+  ],
+  "unit3.unit_iii.risk_management_and_insurance.steps_in_risk_management": [
+    -242.65538024902344,
+    -223.70440673828125,
+    -104.63446044921875
+  ],
+  "unit3.unit_iii.risk_management_and_insurance.risk_management_techniques": [
+    -201.0496368408203,
+    -195.6490020751953,
+    -124.71046447753906
+  ],
+  "unit3.unit_iii.risk_management_and_insurance.case_study_of_risk_management": [
+    -159.47886657714844,
+    -179.04844665527344,
+    -72.93240356445312
+  ],
+  "unit3.unit_iii.risk_management_and_insurance.camels_in_new_zealand": [
+    -55.924560546875,
+    4.142578125,
+    -6.072723388671875
+  ],
+  "unit3.unit_iii.risk_management_and_insurance.types_of_insurance_as_risk_management_tools": [
+    -103.73030090332031,
+    -191.4365692138672,
+    -142.8177490234375
+  ],
+  "unit3.unit_iii.risk_management_and_insurance.risk_management_in_insurance": [
+    -125.48954772949219,
+    -250.229736328125,
+    -76.25762939453125
+  ],
+  "unit3.unit_iii.risk_management_and_insurance.importance_of_insurance_in_risk_management": [
+    -140.2806396484375,
+    -175.77830505371094,
+    -147.17584228515625
+  ],
+  "unit3.unit_iii.risk_management_and_insurance.challenges_in_risk_management_and_insurance": [
+    -83.44467163085938,
+    -211.87994384765625,
+    -47.054840087890625
+  ],
+  "unit3.unit_iii.risk_management_and_insurance.role_of_technology_in_risk_management_and_insurance": [
+    -103.90289306640625,
+    -153.32354736328125,
+    -99.26167297363281
+  ],
+  "unit3.unit_iii.legal_and_ethical_issues_in_entrepreneurship": [
+    -84.20880126953125,
+    191.15283203125,
+    -281.98809814453125
+  ],
+  "unit3.unit_iii.intellectual_property_rights_ipr": [
+    189.2596435546875,
+    72.10458374023438,
+    -135.0936737060547
+  ],
+  "unit3.unit_iii.contracts": [
+    22.834747314453125,
+    -110.66310119628906,
+    -107.10945129394531
+  ],
+  "unit3.unit_iii.corporate_governance_activities": [
+    -142.74627685546875,
+    -69.7196044921875,
+    -226.29119873046875
+  ],
+  "unit3.unit_iii.case_studies_and_practical_applications": [
+    17.050628662109375,
+    -55.049560546875,
+    46.0009765625
+  ],
+  "unit3.unit_iii.case_studies_and_practical_applications.case_study_1_intellectual_property_rights_in_a_tech_startup": [
+    125.62796020507812,
+    165.30963134765625,
+    -45.117889404296875
+  ],
+  "unit3.unit_iii.case_studies_and_practical_applications.case_study_2_contractual_dispute_in_a_freelance_design_business": [
+    69.86691284179688,
+    -91.25955200195312,
+    -37.07257080078125
+  ],
+  "unit3.unit_iii.case_studies_and_practical_applications.practical_applications": [
+    -107.95230102539062,
+    82.49191284179688,
+    -245.0032958984375
+  ],
+  "unit4": [
+    -21.448974609375,
+    -37.5343017578125,
+    58.2386474609375
+  ],
+  "unit4.introduction_patents": [
+    135.9781494140625,
+    55.70989990234375,
+    -51.06488037109375
+  ],
+  "unit4.what_is_intellectual_property": [
+    225.822509765625,
+    99.07958984375,
+    -179.70321655273438
+  ],
+  "unit4.intellectual_property_rights": [
+    231.1395263671875,
+    93.3568115234375,
+    -233.84951782226562
+  ],
+  "unit4.types_of_intellectual_property_rights": [
+    234.363037109375,
+    58.698150634765625,
+    -173.61953735351562
+  ],
+  "unit4.types_of_intellectual_property_rights.copyrights": [
+    280.5994873046875,
+    -15.392303466796875,
+    -139.6830596923828
+  ],
+  "unit4.types_of_intellectual_property_rights.trademarks": [
+    139.0018310546875,
+    82.66973876953125,
+    100.11679077148438
+  ],
+  "unit4.types_of_intellectual_property_rights.patents": [
+    268.33453369140625,
+    104.06100463867188,
+    -188.01974487304688
+  ],
+  "unit4.types_of_intellectual_property_rights.industrial_design_rights": [
+    172.1134033203125,
+    13.4107666015625,
+    -81.21780395507812
+  ],
+  "unit4.types_of_intellectual_property_rights.trade_secrets": [
+    169.513671875,
+    85.85043334960938,
+    -108.04986572265625
+  ],
+  "unit4.salient_features_of_patent": [
+    127.03659057617188,
+    54.2918701171875,
+    -13.357208251953125
+  ],
+  "unit4.salient_features_of_patent.invention_must_be_new": [
+    211.41302490234375,
+    23.71673583984375,
+    -61.473602294921875
+  ],
+  "unit4.salient_features_of_patent.invention_must_have_industrial_application": [
+    93.88162231445312,
+    64.14166259765625,
+    -63.378173828125
+  ],
+  "unit4.patentable_inventions": [
+    208.5213623046875,
+    63.825775146484375,
+    -77.82867431640625
+  ],
+  "unit4.inventions_those_are_not_patentable": [
+    210.38140869140625,
+    43.914520263671875,
+    -144.66818237304688
+  ],
+  "unit4.procedure_for_obtaining_patent": [
+    139.88607788085938,
+    10.508209228515625,
+    -69.17779541015625
+  ],
+  "unit4.procedure_for_obtaining_patent.who_can_apply_for_patent": [
+    277.46502685546875,
+    105.70578002929688,
+    -142.0865020751953
+  ],
+  "unit4.filing_a_patent_application": [
+    191.7437744140625,
+    -7.626617431640625,
+    -106.8724365234375
+  ],
+  "unit4.specifications": [
+    95.76217651367188,
+    -154.3678741455078,
+    -95.64811706542969
+  ],
+  "unit4.claims": [
+    226.72711181640625,
+    -145.53321838378906,
+    -82.79446411132812
+  ],
+  "unit4.publication_of_the_application": [
+    248.8114013671875,
+    -106.35308837890625,
+    -112.96749877929688
+  ],
+  "unit4.examination_of_the_application": [
+    145.83749389648438,
+    -146.6522216796875,
+    -137.37290954589844
+  ],
+  "unit4.acceptance_and_advertisement_of_complete_specifications": [
+    35.0550537109375,
+    -134.99142456054688,
+    77.38436889648438
+  ],
+  "unit4.opposition_to_the_grant_of_patent": [
+    258.8699951171875,
+    -60.26800537109375,
+    -63.748199462890625
+  ],
+  "unit4.grant_and_sealing_of_patent": [
+    250.31915283203125,
+    -57.4552001953125,
+    -173.309326171875
+  ],
+  "unit4.rights_of_a_patentee": [
+    307.63690185546875,
+    80.00186157226562,
+    -99.29402160644531
+  ],
+  "unit4.rights_of_a_patentee.right_to_exploit_the_patent": [
+    240.86712646484375,
+    -9.195068359375,
+    -98.9764404296875
+  ],
+  "unit4.rights_of_a_patentee.right_to_assign_and_licence": [
+    238.09619140625,
+    14.8255615234375,
+    -240.7706298828125
+  ],
+  "unit4.rights_of_a_patentee.right_to_surrender": [
+    227.6824951171875,
+    10.9228515625,
+    -159.13150024414062
+  ],
+  "unit4.rights_of_a_patentee.right_to_sue_for_infringement": [
+    350.0,
+    16.643707275390625,
+    -38.022064208984375
+  ],
+  "unit4.joint-inventorsco-owners_of_patent_rights": [
+    228.62750244140625,
+    66.39059448242188,
+    -130.15879821777344
+  ],
+  "unit4.limitations_on_patentees_rights": [
+    316.46905517578125,
+    25.15777587890625,
+    -169.8590545654297
+  ],
+  "unit4.limitations_on_patentees_rights.use_for_the_purposes_of_government": [
+    166.4931640625,
+    -79.57864379882812,
+    -97.57260131835938
+  ],
+  "unit4.limitations_on_patentees_rights.acquisition_of_patents_and_inventions_by_central_government": [
+    266.4931640625,
+    9.493255615234375,
+    -117.89764404296875
+  ],
+  "unit4.compulsory_licences": [
+    277.0711669921875,
+    45.841705322265625,
+    -88.04852294921875
+  ],
+  "unit4.inventions_for_defence_purposes": [
+    282.70147705078125,
+    -47.40447998046875,
+    -79.1468505859375
+  ],
+  "unit4.revocation_of_patents_for_non-working": [
+    266.42852783203125,
+    24.90386962890625,
+    -128.70372009277344
+  ],
+  "unit4.transfer_of_patent_rights": [
+    290.61883544921875,
+    18.0853271484375,
+    -167.20211791992188
+  ],
+  "unit4.transfer_of_patent_rights.assignment": [
+    187.32757568359375,
+    -72.27511596679688,
+    -215.1393280029297
+  ],
+  "unit4.transfer_of_patent_rights.licence": [
+    230.342529296875,
+    49.728912353515625,
+    -227.74549865722656
+  ],
+  "unit4.transfer_of_patent_rights.operation_of_law": [
+    194.0592041015625,
+    -25.25701904296875,
+    -129.0959930419922
+  ],
+  "unit4.register_of_patents": [
+    179.99322509765625,
+    -12.90936279296875,
+    -148.03219604492188
+  ],
+  "unit4.biodiversity": [
+    -25.213104248046875,
+    -34.78924560546875,
+    -12.620941162109375
+  ],
+  "unit4.biodiversity.traditional_knowledge_ipr_and_biodiversity": [
+    54.784576416015625,
+    117.36294555664062,
+    -42.861572265625
+  ],
+  "unit4.trade_secrets": [
+    164.94720458984375,
+    27.801483154296875,
+    -63.73370361328125
+  ],
+  "unit4.trade_secrets.why_to_protect_a_trade_secret": [
+    126.23794555664062,
+    -13.86541748046875,
+    -41.7667236328125
+  ],
+  "unit4.trade_secrets.trade_secret_versus_patent": [
+    170.55908203125,
+    64.52554321289062,
+    -90.71249389648438
+  ],
+  "unit4.trade_secrets.tools_to_protect_a_trade_secret": [
+    149.98248291015625,
+    6.092803955078125,
+    -103.43214416503906
+  ],
+  "unit4.trade_secrets.case_studies": [
+    191.4400634765625,
+    4.924591064453125,
+    139.26129150390625
+  ],
+  "unit5": [
+    -30.868927001953125,
+    -58.1756591796875,
+    43.735321044921875
+  ],
+  "unit5.industrial_designs": [
+    45.1519775390625,
+    -6.50726318359375,
+    40.3768310546875
+  ],
+  "unit5.introduction": [
+    136.4266357421875,
+    21.846710205078125,
+    114.5294189453125
+  ],
+  "unit5.what_is_an_industrial_design": [
+    48.181304931640625,
+    7.4801025390625,
+    -59.972198486328125
+  ],
+  "unit5.creative_designs_in_business": [
+    -52.368988037109375,
+    147.65957641601562,
+    168.56317138671875
+  ],
+  "unit5.why_protect_industrial_designs": [
+    120.67010498046875,
+    3.62689208984375,
+    -39.078643798828125
+  ],
+  "unit5.procedure_for_obtaining_design_protection": [
+    163.64923095703125,
+    -93.6947021484375,
+    -69.8419189453125
+  ],
+  "unit5.revocation_infringement_and_remedies_of_industrial_designs": [
+    248.4161376953125,
+    -33.28369140625,
+    -18.975921630859375
+  ],
+  "unit5.revocation_infringement_and_remedies_of_industrial_designs.revocation": [
+    148.31430053710938,
+    -28.23004150390625,
+    -99.60322570800781
+  ],
+  "unit5.revocation_infringement_and_remedies_of_industrial_designs.infringement": [
+    276.0069580078125,
+    30.480712890625,
+    30.61517333984375
+  ],
+  "unit5.revocation_infringement_and_remedies_of_industrial_designs.remedies": [
+    187.15692138671875,
+    -77.59298706054688,
+    -14.873931884765625
+  ],
+  "unit5.case_studies": [
+    -47.24560546875,
+    -45.30279541015625,
+    49.45904541015625
+  ],
+  "unit5.case_studies.iphone_design_by_apple": [
+    76.66915893554688,
+    76.53009033203125,
+    74.42373657226562
+  ],
+  "unit5.case_studies.alessi_juicy_salif_citrus_juicer": [
+    -68.38861083984375,
+    52.66387939453125,
+    57.553497314453125
+  ],
+  "unit5.case_studies.vespa_scooter": [
+    -23.8558349609375,
+    50.1947021484375,
+    8.020263671875
+  ],
+  "unit5.case_studies.swatch_watch": [
+    -13.377899169921875,
+    48.487762451171875,
+    65.63104248046875
+  ],
+  "unit5.case_studies.oxo_good_grips_kitchen_tools": [
+    -53.031829833984375,
+    10.230712890625,
+    32.948028564453125
+  ],
+  "unit5.copyright": [
+    215.72003173828125,
+    -35.034698486328125,
+    -4.560211181640625
+  ],
+  "unit5.what_is_copyright": [
+    228.79083251953125,
+    32.6180419921875,
+    -165.59107971191406
+  ],
+  "unit5.what_is_copyright.nature_and_scope": [
+    247.98236083984375,
+    -43.088775634765625,
+    -165.1199951171875
+  ],
+  "unit5.copyright_in_india": [
+    284.57904052734375,
+    -54.904388427734375,
+    -42.91839599609375
+  ],
+  "unit5.protection_of_related_rights": [
+    237.271728515625,
+    -41.584197998046875,
+    -100.54400634765625
+  ],
+  "unit5.protection_of_related_rights.rights_conferred_by_copyright": [
+    267.3453369140625,
+    -40.3040771484375,
+    -174.64418029785156
+  ],
+  "unit5.are_ideas_methods_or_concepts_protected_by_copyright": [
+    196.81390380859375,
+    -49.3646240234375,
+    -53.80194091796875
+  ],
+  "unit5.how_are_rights_related_to_copyright": [
+    213.51971435546875,
+    -50.547698974609375,
+    -146.15098571777344
+  ],
+  "unit5.how_are_rights_related_to_copyright.copy_right_protection": [
+    224.5240478515625,
+    -22.12982177734375,
+    -97.94009399414062
+  ],
+  "unit5.how_are_rights_related_to_copyright.when_does_copyright_protection_begin_and_what_is_required": [
+    243.88916015625,
+    -39.0858154296875,
+    -130.3113250732422
+  ],
+  "unit5.how_are_rights_related_to_copyright.when_does_copyright_protection_end_or_expire": [
+    219.5384521484375,
+    -122.2926025390625,
+    -127.0216064453125
+  ],
+  "unit5.how_are_rights_related_to_copyright.the_famous_symbol": [
+    264.5877685546875,
+    6.668487548828125,
+    -57.306976318359375
+  ],
+  "unit5.computer_software_and_ipr": [
+    86.02096557617188,
+    -82.613037109375,
+    -61.552490234375
+  ],
+  "unit5.computer_software_and_ipr.protection_of_computer_software_under_copyright": [
+    266.77838134765625,
+    -98.34364318847656,
+    -94.24032592773438
+  ],
+  "unit5.authorship_issues_in_works_used_or_made_by_computer": [
+    268.76953125,
+    -97.315185546875,
+    -155.61097717285156
+  ],
+  "unit5.patenting_of_computer_software": [
+    195.6038818359375,
+    -1.788665771484375,
+    -120.61219787597656
+  ],
+  "unit5.patenting_of_computer_software.transfer_of_copy_rights": [
+    245.39337158203125,
+    -72.3177490234375,
+    -112.00381469726562
+  ],
+  "unit5.patenting_of_computer_software.difference_between_licensing_and_assignment_of_copyright": [
+    168.6943359375,
+    -32.4197998046875,
+    -181.30648803710938
+  ],
+  "unit5.patenting_of_computer_software.rights_of_broad_casting_organizations_and": [
+    161.2996826171875,
+    -1.97564697265625,
+    -45.010406494140625
+  ],
+  "unit5.patenting_of_computer_software.performers_rights": [
+    171.265625,
+    -11.90966796875,
+    -20.05548095703125
+  ],
+  "unit5.patenting_of_computer_software.broadcasters_rights_an_introduction": [
+    139.70819091796875,
+    -56.6402587890625,
+    17.175323486328125
+  ],
+  "unit5.patenting_of_computer_software.historical_setting": [
+    235.7235107421875,
+    -53.79949951171875,
+    -9.627166748046875
+  ],
+  "unit5.patenting_of_computer_software.nature_of_broadcast_rights": [
+    244.8734130859375,
+    -68.2894287109375,
+    -36.148681640625
+  ],
+  "unit5.patenting_of_computer_software.what_is_a_broadcast": [
+    213.9495849609375,
+    -32.940216064453125,
+    35.026702880859375
+  ],
+  "unit5.patenting_of_computer_software.broadcasters_right_in_india": [
+    123.74603271484375,
+    -69.62188720703125,
+    113.86553955078125
+  ],
+  "unit5.patenting_of_computer_software.statutory_ambit": [
+    224.8995361328125,
+    -128.86647033691406,
+    -67.87603759765625
+  ],
+  "unit5.patenting_of_computer_software.judicial_dictum": [
+    257.586669921875,
+    -50.6602783203125,
+    -15.5943603515625
+  ],
+  "unit5.patenting_of_computer_software.performers_rights_1": [
+    252.7818603515625,
+    -21.523529052734375,
+    -23.94189453125
+  ],
+  "unit5.patenting_of_computer_software.exceptions_to_copyright": [
+    229.89166259765625,
+    -38.2216796875,
+    -153.50735473632812
+  ],
+  "unit5.patenting_of_computer_software.exceptions_to_infringement_of_performers_rights": [
+    288.510986328125,
+    -110.222900390625,
+    -79.48971557617188
+  ],
+  "unit5.patenting_of_computer_software.infringement_of_copy_right_with_case_studies": [
+    265.40838623046875,
+    -74.32745361328125,
+    6.09619140625
+  ],
+  "unit5.patenting_of_computer_software.super_cassette_industries_ltd_vs_bathla_cassette_industries": [
+    220.02972412109375,
+    -79.40374755859375,
+    59.134063720703125
+  ],
+  "unit5.introduction_to_cyber_law": [
+    112.14743041992188,
+    -54.84967041015625,
+    -57.150970458984375
+  ],
+  "unit5.introduction_to_cyber_law.information_technology_act": [
+    202.2216796875,
+    -80.29205322265625,
+    69.20806884765625
+  ],
+  "unit5.objectives_of_the_act": [
+    86.654296875,
+    -166.30133056640625,
+    -64.522705078125
+  ],
+  "unit5.non-applicability": [
+    187.154296875,
+    -115.26768493652344,
+    -97.69039916992188
+  ],
+  "unit5.scope_or_extent_of_the_act": [
+    117.778076171875,
+    -96.11923217773438,
+    -45.3138427734375
+  ],
+  "unit5.intermediary_liability": [
+    220.14971923828125,
+    -118.45413208007812,
+    3.396575927734375
+  ],
+  "unit5.digital_signature": [
+    115.41543579101562,
+    -96.03440856933594,
+    -39.9476318359375
+  ],
+  "unit5.authentication_of_electronic_record": [
+    148.17868041992188,
+    -73.52828979492188,
+    -31.60247802734375
+  ],
+  "unit5.difference_between_electronic_signature_and_digital_signature": [
+    76.04251098632812,
+    -74.74905395507812,
+    -69.4776611328125
+  ],
+  "unit5.information_technology_amendment_act_2008": [
+    204.9498291015625,
+    -102.05818176269531,
+    -68.42422485351562
+  ],
+  "unit5.cybercrime": [
+    152.05609130859375,
+    -50.70794677734375,
+    -51.51849365234375
+  ],
+  "unit5.history_of_cyber_crime": [
+    82.42001342773438,
+    44.58380126953125,
+    -12.82598876953125
+  ],
+  "unit5.categories_of_cyber_crime": [
+    70.47799682617188,
+    -39.868072509765625,
+    -28.975433349609375
+  ],
+  "unit5.types_of_cyber_crime": [
+    40.606353759765625,
+    -16.1602783203125,
+    -42.38751220703125
+  ],
+  "unit5.need_for_cyber_laws": [
+    90.5284423828125,
+    -36.8055419921875,
+    15.345733642578125
+  ],
+  "unit5.cyber_laws_in_india": [
+    182.96136474609375,
+    -50.690185546875,
+    20.105010986328125
+  ],
+  "unit5.cybercrime_and_e-commerce": [
+    52.808197021484375,
+    -26.902496337890625,
+    60.730438232421875
+  ],
+  "unit5.reporting_counterfeit_items_on_indian_e-commerce_sites": [
+    90.54513549804688,
+    -63.23760986328125,
+    205.5023193359375
+  ],
+  "unit5.practice_and_procedure_for_rights_holders": [
+    190.953125,
+    -78.80874633789062,
+    96.52264404296875
+  ],
+  "unit5.electronic_evidence_case_law": [
+    254.4404296875,
+    -117.55888366699219,
+    -9.63970947265625
+  ],
+  "unit5.cybersquatting_in_india_the_yahoo_case_yahoo_inc_v_akash": [
+    203.9334716796875,
+    -0.067138671875,
+    189.65484619140625
+  ],
+  "unit5.indrp_as_a_model_for_india": [
+    112.18991088867188,
+    -106.21078491210938,
+    54.927581787109375
+  ],
+  "unit5.metatags_and_trademarks": [
+    50.711029052734375,
+    9.586334228515625,
+    74.6033935546875
+  ],
+  "unit5.data_security_confidentiality_and_privacy": [
+    45.2266845703125,
+    -117.79244995117188,
+    -72.861328125
+  ],
+  "unit5.international_aspects_of_computer_and_online_crime": [
+    121.1832275390625,
+    -152.05813598632812,
+    12.67303466796875
+  ]
+}
