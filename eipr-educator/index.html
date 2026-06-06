@@ -42,6 +42,7 @@
                     <button class="tab-btn active" id="tab-tree"><i class="fa-solid fa-diagram-project"></i> Knowledge Tree</button>
                     <button class="tab-btn" id="tab-fog"><i class="fa-solid fa-compass"></i> Fog of War Explorer</button>
                     <button class="tab-btn" id="tab-textbook"><i class="fa-solid fa-book-open"></i> Textbook Viewer</button>
+                    <button class="tab-btn" id="tab-notes"><i class="fa-regular fa-file-lines"></i> Short Notes</button>
                 </div>
 
                 <div class="search-container">
@@ -74,6 +75,87 @@
                     <div class="legend-item"><span class="color-dot" style="background: #34A853;"></span> Subtopic</div>
                     <div class="legend-item"><span class="color-dot" style="background: #8A3FFC;"></span> Concept</div>
                     <div class="legend-item"><span class="color-dot" style="background: #00FAC6;"></span> Case/Example/Activity</div>
+                </div>
+
+                <!-- ═══ Fog of War Dashboard (visible only in fog view) ═══ -->
+                <div id="fog-dashboard" class="fog-dashboard glass hidden">
+                    <div class="fog-dash-header">
+                        <div class="fog-dash-title">
+                            <i class="fa-solid fa-compass"></i>
+                            <span>Learning Path</span>
+                        </div>
+                        <button id="fog-reset-progress" class="fog-reset-btn" title="Reset Progress">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="fog-progress-section">
+                        <div class="fog-progress-label">
+                            <span>Course Progress</span>
+                            <span id="fog-progress-pct">0%</span>
+                        </div>
+                        <div class="fog-progress-track">
+                            <div id="fog-progress-fill" class="fog-progress-fill"></div>
+                        </div>
+                        <div id="fog-progress-text" class="fog-progress-sub">0 / 0 topics</div>
+                    </div>
+
+                    <!-- Recommended Topic -->
+                    <div class="fog-rec-section">
+                        <div class="fog-rec-label">Next Recommended</div>
+                        <div id="fog-recommended-topic" class="fog-rec-topic">
+                            <i class="fa-solid fa-compass"></i>
+                            <span>Loading...</span>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="fog-dash-actions">
+                        <button id="fog-mark-complete-btn" class="fog-action-btn fog-complete-btn">
+                            <i class="fa-solid fa-check-circle"></i> Mark Completed
+                        </button>
+                        <button id="fog-toggle-guide" class="fog-action-btn fog-guide-toggle-btn">
+                            <i class="fa-solid fa-robot"></i> AI Guide
+                        </button>
+                    </div>
+
+                    <!-- Fog Legend -->
+                    <div class="fog-legend-mini">
+                        <div class="fog-legend-item"><span class="fog-dot fog-dot-recommended"></span> Recommended</div>
+                        <div class="fog-legend-item"><span class="fog-dot fog-dot-completed"></span> Completed</div>
+                        <div class="fog-legend-item"><span class="fog-dot fog-dot-locked"></span> Locked</div>
+                        <div class="fog-legend-item"><span class="fog-dot fog-dot-open"></span> Open</div>
+                    </div>
+                </div>
+
+                <!-- ═══ AI Guide Side Panel ═══ -->
+                <div id="fog-guide-panel" class="fog-guide-panel glass">
+                    <div class="fog-guide-header">
+                        <div class="fog-guide-avatar">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="fog-guide-info">
+                            <span class="fog-guide-name">Gemma</span>
+                            <span class="fog-guide-subtitle">EIPR Learning Guide</span>
+                        </div>
+                    </div>
+
+                    <div id="fog-chat-messages" class="fog-chat-messages">
+                        <div class="fog-chat-welcome">
+                            <i class="fa-solid fa-robot"></i>
+                            <p>Hi! I'm <strong>Gemma</strong>, your learning guide. Ask me anything about the course or say "next topic" to continue!</p>
+                        </div>
+                    </div>
+
+                    <div id="fog-quick-actions" class="fog-quick-actions"></div>
+
+                    <div class="fog-chat-input-area">
+                        <input type="text" id="fog-chat-input" class="fog-chat-input" placeholder="Ask Gemma..." autocomplete="off">
+                        <button id="fog-chat-send" class="fog-chat-send" title="Send">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Floating Connected Preview Card -->
@@ -138,6 +220,32 @@
                     </div>
                 </section>
             </div>
+
+            <!-- Short Notes Resource Viewer Container -->
+            <div id="notes-container" class="hidden">
+                <aside class="notes-sidebar glass">
+                    <h3>Units Short Notes</h3>
+                    <div class="notes-toc" id="notes-toc">
+                        <div class="notes-toc-item active" data-source="EIPR short notes/unit-1.html"><i class="fa-solid fa-book"></i> Unit 1 Notes (HTML)</div>
+                        <div class="notes-toc-item" data-source="EIPR short notes/unit-2.html" data-pdf="EIPR short notes/UNIT 2 — Entrepreneurship.pdf"><i class="fa-solid fa-book"></i> Unit 2 Notes (HTML / PDF)</div>
+                        <div class="notes-toc-item" data-source="EIPR short notes/unit-3.html"><i class="fa-solid fa-book"></i> Unit 3 Notes (Merged HTML)</div>
+                        <div class="notes-toc-item" data-source="EIPR short notes/unit-4.html"><i class="fa-solid fa-book"></i> Unit 4 Notes (Merged HTML)</div>
+                        <div class="notes-toc-item" data-source="EIPR short notes/UNIT 5 – Structured Notes.pdf"><i class="fa-solid fa-file-pdf"></i> Unit 5 Notes (PDF)</div>
+                    </div>
+                    <div class="pdf-toggle-container hidden" id="pdf-toggle-container">
+                        <span class="pdf-toggle-label">View Mode:</span>
+                        <div class="pdf-toggle-buttons">
+                            <button id="notes-view-html" class="notes-toggle-btn active">HTML</button>
+                            <button id="notes-view-pdf" class="notes-toggle-btn">PDF</button>
+                        </div>
+                    </div>
+                </aside>
+                <section class="notes-reader">
+                    <div class="notes-content-card glass" id="notes-content-card">
+                        <iframe id="notes-frame" src="EIPR short notes/unit-1.html" class="notes-iframe"></iframe>
+                    </div>
+                </section>
+            </div>
         </main>
     </div>
 
@@ -158,7 +266,6 @@
         </div>
     </div>
 
-
     <!-- Node: Right-click Context Menu -->
     <div id="node-context-menu" class="quiz-context-menu" style="display:none;">
         <button id="node-ctx-popup-btn" class="quiz-context-item">
@@ -171,9 +278,136 @@
         </button>
     </div>
 
+    <!-- Quiz: Right-click Context Menu -->
+    <div id="quiz-context-menu" class="quiz-context-menu" style="display:none;">
+        <button id="quiz-context-generate-btn" class="quiz-context-item">
+            <i class="fa-solid fa-brain"></i>
+            <span>Generate Quiz</span>
+            <span class="quiz-context-hint">3 MCQs</span>
+        </button>
+        <button id="quiz-context-cie-btn" class="quiz-context-item">
+            <i class="fa-solid fa-pen-ruler"></i>
+            <span>Generate CIE Questions</span>
+            <span class="quiz-context-hint">prep</span>
+        </button>
+        <button id="quiz-context-see-btn" class="quiz-context-item">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Generate SEE Questions</span>
+            <span class="quiz-context-hint">prediction</span>
+        </button>
+        <button id="quiz-context-explain-btn" class="quiz-context-item">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Explain Further</span>
+            <span class="quiz-context-hint">context</span>
+        </button>
+    </div>
+
+    <!-- Quiz Modal Overlay -->
+    <div id="quiz-modal-overlay" class="quiz-modal-overlay">
+        <div class="quiz-modal glass">
+
+            <!-- Modal Top Bar -->
+            <div class="quiz-modal-topbar">
+                <div class="quiz-modal-title">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>Knowledge Quiz</span>
+                </div>
+                <div class="quiz-topbar-right">
+                    <div id="quiz-score-badge" class="quiz-score-badge">⭐ 0 pts</div>
+                    <button id="quiz-close-btn" class="quiz-close-btn" title="Close Quiz">&times;</button>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="quiz-progress-track">
+                <div id="quiz-progress-bar" class="quiz-progress-fill"></div>
+            </div>
+            <div class="quiz-progress-label">
+                <span id="quiz-progress-text">0 / 0</span>
+            </div>
+
+            <!-- ── SCREEN 1: Loading ── -->
+            <div id="quiz-loading-screen" class="quiz-screen quiz-loading-screen" style="display:flex;">
+                <div class="quiz-spinner">
+                    <div class="spinner-ring"></div>
+                    <i class="fa-solid fa-brain quiz-spinner-icon"></i>
+                </div>
+                <p id="quiz-loading-msg" class="quiz-loading-msg">Connecting to Ollama...</p>
+                <p id="quiz-error-hint" class="quiz-error-hint" style="display:none;">
+                    Make sure Ollama is running: <code>ollama serve</code><br>
+                    <span style="font-size: 11px; margin-top: 4px; display: block; opacity: 0.85;">
+                        If you face CORS block errors, start Ollama with: <code>OLLAMA_ORIGINS="*" ollama serve</code>
+                    </span>
+                </p>
+            </div>
+
+            <!-- ── SCREEN 2: Question ── -->
+            <div id="quiz-question-screen" class="quiz-screen" style="display:none;">
+                <div class="quiz-q-header">
+                    <span id="quiz-question-number" class="quiz-q-number">Question 1</span>
+                </div>
+                <p id="quiz-question-text" class="quiz-question-text"></p>
+
+                <div id="quiz-options-container" class="quiz-options-container"></div>
+
+                <!-- Feedback Box (shown after answering) -->
+                <div id="quiz-feedback-box" class="quiz-feedback-box" style="display:none;">
+                    <div id="quiz-feedback-correct" class="quiz-feedback-verdict"></div>
+                    <p id="quiz-feedback-explanation" class="quiz-feedback-explanation"></p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 4px;">
+                        <div id="quiz-feedback-focus" class="quiz-feedback-focus"></div>
+                        <button id="quiz-refer-back-btn" class="quiz-refer-back-btn">
+                            <i class="fa-solid fa-book-open"></i> Refer Back To Concept
+                        </button>
+                    </div>
+                </div>
+
+                <button id="quiz-next-btn" class="quiz-next-btn" style="display:none;">
+                    Next <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- ── SCREEN 3: Results ── -->
+            <div id="quiz-result-screen" class="quiz-screen quiz-result-screen" style="display:none;">
+                <div class="quiz-result-ring-wrap">
+                    <svg id="quiz-result-ring" class="quiz-result-ring" viewBox="0 0 120 120">
+                        <circle class="ring-bg" cx="60" cy="60" r="50"/>
+                        <circle class="ring-fill" cx="60" cy="60" r="50"
+                            stroke-dasharray="314"
+                            stroke-dashoffset="314"/>
+                    </svg>
+                    <span id="quiz-result-pct" class="quiz-result-pct">0%</span>
+                </div>
+                <div class="quiz-result-scores">
+                    <span class="quiz-result-score-label">Score</span>
+                    <span class="quiz-result-score-value">
+                        <span id="quiz-result-score">0</span>
+                        <span class="quiz-result-sep">/</span>
+                        <span id="quiz-result-total">0</span>
+                        <span class="quiz-result-pts">pts</span>
+                    </span>
+                </div>
+                <p id="quiz-result-msg" class="quiz-result-msg"></p>
+                <button id="quiz-result-close-btn" class="quiz-next-btn quiz-finish-btn">
+                    <i class="fa-solid fa-check"></i> Done
+                </button>
+            </div>
+
+            <!-- ── SCREEN 4: Descriptive Questions / Explain Further ── -->
+            <div id="quiz-descriptive-screen" class="quiz-screen" style="display:none; flex-direction: column; gap: 15px;">
+                <div id="quiz-descriptive-content" class="quiz-descriptive-content"></div>
+                <button id="quiz-descriptive-close-btn" class="quiz-next-btn quiz-finish-btn" style="margin-top: 10px; align-self: center;">
+                    <i class="fa-solid fa-check"></i> Done
+                </button>
+            </div>
+
+        </div>
+    </div>
 
     <!-- Data and Application Code -->
     <script src="data.js"></script>
+    <script src="fog-guide.js"></script>
     <script src="app.js"></script>
+    <script src="quiz.js"></script>
 </body>
 </html>

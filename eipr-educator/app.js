@@ -39,8 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabTree = document.getElementById("tab-tree");
     const tabFog = document.getElementById("tab-fog");
     const tabTextbook = document.getElementById("tab-textbook");
+    const tabNotes = document.getElementById("tab-notes");
     const searchInput = document.getElementById("search-input");
-
+    const notesContainer = document.getElementById("notes-container");
+    
     // Floating Popup Card Elements
     const nodePopup = document.getElementById("node-popup");
     const popupType = document.getElementById("popup-type");
@@ -499,9 +501,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
         nodeElements.classed("has-children-collapsed", d => d.children && d.children.length > 0 && !d.expanded);
 
+        // ─── Fog of War: Apply visual state classes ───
+        if (currentView === "fog" && typeof FogGuide !== "undefined") {
+            nodeElements
+                .classed("fog-locked", d => {
+                    if (d.node_type === "course" || d.node_type === "unit") return false;
+                    return !FogGuide.isTopicUnlocked(d.id);
+                })
+                .classed("fog-recommended", d => {
+                    return FogGuide.getTopicState(d.id) === 'recommended';
+                })
+                .classed("fog-completed", d => {
+                    return FogGuide.getTopicState(d.id) === 'completed';
+                })
+                .classed("fog-open", d => {
+                    return FogGuide.getTopicState(d.id) === 'open';
+                });
+
+            // Apply fog link classes
+            linkElements
+                .classed("fog-locked-link", d => {
+                    const tgt = typeof d.target === 'object' ? d.target : visibleNodes.find(n => n.id === d.target);
+                    if (!tgt) return false;
+                    if (tgt.node_type === "course" || tgt.node_type === "unit") return false;
+                    return !FogGuide.isTopicUnlocked(tgt.id);
+                })
+                .classed("fog-active-link", d => {
+                    const tgt = typeof d.target === 'object' ? d.target : visibleNodes.find(n => n.id === d.target);
+                    if (!tgt) return false;
+                    return FogGuide.getTopicState(tgt.id) === 'recommended';
+                });
+        } else {
+            // Clear fog classes when not in fog view
+            nodeElements
+                .classed("fog-locked", false)
+                .classed("fog-recommended", false)
+                .classed("fog-completed", false)
+                .classed("fog-open", false);
+        }
+
         // Interactions
         nodeElements.on("click", (event, d) => {
             event.stopPropagation();
+
+            // Fog of War: block interaction on locked nodes
+            if (currentView === "fog" && typeof FogGuide !== "undefined") {
+                if (d.node_type !== "course" && d.node_type !== "unit" && !FogGuide.isTopicUnlocked(d.id)) {
+                    return; // locked — no interaction
+                }
+                // Track last opened
+                FogGuide.setLastOpened(d.id);
+            }
+
             const hasChildren = d.children && d.children.length > 0;
             if (hasChildren) {
                 d.expanded = !d.expanded;
@@ -522,6 +573,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         nodeElements.on("dblclick", (event, d) => {
             event.stopPropagation();
+            // Fog of War: block dblclick on locked nodes
+            if (currentView === "fog" && typeof FogGuide !== "undefined") {
+                if (d.node_type !== "course" && d.node_type !== "unit" && !FogGuide.isTopicUnlocked(d.id)) {
+                    return;
+                }
+            }
             showFullContent(d);
         });
 
@@ -842,14 +899,23 @@ document.addEventListener("DOMContentLoaded", () => {
         tabTree.classList.add("active");
         tabFog.classList.remove("active");
         tabTextbook.classList.remove("active");
-
+        tabNotes.classList.remove("active");
+        
         container.classList.remove("hidden");
         textbookContainer.classList.add("hidden");
+        notesContainer.classList.add("hidden");
         searchInput.disabled = false;
 
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
         document.getElementById("physics-divider").classList.remove("hidden");
 
+        // Hide fog dashboard and guide panel
+        const fogDash = document.getElementById("fog-dashboard");
+        if (fogDash) fogDash.classList.add("hidden");
+        const fogGuidePanel = document.getElementById("fog-guide-panel");
+        if (fogGuidePanel) fogGuidePanel.classList.remove("open");
+        container.classList.remove("fog-view-active");
+        
         closePopup();
         updateGraph();
     });
@@ -860,15 +926,36 @@ document.addEventListener("DOMContentLoaded", () => {
         tabFog.classList.add("active");
         tabTree.classList.remove("active");
         tabTextbook.classList.remove("active");
-
+        tabNotes.classList.remove("active");
+        
         container.classList.remove("hidden");
         textbookContainer.classList.add("hidden");
+        notesContainer.classList.add("hidden");
         searchInput.disabled = false;
 
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
         document.getElementById("physics-divider").classList.remove("hidden");
 
+        // Show fog dashboard, hide regular legend
+        const fogDash = document.getElementById("fog-dashboard");
+        if (fogDash) fogDash.classList.remove("hidden");
+        container.classList.add("fog-view-active");
+
+        // Initialize FogGuide if available
+        if (typeof FogGuide !== "undefined") {
+            FogGuide.init(hierarchyData);
+        }
+        
         closePopup();
+
+        // Auto-expand all units for fog view
+        hierarchyData.expanded = true;
+        if (hierarchyData.children) {
+            hierarchyData.children.forEach(unit => {
+                unit.expanded = true;
+            });
+        }
+
         updateGraph();
     });
 
@@ -878,9 +965,11 @@ document.addEventListener("DOMContentLoaded", () => {
         tabTextbook.classList.add("active");
         tabTree.classList.remove("active");
         tabFog.classList.remove("active");
-
+        tabNotes.classList.remove("active");
+        
         container.classList.add("hidden");
         textbookContainer.classList.remove("hidden");
+        notesContainer.classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
 
@@ -889,6 +978,113 @@ document.addEventListener("DOMContentLoaded", () => {
 
         renderTextbookTOC();
     });
+
+    tabNotes.addEventListener("click", () => {
+        if (currentView === "notes") return;
+        currentView = "notes";
+        tabNotes.classList.add("active");
+        tabTree.classList.remove("active");
+        tabFog.classList.remove("active");
+        tabTextbook.classList.remove("active");
+        
+        container.classList.add("hidden");
+        textbookContainer.classList.add("hidden");
+        notesContainer.classList.remove("hidden");
+        searchInput.disabled = true;
+        closePopup();
+        
+        document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.add("hidden"));
+        document.getElementById("physics-divider").classList.add("hidden");
+
+        // Hide fog dashboard and guide panel
+        const fogDash = document.getElementById("fog-dashboard");
+        if (fogDash) fogDash.classList.add("hidden");
+        const fogGuidePanel = document.getElementById("fog-guide-panel");
+        if (fogGuidePanel) fogGuidePanel.classList.remove("open");
+        container.classList.remove("fog-view-active");
+
+        initNotesView();
+    });
+
+    // 10b. Short Notes View Logic
+    let notesInitialized = false;
+    function initNotesView() {
+        if (notesInitialized) return;
+        notesInitialized = true;
+
+        const notesTocItems = document.querySelectorAll(".notes-toc-item");
+        const notesFrame = document.getElementById("notes-frame");
+        const pdfToggleContainer = document.getElementById("pdf-toggle-container");
+        const notesViewHtmlBtn = document.getElementById("notes-view-html");
+        const notesViewPdfBtn = document.getElementById("notes-view-pdf");
+
+        let currentSelectedUnitItem = document.querySelector(".notes-toc-item.active");
+        let currentSelectedMode = "html";
+
+        function updateNotesContent() {
+            if (!currentSelectedUnitItem) return;
+            const sourceHtml = currentSelectedUnitItem.getAttribute("data-source");
+            const sourcePdf = currentSelectedUnitItem.getAttribute("data-pdf");
+
+            // If the item has a PDF option, show the mode toggle
+            if (sourcePdf) {
+                pdfToggleContainer.classList.remove("hidden");
+            } else {
+                pdfToggleContainer.classList.add("hidden");
+                // If it's a PDF-only resource (like Unit 5), we use "pdf" mode
+                if (sourceHtml && sourceHtml.toLowerCase().endsWith(".pdf")) {
+                    currentSelectedMode = "pdf";
+                } else {
+                    currentSelectedMode = "html";
+                }
+            }
+
+            // Apply active class to mode buttons
+            if (currentSelectedMode === "html") {
+                notesViewHtmlBtn.classList.add("active");
+                notesViewPdfBtn.classList.remove("active");
+                notesFrame.src = sourceHtml;
+            } else {
+                notesViewHtmlBtn.classList.remove("active");
+                notesViewPdfBtn.classList.add("active");
+                notesFrame.src = sourcePdf || sourceHtml; // Use sourceHtml if it is the PDF (e.g. Unit 5)
+            }
+        }
+
+        notesTocItems.forEach(item => {
+            item.addEventListener("click", () => {
+                notesTocItems.forEach(i => i.classList.remove("active"));
+                item.classList.add("active");
+                currentSelectedUnitItem = item;
+                
+                // If the item has NO pdf, reset mode to html
+                const src = item.getAttribute("data-source");
+                const hasPdf = item.getAttribute("data-pdf");
+                if (!hasPdf && !src.toLowerCase().endsWith(".pdf")) {
+                    currentSelectedMode = "html";
+                } else if (src.toLowerCase().endsWith(".pdf")) {
+                    currentSelectedMode = "pdf";
+                }
+                
+                updateNotesContent();
+            });
+        });
+
+        notesViewHtmlBtn.addEventListener("click", () => {
+            if (currentSelectedMode === "html") return;
+            currentSelectedMode = "html";
+            updateNotesContent();
+        });
+
+        notesViewPdfBtn.addEventListener("click", () => {
+            if (currentSelectedMode === "pdf") return;
+            currentSelectedMode = "pdf";
+            updateNotesContent();
+        });
+
+        // Load initial content
+        updateNotesContent();
+    }
 
     // 11. Nested Collapsible Textbook Sidebar TOC
     function renderTextbookTOC() {
@@ -1186,6 +1382,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .style("opacity", d => matchedNodeIds.has(d.source.id) && matchedNodeIds.has(d.target.id) ? 0.65 : 0.05);
     });
 
+<<<<<<< HEAD:eipr-educator/app.js
     // Node Context Menu Logic
     const nodeContextMenu = document.getElementById("node-context-menu");
     let selectedContextNode = null;
@@ -1390,6 +1587,25 @@ ${contentText}`;
                 </div>
             `;
         }
+    }
+
+    // ─── Fog of War: listen for progress updates to re-render ───
+    window.addEventListener('fog-progress-updated', () => {
+        if (currentView === 'fog') {
+            updateGraph();
+        }
+    });
+
+    // Reset progress button
+    const fogResetBtn = document.getElementById('fog-reset-progress');
+    if (fogResetBtn) {
+        fogResetBtn.addEventListener('click', () => {
+            if (confirm('Reset all learning progress? This cannot be undone.')) {
+                if (typeof FogGuide !== 'undefined') {
+                    FogGuide.resetProgress();
+                }
+            }
+        });
     }
 
     // Run graph startup
