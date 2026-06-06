@@ -377,9 +377,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
         nodeElements.classed("has-children-collapsed", d => d.children && d.children.length > 0 && !d.expanded);
 
+        // ─── Fog of War: Apply visual state classes ───
+        if (currentView === "fog" && typeof FogGuide !== "undefined") {
+            nodeElements
+                .classed("fog-locked", d => {
+                    if (d.node_type === "course" || d.node_type === "unit") return false;
+                    return !FogGuide.isTopicUnlocked(d.id);
+                })
+                .classed("fog-recommended", d => {
+                    return FogGuide.getTopicState(d.id) === 'recommended';
+                })
+                .classed("fog-completed", d => {
+                    return FogGuide.getTopicState(d.id) === 'completed';
+                })
+                .classed("fog-open", d => {
+                    return FogGuide.getTopicState(d.id) === 'open';
+                });
+
+            // Apply fog link classes
+            linkElements
+                .classed("fog-locked-link", d => {
+                    const tgt = typeof d.target === 'object' ? d.target : visibleNodes.find(n => n.id === d.target);
+                    if (!tgt) return false;
+                    if (tgt.node_type === "course" || tgt.node_type === "unit") return false;
+                    return !FogGuide.isTopicUnlocked(tgt.id);
+                })
+                .classed("fog-active-link", d => {
+                    const tgt = typeof d.target === 'object' ? d.target : visibleNodes.find(n => n.id === d.target);
+                    if (!tgt) return false;
+                    return FogGuide.getTopicState(tgt.id) === 'recommended';
+                });
+        } else {
+            // Clear fog classes when not in fog view
+            nodeElements
+                .classed("fog-locked", false)
+                .classed("fog-recommended", false)
+                .classed("fog-completed", false)
+                .classed("fog-open", false);
+        }
+
         // Interactions
         nodeElements.on("click", (event, d) => {
             event.stopPropagation();
+
+            // Fog of War: block interaction on locked nodes
+            if (currentView === "fog" && typeof FogGuide !== "undefined") {
+                if (d.node_type !== "course" && d.node_type !== "unit" && !FogGuide.isTopicUnlocked(d.id)) {
+                    return; // locked — no interaction
+                }
+                // Track last opened
+                FogGuide.setLastOpened(d.id);
+            }
+
             if (d.children && d.children.length > 0) {
                 d.expanded = !d.expanded;
                 updateGraph();
@@ -389,6 +438,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         nodeElements.on("dblclick", (event, d) => {
             event.stopPropagation();
+            // Fog of War: block dblclick on locked nodes
+            if (currentView === "fog" && typeof FogGuide !== "undefined") {
+                if (d.node_type !== "course" && d.node_type !== "unit" && !FogGuide.isTopicUnlocked(d.id)) {
+                    return;
+                }
+            }
             showFullContent(d);
         });
 
@@ -679,6 +734,13 @@ document.addEventListener("DOMContentLoaded", () => {
         
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
         document.getElementById("physics-divider").classList.remove("hidden");
+
+        // Hide fog dashboard and guide panel
+        const fogDash = document.getElementById("fog-dashboard");
+        if (fogDash) fogDash.classList.add("hidden");
+        const fogGuidePanel = document.getElementById("fog-guide-panel");
+        if (fogGuidePanel) fogGuidePanel.classList.remove("open");
+        container.classList.remove("fog-view-active");
         
         closePopup();
         updateGraph();
@@ -697,8 +759,27 @@ document.addEventListener("DOMContentLoaded", () => {
         
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
         document.getElementById("physics-divider").classList.remove("hidden");
+
+        // Show fog dashboard, hide regular legend
+        const fogDash = document.getElementById("fog-dashboard");
+        if (fogDash) fogDash.classList.remove("hidden");
+        container.classList.add("fog-view-active");
+
+        // Initialize FogGuide if available
+        if (typeof FogGuide !== "undefined") {
+            FogGuide.init(hierarchyData);
+        }
         
         closePopup();
+
+        // Auto-expand all units for fog view
+        hierarchyData.expanded = true;
+        if (hierarchyData.children) {
+            hierarchyData.children.forEach(unit => {
+                unit.expanded = true;
+            });
+        }
+
         updateGraph();
     });
 
@@ -1015,6 +1096,25 @@ document.addEventListener("DOMContentLoaded", () => {
         g.selectAll(".link")
             .style("opacity", d => matchedNodeIds.has(d.source.id) && matchedNodeIds.has(d.target.id) ? 0.65 : 0.05);
     });
+
+    // ─── Fog of War: listen for progress updates to re-render ───
+    window.addEventListener('fog-progress-updated', () => {
+        if (currentView === 'fog') {
+            updateGraph();
+        }
+    });
+
+    // Reset progress button
+    const fogResetBtn = document.getElementById('fog-reset-progress');
+    if (fogResetBtn) {
+        fogResetBtn.addEventListener('click', () => {
+            if (confirm('Reset all learning progress? This cannot be undone.')) {
+                if (typeof FogGuide !== 'undefined') {
+                    FogGuide.resetProgress();
+                }
+            }
+        });
+    }
 
     // Run graph startup
     updateGraph();
