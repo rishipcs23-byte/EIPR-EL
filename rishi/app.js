@@ -1,6 +1,6 @@
 /**
  * EIPR Knowledge Explorer - Frontend Logic
- * Interactive Horizontal Tree Graph (D3.js) & Textbook Reader
+ * Dynamic Wrap Cards, Locked X layout, Nested TOC Dropdowns, Textbook Scroll Linking
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Prepare our global tree hierarchy
     prepareTree(hierarchyData, 0);
-    // Expand root (Course) and units by default so the starting layer is visible
+    // Expand Course and Units by default
     hierarchyData.expanded = true;
     hierarchyData.children.forEach(unit => {
         unit.expanded = true;
@@ -85,18 +85,11 @@ document.addEventListener("DOMContentLoaded", () => {
         updatePopupPosition();
     });
 
-    // 3. Node Type Colors & Dimensions
+    // 3. Dynamic Node Wrap & Dimensioning Calculations
     const typeRadius = {
         "course": 38,
         "unit": 28
     };
-
-    const rectH = 34; // Constant height for all rectangles
-
-    // Dynamic width helper based on text length
-    function getRectWidth(title) {
-        return Math.max(120, title.length * 7.5 + 24);
-    }
 
     const typeColors = {
         "course": "#4285F4",
@@ -108,6 +101,32 @@ document.addEventListener("DOMContentLoaded", () => {
         "example": "#00bfa5",
         "activity": "#00bfa5"
     };
+
+    // Words wrapping helper for long text titles in rectangles
+    function getWrappedLines(title, maxCharsPerLine = 24) {
+        const words = title.split(/\s+/);
+        const lines = [];
+        let currentLine = "";
+        
+        words.forEach(word => {
+            if ((currentLine + " " + word).trim().length <= maxCharsPerLine) {
+                currentLine = (currentLine + " " + word).trim();
+            } else {
+                if (currentLine) lines.push(currentLine);
+                currentLine = word;
+            }
+        });
+        if (currentLine) lines.push(currentLine);
+        return lines;
+    }
+
+    function getNodeDimensions(node) {
+        const lines = getWrappedLines(node.title, 24);
+        const maxLen = Math.max(...lines.map(l => l.length));
+        const w = Math.max(120, Math.min(260, maxLen * 7.5 + 24));
+        const h = Math.max(34, lines.length * 13 + 14);
+        return { w, h, lines };
+    }
 
     // Active nodes/links
     let visibleNodes = [];
@@ -126,8 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     svg.call(zoom);
 
-    // 4. Horizontal Tree Force Simulation Setup
-    // By adding a strong forceX targeting depth columns, we get a left-to-right tree layout!
+    // 4. Force Simulation Setup (Horizontal Layer Columns Locked X-coordinates)
     const simulation = d3.forceSimulation()
         .force("link", d3.forceLink().id(d => d.id).distance(d => {
             const targetType = d.target.node_type;
@@ -135,17 +153,15 @@ document.addEventListener("DOMContentLoaded", () => {
             if (targetType === "topic") return 110;
             return 80;
         }))
-        .force("charge", d3.forceManyBody().strength(-200))
-        .force("x", d3.forceX(d => 100 + d.depth * 240).strength(2.0)) // Strong X-column forces
-        .force("y", d3.forceY(height / 2).strength(0.25)) // Pull towards vertical center
+        .force("charge", d3.forceManyBody().strength(-250))
+        .force("y", d3.forceY(height / 2).strength(0.25)) // Centered vertically
         .force("collision", d3.forceCollide().radius(d => {
             if (d.node_type === "course" || d.node_type === "unit") {
-                return (typeRadius[d.node_type] || 12) + 20;
+                return typeRadius[d.node_type] + 20;
             }
-            // Dynamic collision radius based on computed rectangle width
-            const halfW = getRectWidth(d.title) / 2;
-            return Math.max(halfW + 15, 60);
-        }).strength(0.9));
+            const dim = getNodeDimensions(d);
+            return Math.max(dim.w / 2 + 10, dim.h / 2 + 15);
+        }).strength(0.85));
 
     // Drag behavior
     function drag(simulation) {
@@ -157,7 +173,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         function dragged(event, d) {
-            d.fx = event.x;
+            // Keep X coordinate locked to its depth column during drag
+            d.fx = 80 + d.depth * 250;
             d.fy = event.y;
             updatePopupPosition();
         }
@@ -201,8 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 node.vx = oldNode.vx;
                 node.vy = oldNode.vy;
             } else {
-                // Determine layout column positions
-                node.x = 100 + node.depth * 240 + (Math.random() - 0.5) * 10;
+                node.x = 80 + node.depth * 250;
                 node.y = node.parent && oldNode ? oldNode.y : height / 2 + (Math.random() - 0.5) * 200;
             }
         });
@@ -257,19 +273,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
         rects.append("rect")
             .attr("class", "node-rect")
-            .attr("x", d => -getRectWidth(d.title) / 2)
-            .attr("y", -rectH / 2)
-            .attr("width", d => getRectWidth(d.title))
-            .attr("height", rectH)
+            .attr("x", d => -getNodeDimensions(d).w / 2)
+            .attr("y", d => -getNodeDimensions(d).h / 2)
+            .attr("width", d => getNodeDimensions(d).w)
+            .attr("height", d => getNodeDimensions(d).h)
             .attr("rx", 8)
             .attr("ry", 8)
             .attr("stroke", d => typeColors[d.node_type]);
 
+        // Render Multi-line text for wrapped lines
         rects.append("text")
             .attr("class", "node-rect-text")
-            .attr("dy", 4)
             .attr("text-anchor", "middle")
-            .text(d => d.title);
+            .each(function(d) {
+                const textNode = d3.select(this);
+                const dims = getNodeDimensions(d);
+                const startDy = -((dims.lines.length - 1) * 13) / 2 + 4;
+                
+                dims.lines.forEach((line, idx) => {
+                    textNode.append("tspan")
+                        .attr("x", 0)
+                        .attr("dy", idx === 0 ? `${startDy}px` : "13px")
+                        .text(line);
+                });
+            });
 
         nodeElements = nodeEnter.merge(nodeElements);
 
@@ -302,8 +329,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Tick layout positioning
+    // Tick layout positioning (Hard lock on depth columns)
     function tickActions() {
+        g.selectAll(".node").each(d => {
+            d.x = 80 + d.depth * 250;
+            d.vx = 0;
+        });
+
         g.selectAll(".link")
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
@@ -423,6 +455,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         modalText.appendChild(li);
                     } else {
                         const p = document.createElement("p");
+                        p.className = "tb-paragraph";
                         p.textContent = line;
                         modalText.appendChild(p);
                     }
@@ -447,18 +480,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
     popupOpenModalBtn.addEventListener("click", () => {
         if (activePopupNode) {
-            showFullContent(activePopupNode);
+            navigateToTextbook(activePopupNode);
         }
     });
 
-    // 8. Global Theme Toggle
+    // 8. Navigation link from Graph Popups to Textbook Reader
+    function navigateToTextbook(node) {
+        // Find ancestor at depth 2 (Topic) to render
+        let topicNode = node;
+        while (topicNode.depth > 2 && topicNode.parent) {
+            topicNode = topicNode.parent;
+        }
+
+        // Switch Tab View
+        tabTextbook.click();
+
+        // Expand nested TOC containers corresponding to path
+        let current = node;
+        const idsToOpen = [];
+        while (current) {
+            idsToOpen.push(current.id);
+            current = current.parent;
+        }
+
+        idsToOpen.reverse().forEach(id => {
+            const tocRow = document.querySelector(`[data-toc-id="${id}"]`);
+            if (tocRow) {
+                const childrenBox = tocRow.nextElementSibling;
+                if (childrenBox && childrenBox.classList.contains("toc-children-box")) {
+                    childrenBox.style.maxHeight = "1000px";
+                    const chevron = tocRow.querySelector(".toc-chevron");
+                    if (chevron) chevron.classList.add("open");
+                }
+            }
+        });
+
+        // Set active on matching Topic row in TOC
+        document.querySelectorAll(".toc-header-row").forEach(row => row.classList.remove("active"));
+        const activeTopicRow = document.querySelector(`[data-toc-id="${topicNode.id}"]`);
+        if (activeTopicRow) activeTopicRow.classList.add("active");
+
+        // Render textbook contents
+        renderTextbookContent(topicNode);
+
+        // Wait brief millisecond for DOM render then scroll to ID
+        setTimeout(() => {
+            const element = document.getElementById(`reader-${node.id}`);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "start" });
+                element.classList.add("highlight-flash");
+                setTimeout(() => element.classList.remove("highlight-flash"), 2500);
+            }
+        }, 80);
+    }
+
+    // 9. Global Theme Toggle
     btnTheme.addEventListener("click", () => {
         const isDark = document.body.classList.toggle("dark-theme");
         btnTheme.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
         btnTheme.title = isDark ? "Toggle Light Theme" : "Toggle Dark Theme";
     });
 
-    // 9. Tab View Switching
+    // 10. Tab View Switching
     tabGraph.addEventListener("click", () => {
         if (currentView === "graph") return;
         currentView = "graph";
@@ -469,7 +552,6 @@ document.addEventListener("DOMContentLoaded", () => {
         textbookContainer.classList.add("hidden");
         searchInput.disabled = false;
         
-        // Show zoom buttons
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
         document.getElementById("physics-divider").classList.remove("hidden");
     });
@@ -485,54 +567,113 @@ document.addEventListener("DOMContentLoaded", () => {
         searchInput.disabled = true;
         closePopup();
         
-        // Hide graph actions
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.add("hidden"));
         document.getElementById("physics-divider").classList.add("hidden");
 
         renderTextbookTOC();
     });
 
-    // 10. Textbook Reader Dynamic Logic
+    // 11. Nested Collapsible Textbook Sidebar TOC
     function renderTextbookTOC() {
         textbookToc.innerHTML = "";
-        
-        // Loop through units
-        hierarchyData.children.forEach(unit => {
-            const unitItem = document.createElement("div");
-            unitItem.className = "toc-unit-item";
-            unitItem.innerHTML = `<span><i class="fa-solid fa-folder-open"></i> ${unit.title}</span> <i class="fa-solid fa-chevron-down"></i>`;
-            textbookToc.appendChild(unitItem);
 
-            const childrenContainer = document.createElement("div");
-            childrenContainer.className = "toc-unit-children";
-            textbookToc.appendChild(childrenContainer);
+        function buildTOCNode(node, containerElement) {
+            const itemContainer = document.createElement("div");
+            itemContainer.className = "toc-item-container";
 
-            // Populate unit topics
-            unit.children.forEach(topic => {
-                const topicItem = document.createElement("div");
-                topicItem.className = "toc-topic-item";
-                topicItem.innerHTML = `<i class="fa-regular fa-file-lines"></i> ${topic.title}`;
-                topicItem.addEventListener("click", () => {
-                    // Remove active from all
-                    document.querySelectorAll(".toc-topic-item").forEach(item => item.classList.remove("active"));
-                    topicItem.classList.add("active");
-                    renderTextbookContent(topic);
+            const row = document.createElement("div");
+            row.className = "toc-header-row";
+            row.setAttribute("data-toc-id", node.id);
+
+            // Icon by type
+            let iconHtml = '<i class="fa-regular fa-file-lines"></i>';
+            if (node.node_type === "unit") iconHtml = '<i class="fa-solid fa-book"></i>';
+            else if (node.node_type === "topic") iconHtml = '<i class="fa-solid fa-folder-open"></i>';
+            else if (node.node_type === "subtopic") iconHtml = '<i class="fa-solid fa-chevron-right" style="font-size:10px;"></i>';
+
+            row.innerHTML = `<span>${iconHtml} ${node.title}</span>`;
+
+            // Expand icon if it has children
+            const hasChildren = node.children && node.children.length > 0;
+            if (hasChildren) {
+                const chevron = document.createElement("i");
+                chevron.className = "fa-solid fa-chevron-right toc-chevron";
+                row.appendChild(chevron);
+
+                const childrenBox = document.createElement("div");
+                childrenBox.className = "toc-children-box";
+                childrenBox.style.maxHeight = "0px"; // Start collapsed
+
+                // Click chevron to toggle collapse without rendering
+                chevron.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const isOpen = chevron.classList.toggle("open");
+                    childrenBox.style.maxHeight = isOpen ? "1000px" : "0px";
                 });
-                childrenContainer.appendChild(topicItem);
-            });
 
-            // Toggle collapsibility of units in TOC
-            unitItem.addEventListener("click", () => {
-                const isHidden = childrenContainer.classList.toggle("hidden");
-                unitItem.querySelector(".fa-chevron-down").style.transform = isHidden ? "rotate(-90deg)" : "rotate(0deg)";
-            });
+                // Clicking the row itself renders content
+                row.addEventListener("click", () => {
+                    // Activate row
+                    document.querySelectorAll(".toc-header-row").forEach(r => r.classList.remove("active"));
+                    row.classList.add("active");
+                    
+                    // Render
+                    let topicNode = node;
+                    while (topicNode.depth > 2 && topicNode.parent) {
+                        topicNode = topicNode.parent;
+                    }
+                    renderTextbookContent(topicNode);
+
+                    // If click subtopic, scroll to it
+                    if (node.depth >= 2) {
+                        setTimeout(() => {
+                            const el = document.getElementById(`reader-${node.id}`);
+                            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }, 50);
+                    }
+                });
+
+                itemContainer.appendChild(row);
+                
+                // Recurse children
+                node.children.forEach(child => {
+                    buildTOCNode(child, childrenBox);
+                });
+                itemContainer.appendChild(childrenBox);
+            } else {
+                // Leaf Node click navigation
+                row.addEventListener("click", () => {
+                    document.querySelectorAll(".toc-header-row").forEach(r => r.classList.remove("active"));
+                    row.classList.add("active");
+                    
+                    let topicNode = node;
+                    while (topicNode.depth > 2 && topicNode.parent) {
+                        topicNode = topicNode.parent;
+                    }
+                    renderTextbookContent(topicNode);
+
+                    setTimeout(() => {
+                        const el = document.getElementById(`reader-${node.id}`);
+                        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }, 50);
+                });
+                itemContainer.appendChild(row);
+            }
+
+            containerElement.appendChild(itemContainer);
+        }
+
+        // Loop through Units under root course
+        hierarchyData.children.forEach(unit => {
+            buildTOCNode(unit, textbookToc);
         });
     }
 
+    // 12. Dynamic Ebook/Markdown Reader Rendering
     function renderTextbookContent(node) {
         textbookContentCard.innerHTML = "";
 
-        // Header / Path breadcrumbs
+        // Path Breadcrumbs
         const path = document.createElement("div");
         path.className = "path-container";
         node.path.forEach((p, idx) => {
@@ -545,12 +686,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         textbookContentCard.appendChild(path);
 
-        // Generate dynamic HTML from this node downwards recursively
+        // Recursive text parser to losslessly map tree to reader content
         function renderNodeText(item) {
             const wrapper = document.createElement("div");
             wrapper.style.marginBottom = "30px";
+            wrapper.id = `reader-${item.id}`;
 
-            // Heading based on node type
+            // Heading by type
             let headerTag = "h4";
             let headingClass = "tb-concept-header";
             
@@ -576,7 +718,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 item.content.forEach(line => {
                     const trimmed = line.trim();
                     if (trimmed.length > 0) {
-                        // Check for bullets/lists
                         if (trimmed.startsWith("●") || trimmed.startsWith("•") || trimmed.startsWith("o") || trimmed.match(/^\d+\./)) {
                             if (!currentList) {
                                 currentList = document.createElement("ul");
@@ -598,7 +739,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
-            // Recurse down children to display entire hierarchy of the topic
+            // Recurse children topics
             if (item.children && item.children.length > 0) {
                 item.children.forEach(child => {
                     wrapper.appendChild(renderNodeText(child));
@@ -612,7 +753,7 @@ document.addEventListener("DOMContentLoaded", () => {
         textbookContentCard.appendChild(formattedContent);
     }
 
-    // 11. Zoom and Controls Actions
+    // 13. Zoom and Controls Actions
     btnZoomIn.addEventListener("click", () => {
         svg.transition().duration(300).call(zoom.scaleBy, 1.3);
     });
@@ -682,7 +823,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 12. Real-time Search
+    // 14. Real-time Search
     searchInput.addEventListener("input", (e) => {
         const query = e.target.value.toLowerCase().trim();
         if (!query) {

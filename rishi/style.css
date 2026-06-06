@@ -623,9 +623,14 @@ body.dark-theme .path-container span {
     gap: 4px;
 }
 
-.toc-unit-item {
-    font-weight: 700;
+.toc-item-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.toc-header-row {
     font-size: 13px;
+    font-weight: 600;
     padding: 8px 12px;
     color: var(--text-primary);
     cursor: pointer;
@@ -636,19 +641,39 @@ body.dark-theme .path-container span {
     transition: var(--transition-smooth);
 }
 
-.toc-unit-item:hover {
+.toc-header-row:hover {
     background: rgba(0,0,0,0.03);
 }
 
-body.dark-theme .toc-unit-item:hover {
+body.dark-theme .toc-header-row:hover {
     background: rgba(255,255,255,0.03);
 }
 
-.toc-unit-children {
-    padding-left: 12px;
-    margin-bottom: 8px;
+.toc-header-row.active {
+    color: var(--google-blue);
+    background: rgba(66, 133, 244, 0.08);
+}
+
+.toc-chevron {
+    font-size: 10px;
+    transition: transform 0.2s ease;
+    color: var(--text-muted);
+    padding: 4px;
+}
+
+.toc-chevron.open {
+    transform: rotate(90deg);
+}
+
+.toc-children-box {
+    padding-left: 10px;
+    margin-left: 8px;
     border-left: 1px solid var(--border-color);
-    margin-left: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+    transition: max-height 0.25s ease-out;
 }
 
 .toc-topic-item {
@@ -681,6 +706,7 @@ body.dark-theme .toc-topic-item:hover {
     flex: 1;
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 30px;
     display: flex;
     justify-content: center;
@@ -692,7 +718,21 @@ body.dark-theme .toc-topic-item:hover {
     min-height: 100%;
     padding: 40px;
     border-radius: 24px;
-    overflow-y: visible;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow: hidden;
+}
+
+/* Flash Highlight Animation */
+@keyframes highlightFlash {
+    0% { background-color: rgba(66, 133, 244, 0.25); }
+    100% { background-color: transparent; }
+}
+
+.highlight-flash {
+    animation: highlightFlash 2.5s ease-out;
+    border-radius: 8px;
+    padding: 4px 8px;
 }
 
 .reader-welcome {
