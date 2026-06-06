@@ -40,8 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabFog = document.getElementById("tab-fog");
     const tabTextbook = document.getElementById("tab-textbook");
     const tabNotes = document.getElementById("tab-notes");
+    const tabSpace = document.getElementById("tab-space");
     const searchInput = document.getElementById("search-input");
     const notesContainer = document.getElementById("notes-container");
+    const spaceContainer = document.getElementById("space-container");
     
     // Floating Popup Card Elements
     const nodePopup = document.getElementById("node-popup");
@@ -900,10 +902,12 @@ document.addEventListener("DOMContentLoaded", () => {
         tabFog.classList.remove("active");
         tabTextbook.classList.remove("active");
         tabNotes.classList.remove("active");
+        tabSpace.classList.remove("active");
         
         container.classList.remove("hidden");
         textbookContainer.classList.add("hidden");
         notesContainer.classList.add("hidden");
+        spaceContainer.classList.add("hidden");
         searchInput.disabled = false;
 
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
@@ -915,6 +919,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const fogGuidePanel = document.getElementById("fog-guide-panel");
         if (fogGuidePanel) fogGuidePanel.classList.remove("open");
         container.classList.remove("fog-view-active");
+
+        if (typeof SpaceExplorer !== "undefined") {
+            SpaceExplorer.pause();
+        }
         
         closePopup();
         updateGraph();
@@ -927,10 +935,12 @@ document.addEventListener("DOMContentLoaded", () => {
         tabTree.classList.remove("active");
         tabTextbook.classList.remove("active");
         tabNotes.classList.remove("active");
+        tabSpace.classList.remove("active");
         
         container.classList.remove("hidden");
         textbookContainer.classList.add("hidden");
         notesContainer.classList.add("hidden");
+        spaceContainer.classList.add("hidden");
         searchInput.disabled = false;
 
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
@@ -944,6 +954,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Initialize FogGuide if available
         if (typeof FogGuide !== "undefined") {
             FogGuide.init(hierarchyData);
+        }
+
+        if (typeof SpaceExplorer !== "undefined") {
+            SpaceExplorer.pause();
         }
         
         closePopup();
@@ -966,15 +980,21 @@ document.addEventListener("DOMContentLoaded", () => {
         tabTree.classList.remove("active");
         tabFog.classList.remove("active");
         tabNotes.classList.remove("active");
+        tabSpace.classList.remove("active");
         
         container.classList.add("hidden");
         textbookContainer.classList.remove("hidden");
         notesContainer.classList.add("hidden");
+        spaceContainer.classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
 
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.add("hidden"));
         document.getElementById("physics-divider").classList.add("hidden");
+
+        if (typeof SpaceExplorer !== "undefined") {
+            SpaceExplorer.pause();
+        }
 
         renderTextbookTOC();
     });
@@ -986,10 +1006,12 @@ document.addEventListener("DOMContentLoaded", () => {
         tabTree.classList.remove("active");
         tabFog.classList.remove("active");
         tabTextbook.classList.remove("active");
+        tabSpace.classList.remove("active");
         
         container.classList.add("hidden");
         textbookContainer.classList.add("hidden");
         notesContainer.classList.remove("hidden");
+        spaceContainer.classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
         
@@ -1002,6 +1024,44 @@ document.addEventListener("DOMContentLoaded", () => {
         const fogGuidePanel = document.getElementById("fog-guide-panel");
         if (fogGuidePanel) fogGuidePanel.classList.remove("open");
         container.classList.remove("fog-view-active");
+
+        if (typeof SpaceExplorer !== "undefined") {
+            SpaceExplorer.pause();
+        }
+
+        initNotesView();
+    });
+
+    tabSpace.addEventListener("click", () => {
+        if (currentView === "space") return;
+        currentView = "space";
+        tabSpace.classList.add("active");
+        tabTree.classList.remove("active");
+        tabFog.classList.remove("active");
+        tabTextbook.classList.remove("active");
+        tabNotes.classList.remove("active");
+        
+        container.classList.add("hidden");
+        textbookContainer.classList.add("hidden");
+        notesContainer.classList.add("hidden");
+        spaceContainer.classList.remove("hidden");
+        searchInput.disabled = true;
+        closePopup();
+        
+        document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.add("hidden"));
+        document.getElementById("physics-divider").classList.add("hidden");
+
+        // Hide fog dashboard and guide panel
+        const fogDash = document.getElementById("fog-dashboard");
+        if (fogDash) fogDash.classList.add("hidden");
+        const fogGuidePanel = document.getElementById("fog-guide-panel");
+        if (fogGuidePanel) fogGuidePanel.classList.remove("open");
+        container.classList.remove("fog-view-active");
+
+        if (typeof SpaceExplorer !== "undefined") {
+            SpaceExplorer.init(hierarchyData);
+        }
+    });e");
 
         initNotesView();
     });

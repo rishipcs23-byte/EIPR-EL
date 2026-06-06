@@ -17,6 +17,9 @@
     
     <!-- Marked.js for Markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body class="dark-theme">
     <!-- Background Blur Blobs -->
@@ -43,6 +46,7 @@
                     <button class="tab-btn" id="tab-fog"><i class="fa-solid fa-compass"></i> Fog of War Explorer</button>
                     <button class="tab-btn" id="tab-textbook"><i class="fa-solid fa-book-open"></i> Textbook Viewer</button>
                     <button class="tab-btn" id="tab-notes"><i class="fa-regular fa-file-lines"></i> Short Notes</button>
+                    <button class="tab-btn" id="tab-space"><i class="fa-solid fa-rocket"></i> Space Explorer</button>
                 </div>
 
                 <div class="search-container">
@@ -246,6 +250,47 @@
                     </div>
                 </section>
             </div>
+
+            <!-- Space Explorer 3D Container -->
+            <div id="space-container" class="hidden">
+                <div id="space-canvas-wrapper"></div>
+                
+                <!-- Space HUD Panel (glowing glassmorphic overlay) -->
+                <div id="space-hud" class="space-hud glass">
+                    <div class="space-hud-header">
+                        <span id="space-hud-type" class="badge">Topic</span>
+                        <span class="space-hud-distance" id="space-hud-dist">0m</span>
+                    </div>
+                    <h3 id="space-hud-title">Targeting Node...</h3>
+                    <div class="space-hud-body">
+                        <div id="space-hud-path" class="path-container"></div>
+                        <div id="space-hud-summary">Fly closer to a node to lock on, steer using mouse and WASD.</div>
+                    </div>
+                    <div class="space-hud-actions">
+                        <button class="btn btn-primary btn-sm" id="space-hud-detail-btn" disabled>
+                            <i class="fa-solid fa-expand"></i> View Full Notes
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Flight Speedometer Overlay -->
+                <div class="space-speedometer glass">
+                    <div class="speed-label"><i class="fa-solid fa-gauge-high"></i> Speed</div>
+                    <div class="speed-value" id="space-speed-val">0 km/s</div>
+                </div>
+
+                <!-- Flight Controls Guide Widget -->
+                <div class="space-controls-guide glass">
+                    <h4><i class="fa-solid fa-gamepad"></i> Flight Controls</h4>
+                    <div class="controls-grid">
+                        <div class="control-key">W / S</div><div>Thrust / Retro</div>
+                        <div class="control-key">A / D</div><div>Strafe Left / Right</div>
+                        <div class="control-key">Space</div><div>Ascend</div>
+                        <div class="control-key">Shift</div><div>Descend</div>
+                        <div class="control-key">Mouse</div><div>Pitch / Yaw (Steer)</div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -409,5 +454,6 @@
     <script src="fog-guide.js"></script>
     <script src="app.js"></script>
     <script src="quiz.js"></script>
+    <script src="space-explorer.js"></script>
 </body>
 </html>
