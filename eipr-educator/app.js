@@ -1382,7 +1382,6 @@ document.addEventListener("DOMContentLoaded", () => {
             .style("opacity", d => matchedNodeIds.has(d.source.id) && matchedNodeIds.has(d.target.id) ? 0.65 : 0.05);
     });
 
-<<<<<<< HEAD:eipr-educator/app.js
     // Node Context Menu Logic
     const nodeContextMenu = document.getElementById("node-context-menu");
     let selectedContextNode = null;
