@@ -26,11 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Prepare our global tree hierarchy
     prepareTree(hierarchyData, 0);
-    // Expand Course and Units by default
+    // Expand Course (root) by default. Keep units collapsed.
     hierarchyData.expanded = true;
-    hierarchyData.children.forEach(unit => {
-        unit.expanded = true;
-    });
 
     // 2. DOM Elements Selection
     const svg = d3.select("#graph-svg");
@@ -232,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         linkElements.exit().remove();
 
-        const linkEnter = linkElements.enter().append("line")
+        const linkEnter = linkElements.enter().append("path")
             .attr("class", "link")
             .attr("stroke", "#bcc1c6")
             .attr("stroke-width", 1.5)
@@ -337,10 +334,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         g.selectAll(".link")
-            .attr("x1", d => d.source.x)
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => d.target.x)
-            .attr("y2", d => d.target.y);
+            .attr("d", d => {
+                const x1 = d.source.x;
+                const y1 = d.source.y;
+                const x2 = d.target.x;
+                const y2 = d.target.y;
+                // Horizontal S-curve (cubic bezier)
+                return `M ${x1} ${y1} C ${(x1 + x2) / 2} ${y1}, ${(x1 + x2) / 2} ${y2}, ${x2} ${y2}`;
+            });
 
         g.selectAll(".node")
             .attr("transform", d => `translate(${d.x}, ${d.y})`);
@@ -792,7 +793,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btnReset.addEventListener("click", () => {
         function collapseAll(node) {
-            node.expanded = (node.id === "course" || node.node_type === "unit");
+            node.expanded = (node.id === "course");
             if (node.children) {
                 node.children.forEach(collapseAll);
             }
@@ -810,6 +811,23 @@ document.addEventListener("DOMContentLoaded", () => {
         updateGraph();
         
         svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+    });
+
+    // Collapse All listener
+    const btnCollapse = document.getElementById("btn-collapse");
+    btnCollapse.addEventListener("click", () => {
+        function collapseAll(node) {
+            node.expanded = (node.id === "course");
+            if (node.children) {
+                node.children.forEach(collapseAll);
+            }
+        }
+        collapseAll(hierarchyData);
+        closePopup();
+        updateGraph();
+        
+        // Refocus center
+        btnZoomFit.click();
     });
 
     btnPhysics.addEventListener("click", () => {

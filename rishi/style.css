@@ -383,6 +383,7 @@ body.dark-theme #search-input {
     stroke-opacity: 0.2;
     stroke-linecap: round;
     transition: stroke-opacity 0.3s;
+    fill: none;
 }
 
 .link.active {
@@ -705,8 +706,7 @@ body.dark-theme .toc-topic-item:hover {
 .textbook-reader {
     flex: 1;
     height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden; /* Do not scroll parent */
     padding: 30px;
     display: flex;
     justify-content: center;
@@ -715,12 +715,12 @@ body.dark-theme .toc-topic-item:hover {
 .textbook-content-card {
     width: 100%;
     max-width: 860px;
-    min-height: 100%;
+    height: 100%; /* Fill container height */
     padding: 40px;
     border-radius: 24px;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    overflow: hidden;
+    overflow-y: auto; /* Scroll inside the card */
 }
 
 /* Flash Highlight Animation */
@@ -815,6 +815,7 @@ body.dark-theme .tb-topic-header {
     color: var(--text-primary);
     margin-bottom: 14px;
     white-space: pre-wrap;
+    text-align: justify;
 }
 
 .tb-bullet-list {
