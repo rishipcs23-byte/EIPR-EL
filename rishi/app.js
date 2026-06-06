@@ -136,6 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Create main SVG group for zooming/panning
     const g = svg.append("g").attr("class", "graph-content");
+    // Layer for cluster hulls (drawn behind nodes)
+    const hullLayer = g.append("g").attr("class", "hull-layer");
 
     // Add zoom behavior
     const zoom = d3.zoom()
@@ -147,31 +149,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     svg.call(zoom);
 
-    // 4. Force Simulation Setup
+    // 4. Force Simulation Setup — sluggish/smooth physics
     const simulation = d3.forceSimulation()
+        .alphaDecay(0.035)          // slow decay so it settles gradually
+        .velocityDecay(0.72)        // high friction = less bounce/jumping
         .force("link", d3.forceLink().id(d => d.id).distance(d => {
             if (currentView === "tree") {
                 const targetType = d.target.node_type;
-                if (targetType === "unit") return 140;
-                if (targetType === "topic") return 110;
-                return 80;
+                if (targetType === "unit") return 150;
+                if (targetType === "topic") return 120;
+                return 85;
             } else {
-                return 60; // Shorter links in radial mode
+                return 65;
             }
-        }))
+        }).strength(0.45))          // softer link springs
         .force("charge", d3.forceManyBody().strength(d => {
-            if (currentView === "tree") return -200;
-            return d.node_type === "course" ? -800 : -150; // Radial mode repulsion
-        }))
-        .force("x", d3.forceX(width / 2).strength(d => currentView === "fog" ? 0.05 : 0))
-        .force("y", d3.forceY(height / 2).strength(d => currentView === "fog" ? 0.05 : 0.25))
+            if (currentView === "tree") return -180;
+            return d.node_type === "course" ? -700 : -130;
+        }).theta(0.9))
+        .force("x", d3.forceX(width / 2).strength(d => currentView === "fog" ? 0.04 : 0))
+        .force("y", d3.forceY(height / 2).strength(d => currentView === "fog" ? 0.04 : 0.18))
         .force("collision", d3.forceCollide().radius(d => {
             if (d.node_type === "course" || d.node_type === "unit") {
-                return typeRadius[d.node_type] + 20;
+                return typeRadius[d.node_type] + 22;
             }
             const dim = getNodeDimensions(d);
-            return Math.max(dim.w / 2 + 12, dim.h / 2 + 15);
-        }).strength(0.85));
+            return Math.max(dim.w / 2 + 14, dim.h / 2 + 18);
+        }).strength(0.7).iterations(2));
 
     // Drag behavior
     function drag(simulation) {
@@ -257,6 +261,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
         visibleNodes = nodesList;
         visibleLinks = linksList;
+
+        // ─── Cluster Hull Containers (translucent yellow behind topics) ─────
+        if (currentView === "tree") {
+            // Build map: unitId -> topic nodes
+            const topicsByUnit = new Map();
+            nodesList.forEach(n => {
+                if (n.node_type === "topic" && n.parent) {
+                    const uid = n.parent.id;
+                    if (!topicsByUnit.has(uid)) topicsByUnit.set(uid, []);
+                    topicsByUnit.get(uid).push(n);
+                }
+            });
+
+            // One hull rect per unit that has visible topics
+            const hullData = Array.from(topicsByUnit.entries())
+                .filter(([, topics]) => topics.length > 0)
+                .map(([uid, topics]) => ({ uid, topics }));
+
+            const hulls = hullLayer.selectAll(".topic-cluster-hull")
+                .data(hullData, d => d.uid);
+
+            hulls.exit().remove();
+
+            hulls.enter().append("rect")
+                .attr("class", "topic-cluster-hull")
+                .merge(hulls)
+                // Actual positioning is updated in tickActions via data bound
+                .attr("fill", "rgba(251, 188, 5, 0.10)")
+                .attr("stroke", "rgba(251, 188, 5, 0.45)")
+                .attr("stroke-width", 1.5)
+                .attr("stroke-dasharray", "6 3")
+                .attr("rx", 14)
+                .attr("ry", 14)
+                .attr("pointer-events", "none")
+                // Position will be updated in tickActions
+                .each(function(d) { d._hullEl = this; });
+        } else {
+            hullLayer.selectAll(".topic-cluster-hull").remove();
+        }
 
         // Render Links (Path curved S-curve or straight line based on tab view)
         let linkElements = g.selectAll(".link")
@@ -362,7 +405,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (physicsEnabled) {
-            simulation.alpha(0.3).restart();
+            // Gentle restart — low alpha means slower, smoother settling
+            simulation.alphaTarget(0.04).alpha(0.25).restart();
+            setTimeout(() => simulation.alphaTarget(0), 2200); // let it glide to rest
         } else {
             simulation.stop();
             tickActions();
@@ -372,19 +417,38 @@ document.addEventListener("DOMContentLoaded", () => {
     // Tick layout positioning
     function tickActions() {
         if (currentView === "tree") {
+            const PAD = 18; // cluster hull padding
+
             g.selectAll(".node").each(d => {
                 if (d.node_type === "course") d.x = 80;
                 else if (d.node_type === "unit") d.x = 240;
                 else if (d.node_type === "topic") {
-                    // Cluster topics in a 2-column square block!
+                    // 2-column grid per unit
                     const col = d.parent.children.indexOf(d) % 2;
-                    d.x = 420 + col * 185;
+                    d.x = 420 + col * 195;
                 }
-                else if (d.node_type === "subtopic") d.x = 800;
-                else if (d.node_type === "concept") d.x = 1000;
-                else d.x = 1200;
-                
+                else if (d.node_type === "subtopic") d.x = 840;
+                else if (d.node_type === "concept") d.x = 1050;
+                else d.x = 1260;
+
                 d.vx = 0;
+            });
+
+            // Update cluster hull rects
+            hullLayer.selectAll(".topic-cluster-hull").each(function(d) {
+                if (!d.topics || d.topics.length === 0) return;
+                const xs = d.topics.map(t => t.x);
+                const ys = d.topics.map(t => t.y);
+                const dims = d.topics.map(t => getNodeDimensions(t));
+                const minX = d3.min(xs.map((x, i) => x - dims[i].w / 2)) - PAD;
+                const maxX = d3.max(xs.map((x, i) => x + dims[i].w / 2)) + PAD;
+                const minY = d3.min(ys.map((y, i) => y - dims[i].h / 2)) - PAD;
+                const maxY = d3.max(ys.map((y, i) => y + dims[i].h / 2)) + PAD;
+                d3.select(this)
+                    .attr("x", minX)
+                    .attr("y", minY)
+                    .attr("width", maxX - minX)
+                    .attr("height", maxY - minY);
             });
 
             g.selectAll(".link")
@@ -393,13 +457,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     const y1 = d.source.y;
                     const x2 = d.target.x;
                     const y2 = d.target.y;
-                    // Curved horizontal S-lines
+                    // S-curved horizontal links
                     return `M ${x1} ${y1} C ${(x1 + x2) / 2} ${y1}, ${(x1 + x2) / 2} ${y2}, ${x2} ${y2}`;
                 });
         } else {
-            // Straight lines for radial Fog of War mode
+            // Curved arc lines for Fog of War mode
             g.selectAll(".link")
-                .attr("d", d => `M ${d.source.x} ${d.source.y} L ${d.target.x} ${d.target.y}`);
+                .attr("d", d => {
+                    const dx = d.target.x - d.source.x;
+                    const dy = d.target.y - d.source.y;
+                    const dr = Math.sqrt(dx * dx + dy * dy) * 1.2;
+                    return `M ${d.source.x} ${d.source.y} A ${dr} ${dr} 0 0 1 ${d.target.x} ${d.target.y}`;
+                });
         }
 
         g.selectAll(".node")
@@ -896,7 +965,8 @@ document.addEventListener("DOMContentLoaded", () => {
         btnPhysics.classList.toggle("active", physicsEnabled);
         
         if (physicsEnabled) {
-            simulation.alphaTarget(0.3).restart();
+            simulation.alphaTarget(0.04).alpha(0.2).restart();
+            setTimeout(() => simulation.alphaTarget(0), 2200);
         } else {
             simulation.stop();
         }
