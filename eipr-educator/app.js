@@ -686,6 +686,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         nodePopup.classList.remove("hidden");
         updatePopupPosition();
+
+        // Check if auto-summary is enabled
+        const autoSummaryCheckbox = document.getElementById("popup-auto-summary-checkbox");
+        if (autoSummaryCheckbox && autoSummaryCheckbox.checked) {
+            triggerAISummary(node);
+        }
     }
 
     function updatePopupPosition() {
@@ -1235,17 +1241,49 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // AI Summary Sidebar Panel
+    // AI Summary Sidebar Panel & Resizing
     const aiSummaryPanel = document.getElementById("ai-summary-panel");
     const aiPanelInner = aiSummaryPanel ? aiSummaryPanel.querySelector(".ai-summary-panel-inner") : null;
     const aiPanelNodeTitle = document.getElementById("ai-panel-node-title");
     const aiPanelPath = document.getElementById("ai-panel-path");
     const aiPanelContent = document.getElementById("ai-panel-content");
     const aiPanelCloseBtn = document.getElementById("ai-panel-close-btn");
+    const aiSidebarResizer = document.getElementById("ai-sidebar-resizer");
 
     if (aiPanelCloseBtn) {
         aiPanelCloseBtn.addEventListener("click", () => {
             aiSummaryPanel.classList.add("hidden");
+        });
+    }
+
+    // Sidebar resize logic
+    let isResizingSidebar = false;
+    if (aiSidebarResizer && aiSummaryPanel) {
+        aiSidebarResizer.addEventListener("mousedown", (e) => {
+            isResizingSidebar = true;
+            aiSidebarResizer.classList.add("dragging");
+            // Prevent transitions while resizing
+            aiSummaryPanel.style.transition = "none";
+            document.body.style.cursor = "ew-resize";
+            e.preventDefault();
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (!isResizingSidebar) return;
+            // Calculate new width: window width minus mouse X position
+            let newWidth = window.innerWidth - e.clientX;
+            // Constrain width
+            newWidth = Math.max(250, Math.min(newWidth, 800));
+            aiSummaryPanel.style.width = `${newWidth}px`;
+        });
+
+        document.addEventListener("mouseup", () => {
+            if (isResizingSidebar) {
+                isResizingSidebar = false;
+                aiSidebarResizer.classList.remove("dragging");
+                aiSummaryPanel.style.transition = ""; // Restore transition
+                document.body.style.cursor = "";
+            }
         });
     }
 
@@ -1279,9 +1317,29 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
 
-        const contentText = node.content ? (Array.isArray(node.content) ? node.content.join('\n') : node.content) : "No content available.";
+        function gatherContent(n, level = 0) {
+            let result = "";
+            let indent = "  ".repeat(level);
+            if (level > 0 && n.title) {
+                result += indent + "Subtopic: " + n.title + "\n";
+            }
+            if (n.content && n.content.length > 0) {
+                let text = Array.isArray(n.content) ? n.content.join(' ') : n.content;
+                if (text.trim().length > 0) {
+                    result += indent + text + "\n";
+                }
+            }
+            if (n.children && n.children.length > 0) {
+                n.children.forEach(child => {
+                    result += gatherContent(child, level + 1);
+                });
+            }
+            return result;
+        }
 
-        const prompt = `Preserve each topic but rephrase into shortened version.
+        const contentText = gatherContent(node) || "No content available.";
+
+        const prompt = `Provide a concise summary of the topic, followed by a single list of key takeaways/bullet points.
         
 Topic Title: ${node.title}
 
@@ -1314,24 +1372,12 @@ ${contentText}`;
             // Switch border to slower subtle glow on success
             if (aiPanelInner) aiPanelInner.classList.add("loaded");
 
-            aiPanelContent.innerHTML = "";
-            const lines = summaryText.split("\n");
-            lines.forEach(line => {
-                const trimmed = line.trim();
-                if (trimmed.length > 0) {
-                    if (trimmed.startsWith("●") || trimmed.startsWith("•") || trimmed.match(/^[-\*]\s/) || trimmed.match(/^\d+\./)) {
-                        const li = document.createElement("p");
-                        li.className = "ai-panel-list-item";
-                        li.textContent = line;
-                        aiPanelContent.appendChild(li);
-                    } else {
-                        const p = document.createElement("p");
-                        p.className = "ai-panel-paragraph";
-                        p.textContent = line;
-                        aiPanelContent.appendChild(p);
-                    }
-                }
-            });
+            // Use marked.js if available, otherwise fallback to plain text
+            if (typeof marked !== 'undefined') {
+                aiPanelContent.innerHTML = marked.parse(summaryText);
+            } else {
+                aiPanelContent.textContent = summaryText;
+            }
 
         } catch (error) {
             if (aiPanelInner) aiPanelInner.classList.add("loaded");

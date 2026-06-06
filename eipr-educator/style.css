@@ -1106,7 +1106,7 @@ body.dark-theme .close-btn:hover {
     height: 100%;
     z-index: 20;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     pointer-events: auto;
     transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.35s ease;
 }
@@ -1115,13 +1115,51 @@ body.dark-theme .close-btn:hover {
     display: none !important;
 }
 
+.sidebar-resizer {
+    width: 10px;
+    height: 100%;
+    cursor: ew-resize;
+    position: relative;
+    z-index: 30;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-resizer::after {
+    content: '';
+    width: 3px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    transition: background 0.2s;
+}
+
+.sidebar-resizer:hover::after,
+.sidebar-resizer.dragging::after {
+    background: var(--google-blue);
+}
+
 /* Glowing rainbow-border wrapper using conic-gradient + animation */
 .ai-summary-panel-inner {
     position: relative;
-    margin: 12px;
+    margin: 12px 12px 12px 0;
+    flex: 1;
     height: calc(100% - 24px);
     border-radius: 20px;
-    padding: 3px; /* border thickness */
+    padding: 2.5px; /* border thickness while thinking */
+    background: var(--glass-border);
+    transition: padding 1.2s cubic-bezier(0.25, 0.8, 0.25, 1), background 1.2s ease, box-shadow 1.2s ease;
+    box-shadow: 0 0 25px rgba(66, 133, 244, 0.2), 0 0 50px rgba(234, 67, 53, 0.1);
+}
+
+/* Animated rainbow border background on a pseudo-element */
+.ai-summary-panel-inner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: inherit;
     background: conic-gradient(
         from var(--rainbow-angle, 0deg),
         #4285F4,
@@ -1133,23 +1171,22 @@ body.dark-theme .close-btn:hover {
         #4285F4
     );
     animation: rainbow-spin 2.8s linear infinite;
-    box-shadow: 0 0 30px rgba(66, 133, 244, 0.25), 0 0 60px rgba(234, 67, 53, 0.12);
+    z-index: 0;
+    pointer-events: none;
+    transition: opacity 1.2s ease;
+    opacity: 1;
 }
 
-/* When loaded (not thinking), dim the border to a subtle glow */
+/* When loaded (not thinking), gently stop the animation and fade away the bright colours */
+.ai-summary-panel-inner.loaded::before {
+    opacity: 0;
+    animation-play-state: paused;
+}
+
 .ai-summary-panel-inner.loaded {
-    animation: rainbow-spin-slow 8s linear infinite;
-    background: conic-gradient(
-        from var(--rainbow-angle, 0deg),
-        rgba(66, 133, 244, 0.6),
-        rgba(234, 67, 53, 0.6),
-        rgba(251, 188, 5, 0.6),
-        rgba(52, 168, 83, 0.6),
-        rgba(138, 63, 252, 0.6),
-        rgba(0, 191, 165, 0.6),
-        rgba(66, 133, 244, 0.6)
-    );
-    box-shadow: 0 0 20px rgba(66, 133, 244, 0.1);
+    padding: 1px; /* standard 1px border thickness */
+    background: var(--glass-border);
+    box-shadow: var(--card-shadow);
 }
 
 @property --rainbow-angle {
@@ -1162,11 +1199,9 @@ body.dark-theme .close-btn:hover {
     to { --rainbow-angle: 360deg; }
 }
 
-@keyframes rainbow-spin-slow {
-    to { --rainbow-angle: 360deg; }
-}
-
 .ai-summary-panel-inner > .ai-panel-body {
+    position: relative;
+    z-index: 1;
     background: var(--glass-bg);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -1272,17 +1307,42 @@ body.dark-theme .close-btn:hover {
     letter-spacing: 0.5px;
 }
 
-.ai-panel-paragraph {
+.ai-panel-content p {
     font-size: 13px;
     line-height: 1.7;
     color: var(--text-secondary);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
-.ai-panel-list-item {
+.ai-panel-content p:last-child {
+    margin-bottom: 0;
+}
+
+.ai-panel-content ul, .ai-panel-content ol {
+    margin-left: 18px;
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+}
+
+.ai-panel-content li {
     font-size: 13px;
     line-height: 1.6;
-    color: var(--text-secondary);
-    margin-bottom: 5px;
-    margin-left: 12px;
+    margin-bottom: 6px;
 }
+
+.ai-panel-content strong, .ai-panel-content b {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.ai-panel-content h1, .ai-panel-content h2, .ai-panel-content h3 {
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.ai-panel-content h1 { font-size: 16px; }
+.ai-panel-content h2 { font-size: 15px; }
+.ai-panel-content h3 { font-size: 14px; }
