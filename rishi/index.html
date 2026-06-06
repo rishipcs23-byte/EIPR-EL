@@ -128,8 +128,104 @@
         </div>
     </div>
 
+    <!-- Quiz: Right-click Context Menu -->
+    <div id="quiz-context-menu" class="quiz-context-menu" style="display:none;">
+        <button id="quiz-context-generate-btn" class="quiz-context-item">
+            <i class="fa-solid fa-brain"></i>
+            <span>Generate Quiz</span>
+            <span class="quiz-context-hint">from selection</span>
+        </button>
+    </div>
+
+    <!-- Quiz Modal Overlay -->
+    <div id="quiz-modal-overlay" class="quiz-modal-overlay">
+        <div class="quiz-modal glass">
+
+            <!-- Modal Top Bar -->
+            <div class="quiz-modal-topbar">
+                <div class="quiz-modal-title">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>Knowledge Quiz</span>
+                </div>
+                <div class="quiz-topbar-right">
+                    <div id="quiz-score-badge" class="quiz-score-badge">⭐ 0 pts</div>
+                    <button id="quiz-close-btn" class="quiz-close-btn" title="Close Quiz">&times;</button>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="quiz-progress-track">
+                <div id="quiz-progress-bar" class="quiz-progress-fill"></div>
+            </div>
+            <div class="quiz-progress-label">
+                <span id="quiz-progress-text">0 / 0</span>
+            </div>
+
+            <!-- ── SCREEN 1: Loading ── -->
+            <div id="quiz-loading-screen" class="quiz-screen quiz-loading-screen" style="display:flex;">
+                <div class="quiz-spinner">
+                    <div class="spinner-ring"></div>
+                    <i class="fa-solid fa-brain quiz-spinner-icon"></i>
+                </div>
+                <p id="quiz-loading-msg" class="quiz-loading-msg">Connecting to Ollama...</p>
+                <p id="quiz-error-hint" class="quiz-error-hint" style="display:none;">
+                    Make sure Ollama is running: <code>ollama serve</code>
+                </p>
+            </div>
+
+            <!-- ── SCREEN 2: Question ── -->
+            <div id="quiz-question-screen" class="quiz-screen" style="display:none;">
+                <div class="quiz-q-header">
+                    <span id="quiz-question-number" class="quiz-q-number">Question 1</span>
+                </div>
+                <p id="quiz-question-text" class="quiz-question-text"></p>
+
+                <div id="quiz-options-container" class="quiz-options-container"></div>
+
+                <!-- Feedback Box (shown after answering) -->
+                <div id="quiz-feedback-box" class="quiz-feedback-box" style="display:none;">
+                    <div id="quiz-feedback-correct" class="quiz-feedback-verdict"></div>
+                    <p id="quiz-feedback-explanation" class="quiz-feedback-explanation"></p>
+                    <div id="quiz-feedback-focus" class="quiz-feedback-focus"></div>
+                </div>
+
+                <button id="quiz-next-btn" class="quiz-next-btn" style="display:none;">
+                    Next <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- ── SCREEN 3: Results ── -->
+            <div id="quiz-result-screen" class="quiz-screen quiz-result-screen" style="display:none;">
+                <div class="quiz-result-ring-wrap">
+                    <svg id="quiz-result-ring" class="quiz-result-ring" viewBox="0 0 120 120">
+                        <circle class="ring-bg" cx="60" cy="60" r="50"/>
+                        <circle class="ring-fill" cx="60" cy="60" r="50"
+                            stroke-dasharray="314"
+                            stroke-dashoffset="314"/>
+                    </svg>
+                    <span id="quiz-result-pct" class="quiz-result-pct">0%</span>
+                </div>
+                <div class="quiz-result-scores">
+                    <span class="quiz-result-score-label">Score</span>
+                    <span class="quiz-result-score-value">
+                        <span id="quiz-result-score">0</span>
+                        <span class="quiz-result-sep">/</span>
+                        <span id="quiz-result-total">0</span>
+                        <span class="quiz-result-pts">pts</span>
+                    </span>
+                </div>
+                <p id="quiz-result-msg" class="quiz-result-msg"></p>
+                <button id="quiz-result-close-btn" class="quiz-next-btn quiz-finish-btn">
+                    <i class="fa-solid fa-check"></i> Done
+                </button>
+            </div>
+
+        </div>
+    </div>
+
     <!-- Data and Application Code -->
     <script src="data.js"></script>
     <script src="app.js"></script>
+    <script src="quiz.js"></script>
 </body>
 </html>
