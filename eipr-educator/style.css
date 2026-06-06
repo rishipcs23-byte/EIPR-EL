@@ -2457,3 +2457,1115 @@ body.dark-theme .pdf-toggle-container {
 }
 
 
+
+
+/* ═══════════════════════════════════════════════════════════
+   EXTENDED QUIZ FEATURES — CIE, SEE, Explain Further
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Context Menu Separator ── */
+.quiz-context-separator {
+    height: 1px;
+    background: var(--glass-border);
+    margin: 4px 8px;
+}
+
+/* Context menu icon coloring per button type */
+#quiz-context-generate-btn i { color: var(--google-blue); }
+#quiz-context-cie-btn i { color: #e37400; }
+#quiz-context-see-btn i { color: var(--concept-purple); }
+#quiz-context-explain-btn i { color: var(--google-green); }
+
+/* ── Refer Back To Concept Button ── */
+.quiz-refer-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(52, 168, 83, 0.10);
+    border: 1px solid rgba(52, 168, 83, 0.30);
+    border-radius: 10px;
+    color: var(--google-green);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.15s ease, box-shadow 0.18s ease;
+    flex-shrink: 0;
+}
+
+.quiz-refer-back-btn:hover {
+    background: rgba(52, 168, 83, 0.18);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(52, 168, 83, 0.20);
+}
+
+.quiz-refer-back-btn i { font-size: 11px; }
+
+/* ── Descriptive Questions Screen (CIE / SEE / Explain) ── */
+.quiz-descriptive-content {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* Descriptive mode header */
+.dq-mode-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--glass-border);
+    margin-bottom: 4px;
+    flex-shrink: 0;
+}
+
+.dq-mode-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.dq-mode-icon.cie { background: rgba(227,116,0,0.12); color: #e37400; }
+.dq-mode-icon.see { background: rgba(138,63,252,0.12); color: var(--concept-purple); }
+.dq-mode-icon.explain { background: rgba(52,168,83,0.12); color: var(--google-green); }
+
+.dq-mode-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.dq-mode-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 1px;
+}
+
+/* Descriptive Section Titles */
+.dq-section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dq-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+}
+
+/* Individual descriptive question card */
+.dq-card {
+    background: var(--bg-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: feedbackSlide 0.3s ease;
+    position: relative;
+}
+
+.dq-card:hover {
+    border-color: rgba(66,133,244,0.25);
+}
+
+/* Question header row inside card */
+.dq-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.dq-q-index {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(66,133,244,0.10);
+    color: var(--google-blue);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(66,133,244,0.25);
+}
+
+.dq-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+}
+
+/* Marks badge (2M / 5M / 8M) */
+.dq-marks-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+}
+
+.dq-marks-badge.mark-2 {
+    background: rgba(66,133,244,0.10);
+    color: var(--google-blue);
+    border-color: rgba(66,133,244,0.25);
+}
+
+.dq-marks-badge.mark-5 {
+    background: rgba(227,116,0,0.10);
+    color: #e37400;
+    border-color: rgba(227,116,0,0.25);
+}
+
+.dq-marks-badge.mark-8 {
+    background: rgba(138,63,252,0.10);
+    color: var(--concept-purple);
+    border-color: rgba(138,63,252,0.25);
+}
+
+/* Category badge (Definition / Procedure / etc) */
+.dq-cat-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: rgba(0,0,0,0.04);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+body.dark-theme .dq-cat-badge {
+    background: rgba(255,255,255,0.05);
+}
+
+/* SEE Pattern/Prediction specific */
+.dq-cat-badge.hist {
+    background: rgba(52,168,83,0.10);
+    color: var(--google-green);
+    border-color: rgba(52,168,83,0.25);
+}
+
+.dq-cat-badge.pred {
+    background: rgba(66,133,244,0.10);
+    color: var(--google-blue);
+    border-color: rgba(66,133,244,0.25);
+}
+
+/* Star rating row */
+.dq-stars {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 12px;
+}
+
+.dq-star { color: rgba(0,0,0,0.15); }
+body.dark-theme .dq-star { color: rgba(255,255,255,0.12); }
+.dq-star.filled { color: #fbbf24; }
+
+/* Confidence tag */
+.dq-confidence {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-left: 2px;
+}
+
+.dq-confidence.high { background: rgba(52,168,83,0.12); color: var(--google-green); border: 1px solid rgba(52,168,83,0.3); }
+.dq-confidence.medium { background: rgba(251,188,5,0.12); color: #b06000; border: 1px solid rgba(251,188,5,0.3); }
+body.dark-theme .dq-confidence.medium { color: #fdd663; }
+.dq-confidence.low { background: rgba(234,67,53,0.10); color: var(--google-red); border: 1px solid rgba(234,67,53,0.25); }
+
+/* Question text */
+.dq-question-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* Show answer toggle button */
+.dq-show-answer-btn {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: rgba(66,133,244,0.06);
+    border: 1px solid rgba(66,133,244,0.20);
+    border-radius: 10px;
+    color: var(--google-blue);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.dq-show-answer-btn:hover {
+    background: rgba(66,133,244,0.12);
+    border-color: rgba(66,133,244,0.35);
+}
+
+.dq-show-answer-btn i { font-size: 10px; transition: transform 0.2s ease; }
+.dq-show-answer-btn.revealed i { transform: rotate(90deg); }
+
+/* Collapsible Answer Block */
+.dq-answer-block {
+    background: rgba(0,0,0,0.025);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    animation: feedbackSlide 0.25s ease;
+}
+
+body.dark-theme .dq-answer-block {
+    background: rgba(255,255,255,0.03);
+}
+
+.dq-answer-block ul {
+    padding-left: 20px;
+    margin-top: 8px;
+}
+
+.dq-answer-block ul li {
+    margin-bottom: 4px;
+}
+
+.dq-answer-block strong {
+    color: var(--text-primary);
+}
+
+/* Explain Further: styled content card */
+.dq-explain-card {
+    background: linear-gradient(135deg, rgba(52,168,83,0.05), rgba(66,133,244,0.05));
+    border: 1px solid rgba(52,168,83,0.2);
+    border-radius: 16px;
+    padding: 20px 22px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    animation: feedbackSlide 0.3s ease;
+}
+
+.dq-explain-card h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.dq-explain-card p { margin-bottom: 8px; }
+.dq-explain-card p:last-child { margin-bottom: 0; }
+
+/* Modal top bar title update for descriptive mode */
+.quiz-modal-title.cie-mode i { color: #e37400; }
+.quiz-modal-title.see-mode i { color: var(--concept-purple); }
+.quiz-modal-title.explain-mode i { color: var(--google-green); }
+
+/* Highlight flash for "Refer Back" scroll */
+@keyframes referFlash {
+    0%   { box-shadow: inset 0 0 0 2px var(--google-green), 0 0 20px rgba(52,168,83,0.4); }
+    50%  { box-shadow: inset 0 0 0 3px var(--google-green), 0 0 40px rgba(52,168,83,0.6); }
+    100% { box-shadow: none; }
+}
+
+.refer-flash {
+    animation: referFlash 1.5s ease-out;
+    border-radius: 8px;
+}
+
+/* ==========================================================================
+   FOG OF WAR — LEARNING PATH SYSTEM
+   ========================================================================== */
+
+/* ── Fog Dashboard (bottom-left floating panel) ── */
+.fog-dashboard {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 260px;
+    padding: 18px;
+    border-radius: 20px;
+    z-index: 8;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: fogDashIn 0.4s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+
+@keyframes fogDashIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.fog-dash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.fog-dash-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.fog-dash-title i {
+    color: var(--google-blue);
+    font-size: 16px;
+}
+
+.fog-reset-btn {
+    background: rgba(234, 67, 53, 0.08);
+    border: 1px solid rgba(234, 67, 53, 0.20);
+    color: var(--google-red);
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    transition: var(--transition-smooth);
+}
+
+.fog-reset-btn:hover {
+    background: rgba(234, 67, 53, 0.15);
+    transform: rotate(-90deg);
+}
+
+/* ── Progress Section ── */
+.fog-progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fog-progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#fog-progress-pct {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    color: var(--google-blue);
+}
+
+.fog-progress-track {
+    height: 8px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+body.dark-theme .fog-progress-track {
+    background: rgba(255,255,255,0.06);
+}
+
+.fog-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--google-blue), var(--concept-purple), var(--google-green));
+    border-radius: 10px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.fog-progress-fill::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 14px;
+    height: 100%;
+    background: rgba(255,255,255,0.4);
+    border-radius: 10px;
+    animation: progressShimmer 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes progressShimmer {
+    from { opacity: 0.2; }
+    to   { opacity: 0.8; }
+}
+
+.fog-progress-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+/* ── Recommended Topic ── */
+.fog-rec-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.fog-rec-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+}
+
+.fog-rec-topic {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(66, 133, 244, 0.08);
+    border: 1px solid rgba(66, 133, 244, 0.20);
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--google-blue);
+    overflow: hidden;
+}
+
+.fog-rec-topic i {
+    font-size: 13px;
+    flex-shrink: 0;
+    animation: compassSpin 3s ease-in-out infinite;
+}
+
+@keyframes compassSpin {
+    0%, 100% { transform: rotate(0deg); }
+    25%  { transform: rotate(20deg); }
+    75%  { transform: rotate(-20deg); }
+}
+
+.fog-rec-topic span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ── Dashboard Action Buttons ── */
+.fog-dash-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.fog-action-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.fog-complete-btn {
+    background: linear-gradient(135deg, var(--google-green), #1e9149);
+    color: white;
+    box-shadow: 0 3px 12px rgba(52, 168, 83, 0.25);
+}
+
+.fog-complete-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(52, 168, 83, 0.35);
+}
+
+.fog-guide-toggle-btn {
+    background: linear-gradient(135deg, var(--concept-purple), #6b2fd4);
+    color: white;
+    box-shadow: 0 3px 12px rgba(138, 63, 252, 0.25);
+}
+
+.fog-guide-toggle-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(138, 63, 252, 0.35);
+}
+
+.fog-guide-toggle-btn.active {
+    background: linear-gradient(135deg, #6b2fd4, var(--concept-purple));
+    box-shadow: 0 0 0 3px rgba(138, 63, 252, 0.30), 0 6px 18px rgba(138, 63, 252, 0.35);
+}
+
+/* ── Fog Legend Mini ── */
+.fog-legend-mini {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 8px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.fog-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.fog-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.fog-dot-recommended {
+    background: var(--google-green);
+    box-shadow: 0 0 8px rgba(52, 168, 83, 0.5);
+    animation: fogDotPulse 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes fogDotPulse {
+    from { box-shadow: 0 0 4px rgba(52, 168, 83, 0.3); }
+    to   { box-shadow: 0 0 12px rgba(52, 168, 83, 0.7); }
+}
+
+.fog-dot-completed {
+    background: var(--google-blue);
+    box-shadow: 0 0 6px rgba(66, 133, 244, 0.4);
+}
+
+.fog-dot-locked {
+    background: var(--text-muted);
+    opacity: 0.4;
+}
+
+.fog-dot-open {
+    background: var(--google-yellow);
+    box-shadow: 0 0 6px rgba(251, 188, 5, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FOG OF WAR — AI GUIDE PANEL
+   ═══════════════════════════════════════════════════════════ */
+
+.fog-guide-panel {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 340px;
+    height: calc(100% - 20px);
+    border-radius: 20px;
+    z-index: 20;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(110%);
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.34, 1.1, 0.64, 1), opacity 0.3s ease;
+}
+
+.fog-guide-panel.open {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.fog-guide-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--glass-border);
+    flex-shrink: 0;
+}
+
+.fog-guide-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--concept-purple), var(--google-blue));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(138, 63, 252, 0.3);
+}
+
+.fog-guide-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.fog-guide-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.fog-guide-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* ── Chat Messages Area ── */
+.fog-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.fog-chat-messages::-webkit-scrollbar { width: 4px; }
+.fog-chat-messages::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 2px; }
+
+.fog-chat-welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px 16px;
+    gap: 12px;
+    color: var(--text-muted);
+}
+
+.fog-chat-welcome i {
+    font-size: 36px;
+    color: var(--concept-purple);
+    opacity: 0.6;
+}
+
+.fog-chat-welcome p {
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: 260px;
+}
+
+.fog-chat-welcome strong {
+    color: var(--text-primary);
+}
+
+/* ── Chat Bubbles ── */
+.fog-chat-bubble {
+    max-width: 88%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 13px;
+    line-height: 1.55;
+    word-wrap: break-word;
+    animation: bubbleIn 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
+    white-space: pre-wrap;
+}
+
+@keyframes bubbleIn {
+    from { opacity: 0; transform: translateY(8px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.fog-chat-bubble.user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, var(--google-blue), #2b72e2);
+    color: white;
+    border-bottom-right-radius: 6px;
+}
+
+.fog-chat-bubble.assistant {
+    align-self: flex-start;
+    background: var(--bg-card);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-bottom-left-radius: 6px;
+}
+
+/* ── Typing Indicator ── */
+.fog-chat-bubble.typing {
+    padding: 12px 18px;
+}
+
+.fog-typing-dots {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.fog-typing-dots span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    animation: typingBounce 1.4s infinite ease-in-out;
+}
+
+.fog-typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.fog-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* ── Quick Action Buttons ── */
+.fog-quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 16px;
+    border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.fog-quick-btn {
+    padding: 5px 10px;
+    background: rgba(0,0,0,0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    white-space: nowrap;
+}
+
+body.dark-theme .fog-quick-btn {
+    background: rgba(255,255,255,0.04);
+}
+
+.fog-quick-btn:hover {
+    background: rgba(66, 133, 244, 0.08);
+    border-color: rgba(66, 133, 244, 0.3);
+    color: var(--google-blue);
+}
+
+/* ── Chat Input Area ── */
+.fog-chat-input-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    border-top: 1px solid var(--glass-border);
+    flex-shrink: 0;
+}
+
+.fog-chat-input {
+    flex: 1;
+    padding: 9px 14px;
+    background: rgba(0,0,0,0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text-primary);
+    transition: var(--transition-smooth);
+}
+
+body.dark-theme .fog-chat-input {
+    background: rgba(255,255,255,0.04);
+}
+
+.fog-chat-input:focus {
+    outline: none;
+    border-color: var(--concept-purple);
+    box-shadow: 0 0 0 3px rgba(138, 63, 252, 0.12);
+}
+
+.fog-chat-input:disabled {
+    opacity: 0.5;
+}
+
+.fog-chat-send {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, var(--concept-purple), var(--google-blue));
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+    flex-shrink: 0;
+}
+
+.fog-chat-send:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 14px rgba(138, 63, 252, 0.35);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FOG OF WAR — NODE VISUAL STATES
+   ═══════════════════════════════════════════════════════════ */
+
+/* Blurred / Locked nodes */
+.node.fog-locked {
+    opacity: 0.30;
+    filter: blur(2px);
+    pointer-events: none;
+    transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+.node.fog-locked .node-rect,
+.node.fog-locked .node-circle {
+    stroke-dasharray: 4 3;
+    stroke-opacity: 0.3;
+}
+
+/* Recommended node — pulsing green glow */
+.node.fog-recommended .node-rect {
+    stroke: var(--google-green) !important;
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 10px rgba(52, 168, 83, 0.45));
+    animation: fogRecommendedPulse 2s ease-in-out infinite alternate;
+}
+
+.node.fog-recommended .node-circle {
+    stroke: var(--google-green) !important;
+    stroke-width: 4px !important;
+    filter: drop-shadow(0 0 10px rgba(52, 168, 83, 0.45));
+    animation: fogRecommendedPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes fogRecommendedPulse {
+    0% {
+        filter: drop-shadow(0 0 6px rgba(52, 168, 83, 0.3));
+        stroke-width: 2.5px;
+    }
+    100% {
+        filter: drop-shadow(0 0 16px rgba(52, 168, 83, 0.6));
+        stroke-width: 3.5px;
+    }
+}
+
+/* Completed node — blue tint with checkmark effect */
+.node.fog-completed .node-rect {
+    stroke: var(--google-blue) !important;
+    stroke-width: 2px !important;
+    fill: rgba(66, 133, 244, 0.06) !important;
+}
+
+.node.fog-completed .node-circle {
+    stroke: var(--google-blue) !important;
+    fill: rgba(66, 133, 244, 0.1) !important;
+}
+
+.node.fog-completed {
+    opacity: 0.75;
+}
+
+/* Currently open node — yellow highlight */
+.node.fog-open .node-rect {
+    stroke: var(--google-yellow) !important;
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 8px rgba(251, 188, 5, 0.4));
+}
+
+.node.fog-open .node-circle {
+    stroke: var(--google-yellow) !important;
+    stroke-width: 4px !important;
+    filter: drop-shadow(0 0 8px rgba(251, 188, 5, 0.4));
+}
+
+/* Links in fog mode — dimmed for locked nodes */
+.link.fog-locked-link {
+    stroke-opacity: 0.06 !important;
+    stroke-dasharray: 3 4;
+}
+
+.link.fog-active-link {
+    stroke-opacity: 0.35 !important;
+    stroke: var(--google-green);
+    stroke-width: 2px;
+}
+
+/* Hide normal legend in fog mode, show fog dashboard instead */
+.fog-view-active .floating-legend {
+    display: none;
+}
+
+/* Short Notes Resource Viewer Page Layout */
+#notes-container {
+    display: flex;
+    width: 100%;
+    height: calc(100% - var(--header-height));
+    background: var(--bg-light);
+    position: relative;
+    z-index: 10;
+    transition: background-color 0.4s ease;
+}
+
+.notes-sidebar {
+    width: 320px;
+    height: 100%;
+    border-right: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    overflow-y: auto;
+    flex-shrink: 0;
+    gap: 20px;
+}
+
+.notes-sidebar h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.notes-toc {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.notes-toc-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    border: 1px solid transparent;
+}
+
+.notes-toc-item:hover {
+    background: rgba(0,0,0,0.03);
+    color: var(--text-primary);
+}
+
+body.dark-theme .notes-toc-item:hover {
+    background: rgba(255,255,255,0.04);
+}
+
+.notes-toc-item.active {
+    color: var(--google-blue);
+    background: rgba(66, 133, 244, 0.08);
+    border-color: rgba(66, 133, 244, 0.15);
+    font-weight: 600;
+}
+
+.notes-reader {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.notes-content-card {
+    width: 100%;
+    max-width: 1000px;
+    height: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--glass-border);
+}
+
+.notes-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: var(--bg-card);
+}
+
+/* PDF/HTML toggle */
+.pdf-toggle-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+    background: rgba(0,0,0,0.02);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    margin-top: auto;
+}
+
+body.dark-theme .pdf-toggle-container {
+    background: rgba(255,255,255,0.02);
+}
+
+.pdf-toggle-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.pdf-toggle-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.notes-toggle-btn {
+    flex: 1;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--glass-border);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.notes-toggle-btn:hover {
+    color: var(--text-primary);
+    background: rgba(0,0,0,0.02);
+}
+
+.notes-toggle-btn.active {
+    background: var(--google-blue);
+    color: white;
+    border-color: var(--google-blue);
+}
+
