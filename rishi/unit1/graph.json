@@ -1,0 +1,681 @@
+{
+  "concepts": [
+    {
+      "id": "unit1",
+      "title": "UNIT 1",
+      "node_type": "unit"
+    },
+    {
+      "id": "unit1.introduction",
+      "title": "Introduction",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.introduction.what_is_the_importance_of_entrepreneurship",
+      "title": "What is The Importance of Entrepreneurship?",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit1.introduction.what_is_the_importance_of_entrepreneurship.creation_of_job_opportunities",
+      "title": "Creation of job opportunities",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.introduction.what_is_the_importance_of_entrepreneurship.creation_of_new_businesses",
+      "title": "Creation of new businesses",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.introduction.difference_between_management_and_entrepreneurship_list",
+      "title": "Difference Between Management And Entrepreneurship (List)",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit1.introduction.difference_between_management_and_entrepreneurship_list.innovation",
+      "title": "Innovation",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.introduction.difference_between_management_and_entrepreneurship_list.leads_to_better_standards_of_living",
+      "title": "Leads to better standards of living",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.introduction.difference_between_management_and_entrepreneurship_list.supports_research_and_development",
+      "title": "Supports research and development",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.introduction.difference_between_management_and_entrepreneurship_list.promotes_community_development",
+      "title": "Promotes community development",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.introduction.difference_between_management_and_entrepreneurship_list.leads_to_increased_productivity",
+      "title": "Leads to increased productivity",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.introduction.difference_between_management_and_entrepreneurship_list.creation_of_national_wealth",
+      "title": "Creation of national wealth",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.introduction.difference_between_management_and_entrepreneurship_list.contributes_to_social_welfare",
+      "title": "Contributes to social welfare",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.the_4_types_of_entrepreneurs",
+      "title": "The 4 types of entrepreneurs",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.the_4_types_of_entrepreneurs.the_inventor",
+      "title": "The inventor",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.the_4_types_of_entrepreneurs.the_small_business_owner",
+      "title": "The small business owner",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.the_4_types_of_entrepreneurs.the_online_entrepreneur",
+      "title": "The online entrepreneur",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.the_4_types_of_entrepreneurs.the_home_business_owner",
+      "title": "The home business owner",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.the_4_types_of_entrepreneurs.what_are_the_qualities_of_a_successful_entrepreneur",
+      "title": "What are the qualities of a successful entrepreneur?",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit1.the_4_types_of_entrepreneurs.here_are_some_skills_you_need_to_become_a_successful_entrepreneur",
+      "title": "Here are some skills you need to become a successful entrepreneur",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit1.10_of_the_most_common_entrepreneurship_myths",
+      "title": "10 of the Most Common Entrepreneurship Myths",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_1_entrepreneurs_are_born_that_way",
+      "title": "Myth 1: Entrepreneurs are born that way.",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_2_the_only_requirement_is_a_good_idea",
+      "title": "Myth 2: The only requirement is a good idea.",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_3_starting_a_new_business_guarantees_freedom",
+      "title": "Myth 3: Starting a new business guarantees freedom.",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_4_launching_a_company_quickly_leads_to_wealth",
+      "title": "Myth 4: Launching a company quickly leads to wealth.",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_5_only_money_motivates_employees",
+      "title": "Myth 5: Only money motivates employees.",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_6_businesses_either_flourish_or_fail",
+      "title": "Myth 6: Businesses either flourish or fail.",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_7_all_responsibility_falls_on_the_entrepreneur",
+      "title": "Myth 7: All responsibility falls on the entrepreneur.",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_8_theres_a_secret_silver_bullet_key_to_success",
+      "title": "Myth 8: There’s a secret, “silver bullet” key to success.",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_9_businesses_need_someone_with_an_mba_at_the_helm",
+      "title": "Myth 9: Businesses need someone with an MBA at the helm.",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_10_quitting_is_for_losers",
+      "title": "Myth 10: Quitting is for losers.",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.entrepreneurial_development_models",
+      "title": "Entrepreneurial Development Models",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.entrepreneurial_development_models.large_business_entrepreneurship",
+      "title": "Large business entrepreneurship",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.entrepreneurial_development_models.small_business_entrepreneurship",
+      "title": "Small business entrepreneurship",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.entrepreneurial_development_models.social_entrepreneurship",
+      "title": "Social entrepreneurship",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.entrepreneurial_development_models.scalable_startup_entrepreneurship",
+      "title": "Scalable startup entrepreneurship",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.entrepreneurial_development_models.innovation_entrepreneurship",
+      "title": "Innovation Entrepreneurship",
+      "node_type": "concept"
+    },
+    {
+      "id": "unit1.problems_faced_by_entrepreneurs",
+      "title": "Problems Faced by Entrepreneurs",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.capacity_building_for_entrepreneurship",
+      "title": "Capacity Building for Entrepreneurship",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.here_are_7_examples_of_entrepreneurs_who_brought_change_and_shaped_the_world_according_to_their_vision",
+      "title": "Here are 7 examples of entrepreneurs who brought change and shaped the world according to their vision.",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.e-cells_on_campus",
+      "title": "E-cells on Campus",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.e-cell",
+      "title": "E-CELL",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.common_characteristics_of_successful_entrepreneurs",
+      "title": "Common Characteristics of Successful Entrepreneurs",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.different_types_of_entrepreneurial_styles",
+      "title": "Different types of Entrepreneurial styles",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.getting_to_know_your_business",
+      "title": "Getting to know your Business",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.understanding_your_businesss_ecosystem_and_environment_is_essential_for_successful_entrepreneurship_in_todays_interconnected_world_heres_how_you_can_delve_into_this_aspect",
+      "title": "Understanding your business's ecosystem and environment is essential for successful entrepreneurship in today's interconnected world. Here's how you can delve into this aspect",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.its_eco-system_and_environment",
+      "title": "it’s Eco-system and Environment",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.understanding_your_businesss_ecosystem_and_environment_is_essential_for_successful_entrepreneurship_in_todays_interconnected_world_heres_how_you_can_delve_into_this_aspect_1",
+      "title": "Understanding your business's ecosystem and environment is essential for successful entrepreneurship in today's interconnected world. Here's how you can delve into this aspect",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.passion_and_values_are_fundamental_drivers_of_entrepreneurship_shaping_the_vision_culture_and_actions_of_businesses_heres_how_they_influence_entrepreneurship",
+      "title": "Passion and values are fundamental drivers of entrepreneurship, shaping the vision, culture, and actions of businesses. Here's how they influence entrepreneurship",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.building_and_growing_family_businesses",
+      "title": "Building and growing Family businesses",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.challenges_are_inevitable_in_any_business_and_family_businesses_face_a_unique_set_of_challenges_due_to_the_intertwining_of_family_dynamics_with_business_operations_here_are_some_common_challenges_and_suggested_management_approaches_for_family_businesses",
+      "title": "Challenges are inevitable in any business, and family businesses face a unique set of challenges due to the intertwining of family dynamics with business operations. Here are some common challenges and suggested management approaches for family businesses",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.role_of_entrepreneurship_in_economic_development",
+      "title": "Role of Entrepreneurship in Economic Development",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.emerging_trends_in_entrepreneurship",
+      "title": "Emerging Trends in Entrepreneurship",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.entrepreneur_and_entrepreneurship",
+      "title": "Entrepreneur and Entrepreneurship",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.characteristics_of_an_entrepreneur",
+      "title": "Characteristics of an Entrepreneur",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.myths_about_entrepreneurship",
+      "title": "Myths About Entrepreneurship",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.entrepreneur_vs_intrapreneur",
+      "title": "Entrepreneur vs. Intrapreneur",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit1.role_of_entrepreneurial_teams",
+      "title": "Role of Entrepreneurial Teams",
+      "node_type": "topic"
+    },
+    {
+      "id": "apple",
+      "title": "Apple",
+      "node_type": "example"
+    },
+    {
+      "id": "samsung",
+      "title": "Samsung",
+      "node_type": "example"
+    },
+    {
+      "id": "facebook",
+      "title": "Facebook",
+      "node_type": "example"
+    },
+    {
+      "id": "tesla",
+      "title": "Tesla",
+      "node_type": "example"
+    },
+    {
+      "id": "iphones",
+      "title": "iPhones",
+      "node_type": "example"
+    }
+  ],
+  "relationships": [
+    {
+      "from": "unit1.introduction",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.the_4_types_of_entrepreneurs",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.10_of_the_most_common_entrepreneurship_myths",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.entrepreneurial_development_models",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.problems_faced_by_entrepreneurs",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.capacity_building_for_entrepreneurship",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.here_are_7_examples_of_entrepreneurs_who_brought_change_and_shaped_the_world_according_to_their_vision",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.e-cells_on_campus",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.e-cell",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.common_characteristics_of_successful_entrepreneurs",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.different_types_of_entrepreneurial_styles",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.getting_to_know_your_business",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.understanding_your_businesss_ecosystem_and_environment_is_essential_for_successful_entrepreneurship_in_todays_interconnected_world_heres_how_you_can_delve_into_this_aspect",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.its_eco-system_and_environment",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.understanding_your_businesss_ecosystem_and_environment_is_essential_for_successful_entrepreneurship_in_todays_interconnected_world_heres_how_you_can_delve_into_this_aspect_1",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.passion_and_values_are_fundamental_drivers_of_entrepreneurship_shaping_the_vision_culture_and_actions_of_businesses_heres_how_they_influence_entrepreneurship",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.building_and_growing_family_businesses",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.challenges_are_inevitable_in_any_business_and_family_businesses_face_a_unique_set_of_challenges_due_to_the_intertwining_of_family_dynamics_with_business_operations_here_are_some_common_challenges_and_suggested_management_approaches_for_family_businesses",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.role_of_entrepreneurship_in_economic_development",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.emerging_trends_in_entrepreneurship",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.entrepreneur_and_entrepreneurship",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.characteristics_of_an_entrepreneur",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.myths_about_entrepreneurship",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.entrepreneur_vs_intrapreneur",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.role_of_entrepreneurial_teams",
+      "to": "unit1",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.introduction.what_is_the_importance_of_entrepreneurship",
+      "to": "unit1.introduction",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.introduction.difference_between_management_and_entrepreneurship_list",
+      "to": "unit1.introduction",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.introduction.what_is_the_importance_of_entrepreneurship.creation_of_job_opportunities",
+      "to": "unit1.introduction.what_is_the_importance_of_entrepreneurship",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.introduction.what_is_the_importance_of_entrepreneurship.creation_of_new_businesses",
+      "to": "unit1.introduction.what_is_the_importance_of_entrepreneurship",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.introduction.difference_between_management_and_entrepreneurship_list.innovation",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.introduction.difference_between_management_and_entrepreneurship_list.leads_to_better_standards_of_living",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.introduction.difference_between_management_and_entrepreneurship_list.supports_research_and_development",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.introduction.difference_between_management_and_entrepreneurship_list.promotes_community_development",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.introduction.difference_between_management_and_entrepreneurship_list.leads_to_increased_productivity",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.introduction.difference_between_management_and_entrepreneurship_list.creation_of_national_wealth",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.introduction.difference_between_management_and_entrepreneurship_list.contributes_to_social_welfare",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.the_4_types_of_entrepreneurs.the_inventor",
+      "to": "unit1.the_4_types_of_entrepreneurs",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.the_4_types_of_entrepreneurs.the_small_business_owner",
+      "to": "unit1.the_4_types_of_entrepreneurs",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.the_4_types_of_entrepreneurs.the_online_entrepreneur",
+      "to": "unit1.the_4_types_of_entrepreneurs",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.the_4_types_of_entrepreneurs.the_home_business_owner",
+      "to": "unit1.the_4_types_of_entrepreneurs",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.the_4_types_of_entrepreneurs.what_are_the_qualities_of_a_successful_entrepreneur",
+      "to": "unit1.the_4_types_of_entrepreneurs",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.the_4_types_of_entrepreneurs.here_are_some_skills_you_need_to_become_a_successful_entrepreneur",
+      "to": "unit1.the_4_types_of_entrepreneurs",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_1_entrepreneurs_are_born_that_way",
+      "to": "unit1.10_of_the_most_common_entrepreneurship_myths",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_2_the_only_requirement_is_a_good_idea",
+      "to": "unit1.10_of_the_most_common_entrepreneurship_myths",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_3_starting_a_new_business_guarantees_freedom",
+      "to": "unit1.10_of_the_most_common_entrepreneurship_myths",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_4_launching_a_company_quickly_leads_to_wealth",
+      "to": "unit1.10_of_the_most_common_entrepreneurship_myths",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_5_only_money_motivates_employees",
+      "to": "unit1.10_of_the_most_common_entrepreneurship_myths",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_6_businesses_either_flourish_or_fail",
+      "to": "unit1.10_of_the_most_common_entrepreneurship_myths",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_7_all_responsibility_falls_on_the_entrepreneur",
+      "to": "unit1.10_of_the_most_common_entrepreneurship_myths",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_8_theres_a_secret_silver_bullet_key_to_success",
+      "to": "unit1.10_of_the_most_common_entrepreneurship_myths",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_9_businesses_need_someone_with_an_mba_at_the_helm",
+      "to": "unit1.10_of_the_most_common_entrepreneurship_myths",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.10_of_the_most_common_entrepreneurship_myths.myth_10_quitting_is_for_losers",
+      "to": "unit1.10_of_the_most_common_entrepreneurship_myths",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.entrepreneurial_development_models.large_business_entrepreneurship",
+      "to": "unit1.entrepreneurial_development_models",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.entrepreneurial_development_models.small_business_entrepreneurship",
+      "to": "unit1.entrepreneurial_development_models",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.entrepreneurial_development_models.social_entrepreneurship",
+      "to": "unit1.entrepreneurial_development_models",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.entrepreneurial_development_models.scalable_startup_entrepreneurship",
+      "to": "unit1.entrepreneurial_development_models",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1.entrepreneurial_development_models.innovation_entrepreneurship",
+      "to": "unit1.entrepreneurial_development_models",
+      "type": "part_of"
+    },
+    {
+      "from": "unit1",
+      "to": "unit1.introduction.what_is_the_importance_of_entrepreneurship.creation_of_job_opportunities",
+      "type": "causes"
+    },
+    {
+      "from": "unit1",
+      "to": "unit1.introduction.what_is_the_importance_of_entrepreneurship.creation_of_new_businesses",
+      "type": "causes"
+    },
+    {
+      "from": "unit1",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list.innovation",
+      "type": "causes"
+    },
+    {
+      "from": "unit1",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list.leads_to_better_standards_of_living",
+      "type": "causes"
+    },
+    {
+      "from": "unit1",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list.supports_research_and_development",
+      "type": "causes"
+    },
+    {
+      "from": "unit1",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list.promotes_community_development",
+      "type": "causes"
+    },
+    {
+      "from": "unit1",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list.leads_to_increased_productivity",
+      "type": "causes"
+    },
+    {
+      "from": "unit1",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list.creation_of_national_wealth",
+      "type": "causes"
+    },
+    {
+      "from": "unit1",
+      "to": "unit1.introduction.difference_between_management_and_entrepreneurship_list.contributes_to_social_welfare",
+      "type": "causes"
+    },
+    {
+      "from": "unit1.entrepreneur_vs_intrapreneur",
+      "to": "unit1.entrepreneur_and_entrepreneurship",
+      "type": "related_to"
+    },
+    {
+      "from": "apple",
+      "to": "unit1.entrepreneurial_development_models.large_business_entrepreneurship",
+      "type": "example_of"
+    },
+    {
+      "from": "samsung",
+      "to": "unit1.entrepreneurial_development_models.large_business_entrepreneurship",
+      "type": "example_of"
+    },
+    {
+      "from": "facebook",
+      "to": "unit1.entrepreneurial_development_models.scalable_startup_entrepreneurship",
+      "type": "example_of"
+    },
+    {
+      "from": "tesla",
+      "to": "unit1.entrepreneurial_development_models.innovation_entrepreneurship",
+      "type": "example_of"
+    },
+    {
+      "from": "iphones",
+      "to": "unit1.entrepreneurial_development_models.innovation_entrepreneurship",
+      "type": "example_of"
+    }
+  ]
+}

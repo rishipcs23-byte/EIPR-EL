@@ -1,0 +1,766 @@
+{
+  "concepts": [
+    {
+      "id": "unit5",
+      "title": "UNIT 5",
+      "node_type": "unit"
+    },
+    {
+      "id": "unit5.industrial_designs",
+      "title": "INDUSTRIAL DESIGNS",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.introduction",
+      "title": "Introduction",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.what_is_an_industrial_design",
+      "title": "What is an Industrial Design?",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.creative_designs_in_business",
+      "title": "Creative Designs in Business",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.why_protect_industrial_designs",
+      "title": "Why protect industrial designs?",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.procedure_for_obtaining_design_protection",
+      "title": "Procedure for obtaining Design Protection",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.revocation_infringement_and_remedies_of_industrial_designs",
+      "title": "Revocation Infringement and Remedies of Industrial Designs",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.revocation_infringement_and_remedies_of_industrial_designs.revocation",
+      "title": "Revocation",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.revocation_infringement_and_remedies_of_industrial_designs.infringement",
+      "title": "Infringement",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.revocation_infringement_and_remedies_of_industrial_designs.remedies",
+      "title": "Remedies",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.case_studies",
+      "title": "Case Studies",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.case_studies.iphone_design_by_apple",
+      "title": "iPhone Design by Apple",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.case_studies.alessi_juicy_salif_citrus_juicer",
+      "title": "Alessi Juicy Salif Citrus Juicer",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.case_studies.vespa_scooter",
+      "title": "Vespa Scooter",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.case_studies.swatch_watch",
+      "title": "Swatch Watch",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.case_studies.oxo_good_grips_kitchen_tools",
+      "title": "Oxo Good Grips Kitchen Tools",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.copyright",
+      "title": "COPYRIGHT",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.what_is_copyright",
+      "title": "WHAT IS COPYRIGHT?",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.what_is_copyright.nature_and_scope",
+      "title": "NATURE AND SCOPE.",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.copyright_in_india",
+      "title": "COPYRIGHT IN INDIA",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.protection_of_related_rights",
+      "title": "PROTECTION OF RELATED RIGHTS",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.protection_of_related_rights.rights_conferred_by_copyright",
+      "title": "RIGHTS CONFERRED BY COPYRIGHT",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.are_ideas_methods_or_concepts_protected_by_copyright",
+      "title": "Are ideas, methods or concepts protected by copyright?",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.how_are_rights_related_to_copyright",
+      "title": "How are rights related to copyright?",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.how_are_rights_related_to_copyright.copy_right_protection",
+      "title": "Copy right protection.",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.how_are_rights_related_to_copyright.when_does_copyright_protection_begin_and_what_is_required",
+      "title": "When does Copyright Protection begin, and what is required?",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.how_are_rights_related_to_copyright.when_does_copyright_protection_end_or_expire",
+      "title": "WHEN DOES COPYRIGHT PROTECTION END, OR EXPIRE?",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.how_are_rights_related_to_copyright.the_famous_symbol",
+      "title": "The Famous © Symbol",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.computer_software_and_ipr",
+      "title": "COMPUTER SOFTWARE AND IPR",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.computer_software_and_ipr.protection_of_computer_software_under_copyright",
+      "title": "Protection of computer software under copyright",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.authorship_issues_in_works_used_or_made_by_computer",
+      "title": "AUTHORSHIP ISSUES IN WORKS USED OR MADE BY COMPUTER",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software",
+      "title": "Patenting of computer software",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.transfer_of_copy_rights",
+      "title": "TRANSFER OF COPY RIGHTS.",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.difference_between_licensing_and_assignment_of_copyright",
+      "title": "Difference between licensing and assignment of copyright –",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.rights_of_broad_casting_organizations_and",
+      "title": "RIGHTS OF BROAD CASTING ORGANIZATIONS AND",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.performers_rights",
+      "title": "PERFORMERS RIGHTS",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.broadcasters_rights_an_introduction",
+      "title": "BROADCASTER’S RIGHTS: AN INTRODUCTION",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.historical_setting",
+      "title": "Historical Setting",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.nature_of_broadcast_rights",
+      "title": "Nature of Broadcast rights",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.what_is_a_broadcast",
+      "title": "What is a broadcast?",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.broadcasters_right_in_india",
+      "title": "BROADCASTER’S RIGHT IN INDIA",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.statutory_ambit",
+      "title": "Statutory Ambit",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.judicial_dictum",
+      "title": "Judicial Dictum",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.performers_rights_1",
+      "title": "PERFORMERS’ RIGHTS",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.exceptions_to_copyright",
+      "title": "EXCEPTIONS TO COPYRIGHT",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.exceptions_to_infringement_of_performers_rights",
+      "title": "EXCEPTIONS TO INFRINGEMENT OF PERFORMER’S RIGHTS",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.infringement_of_copy_right_with_case_studies",
+      "title": "INFRINGEMENT OF COPY RIGHT WITH CASE STUDIES.",
+      "node_type": "case_study"
+    },
+    {
+      "id": "unit5.patenting_of_computer_software.super_cassette_industries_ltd_vs_bathla_cassette_industries",
+      "title": "SUPER CASSETTE INDUSTRIES LTD. Vs. BATHLA CASSETTE INDUSTRIES",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.introduction_to_cyber_law",
+      "title": "INTRODUCTION TO CYBER LAW",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.introduction_to_cyber_law.information_technology_act",
+      "title": "Information Technology Act",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit5.objectives_of_the_act",
+      "title": "Objectives of the Act",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.non-applicability",
+      "title": "Non-Applicability",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.scope_or_extent_of_the_act",
+      "title": "Scope or Extent of the ACT",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.intermediary_liability",
+      "title": "Intermediary liability",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.digital_signature",
+      "title": "Digital Signature",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.authentication_of_electronic_record",
+      "title": "Authentication of Electronic record",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.difference_between_electronic_signature_and_digital_signature",
+      "title": "Difference between Electronic Signature and Digital Signature",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.information_technology_amendment_act_2008",
+      "title": "Information Technology Amendment Act, 2008",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.cybercrime",
+      "title": "Cybercrime",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.history_of_cyber_crime",
+      "title": "History of Cyber Crime",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.categories_of_cyber_crime",
+      "title": "CATEGORIES OF CYBER CRIME",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.types_of_cyber_crime",
+      "title": "Types of Cyber Crime",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.need_for_cyber_laws",
+      "title": "NEED FOR CYBER LAWS",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.cyber_laws_in_india",
+      "title": "Cyber Laws in India",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.cybercrime_and_e-commerce",
+      "title": "Cybercrime and e-commerce",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.reporting_counterfeit_items_on_indian_e-commerce_sites",
+      "title": "REPORTING COUNTERFEIT ITEMS ON INDIAN E-COMMERCE SITES",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.practice_and_procedure_for_rights_holders",
+      "title": "PRACTICE AND PROCEDURE FOR RIGHTS HOLDERS",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.electronic_evidence_case_law",
+      "title": "ELECTRONIC EVIDENCE – CASE LAW",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.cybersquatting_in_india_the_yahoo_case_yahoo_inc_v_akash",
+      "title": "CYBERSQUATTING IN INDIA: THE YAHOO!  CASE [YAHOO! INC. V. AKASH",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.indrp_as_a_model_for_india",
+      "title": "INDRP as a model for INDIA",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.metatags_and_trademarks",
+      "title": "METATAGS’ AND TRADEMARKS",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.data_security_confidentiality_and_privacy",
+      "title": "Data security, Confidentiality and Privacy",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit5.international_aspects_of_computer_and_online_crime",
+      "title": "International aspects of computer and online crime",
+      "node_type": "topic"
+    }
+  ],
+  "relationships": [
+    {
+      "from": "unit5.industrial_designs",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.introduction",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.what_is_an_industrial_design",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.creative_designs_in_business",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.why_protect_industrial_designs",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.procedure_for_obtaining_design_protection",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.revocation_infringement_and_remedies_of_industrial_designs",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.case_studies",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.copyright",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.what_is_copyright",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.copyright_in_india",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.protection_of_related_rights",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.are_ideas_methods_or_concepts_protected_by_copyright",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.how_are_rights_related_to_copyright",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.computer_software_and_ipr",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.authorship_issues_in_works_used_or_made_by_computer",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.introduction_to_cyber_law",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.objectives_of_the_act",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.non-applicability",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.scope_or_extent_of_the_act",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.intermediary_liability",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.digital_signature",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.authentication_of_electronic_record",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.difference_between_electronic_signature_and_digital_signature",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.information_technology_amendment_act_2008",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.cybercrime",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.history_of_cyber_crime",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.categories_of_cyber_crime",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.types_of_cyber_crime",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.need_for_cyber_laws",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.cyber_laws_in_india",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.cybercrime_and_e-commerce",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.reporting_counterfeit_items_on_indian_e-commerce_sites",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.practice_and_procedure_for_rights_holders",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.electronic_evidence_case_law",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.cybersquatting_in_india_the_yahoo_case_yahoo_inc_v_akash",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.indrp_as_a_model_for_india",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.metatags_and_trademarks",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.data_security_confidentiality_and_privacy",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.international_aspects_of_computer_and_online_crime",
+      "to": "unit5",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.revocation_infringement_and_remedies_of_industrial_designs.revocation",
+      "to": "unit5.revocation_infringement_and_remedies_of_industrial_designs",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.revocation_infringement_and_remedies_of_industrial_designs.infringement",
+      "to": "unit5.revocation_infringement_and_remedies_of_industrial_designs",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.revocation_infringement_and_remedies_of_industrial_designs.remedies",
+      "to": "unit5.revocation_infringement_and_remedies_of_industrial_designs",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.case_studies.iphone_design_by_apple",
+      "to": "unit5.case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.case_studies.alessi_juicy_salif_citrus_juicer",
+      "to": "unit5.case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.case_studies.vespa_scooter",
+      "to": "unit5.case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.case_studies.swatch_watch",
+      "to": "unit5.case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.case_studies.oxo_good_grips_kitchen_tools",
+      "to": "unit5.case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.what_is_copyright.nature_and_scope",
+      "to": "unit5.what_is_copyright",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.protection_of_related_rights.rights_conferred_by_copyright",
+      "to": "unit5.protection_of_related_rights",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.how_are_rights_related_to_copyright.copy_right_protection",
+      "to": "unit5.how_are_rights_related_to_copyright",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.how_are_rights_related_to_copyright.when_does_copyright_protection_begin_and_what_is_required",
+      "to": "unit5.how_are_rights_related_to_copyright",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.how_are_rights_related_to_copyright.when_does_copyright_protection_end_or_expire",
+      "to": "unit5.how_are_rights_related_to_copyright",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.how_are_rights_related_to_copyright.the_famous_symbol",
+      "to": "unit5.how_are_rights_related_to_copyright",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.computer_software_and_ipr.protection_of_computer_software_under_copyright",
+      "to": "unit5.computer_software_and_ipr",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.transfer_of_copy_rights",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.difference_between_licensing_and_assignment_of_copyright",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.rights_of_broad_casting_organizations_and",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.performers_rights",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.broadcasters_rights_an_introduction",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.historical_setting",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.nature_of_broadcast_rights",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.what_is_a_broadcast",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.broadcasters_right_in_india",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.statutory_ambit",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.judicial_dictum",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.performers_rights_1",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.exceptions_to_copyright",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.exceptions_to_infringement_of_performers_rights",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.infringement_of_copy_right_with_case_studies",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.patenting_of_computer_software.super_cassette_industries_ltd_vs_bathla_cassette_industries",
+      "to": "unit5.patenting_of_computer_software",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.introduction_to_cyber_law.information_technology_act",
+      "to": "unit5.introduction_to_cyber_law",
+      "type": "part_of"
+    },
+    {
+      "from": "unit5.case_studies.iphone_design_by_apple",
+      "to": "unit5.case_studies",
+      "type": "example_of"
+    },
+    {
+      "from": "unit5.case_studies.alessi_juicy_salif_citrus_juicer",
+      "to": "unit5.case_studies",
+      "type": "example_of"
+    },
+    {
+      "from": "unit5.case_studies.vespa_scooter",
+      "to": "unit5.case_studies",
+      "type": "example_of"
+    },
+    {
+      "from": "unit5.case_studies.swatch_watch",
+      "to": "unit5.case_studies",
+      "type": "example_of"
+    },
+    {
+      "from": "unit5.case_studies.oxo_good_grips_kitchen_tools",
+      "to": "unit5.case_studies",
+      "type": "example_of"
+    }
+  ]
+}
