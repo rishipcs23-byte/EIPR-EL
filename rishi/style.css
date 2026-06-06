@@ -2601,3 +2601,149 @@ body.dark-theme .fog-chat-input {
 .fog-view-active .floating-legend {
     display: none;
 }
+
+/* Short Notes Resource Viewer Page Layout */
+#notes-container {
+    display: flex;
+    width: 100%;
+    height: calc(100% - var(--header-height));
+    background: var(--bg-light);
+    position: relative;
+    z-index: 10;
+    transition: background-color 0.4s ease;
+}
+
+.notes-sidebar {
+    width: 320px;
+    height: 100%;
+    border-right: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    overflow-y: auto;
+    flex-shrink: 0;
+    gap: 20px;
+}
+
+.notes-sidebar h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.notes-toc {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.notes-toc-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    border: 1px solid transparent;
+}
+
+.notes-toc-item:hover {
+    background: rgba(0,0,0,0.03);
+    color: var(--text-primary);
+}
+
+body.dark-theme .notes-toc-item:hover {
+    background: rgba(255,255,255,0.04);
+}
+
+.notes-toc-item.active {
+    color: var(--google-blue);
+    background: rgba(66, 133, 244, 0.08);
+    border-color: rgba(66, 133, 244, 0.15);
+    font-weight: 600;
+}
+
+.notes-reader {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.notes-content-card {
+    width: 100%;
+    max-width: 1000px;
+    height: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--glass-border);
+}
+
+.notes-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: var(--bg-card);
+}
+
+/* PDF/HTML toggle */
+.pdf-toggle-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+    background: rgba(0,0,0,0.02);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    margin-top: auto;
+}
+
+body.dark-theme .pdf-toggle-container {
+    background: rgba(255,255,255,0.02);
+}
+
+.pdf-toggle-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.pdf-toggle-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.notes-toggle-btn {
+    flex: 1;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--glass-border);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.notes-toggle-btn:hover {
+    color: var(--text-primary);
+    background: rgba(0,0,0,0.02);
+}
+
+.notes-toggle-btn.active {
+    background: var(--google-blue);
+    color: white;
+    border-color: var(--google-blue);
+}
+

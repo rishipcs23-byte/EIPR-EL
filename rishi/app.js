@@ -39,7 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabTree = document.getElementById("tab-tree");
     const tabFog = document.getElementById("tab-fog");
     const tabTextbook = document.getElementById("tab-textbook");
+    const tabNotes = document.getElementById("tab-notes");
     const searchInput = document.getElementById("search-input");
+    const notesContainer = document.getElementById("notes-container");
     
     // Floating Popup Card Elements
     const nodePopup = document.getElementById("node-popup");
@@ -727,9 +729,11 @@ document.addEventListener("DOMContentLoaded", () => {
         tabTree.classList.add("active");
         tabFog.classList.remove("active");
         tabTextbook.classList.remove("active");
+        tabNotes.classList.remove("active");
         
         container.classList.remove("hidden");
         textbookContainer.classList.add("hidden");
+        notesContainer.classList.add("hidden");
         searchInput.disabled = false;
         
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
@@ -752,9 +756,11 @@ document.addEventListener("DOMContentLoaded", () => {
         tabFog.classList.add("active");
         tabTree.classList.remove("active");
         tabTextbook.classList.remove("active");
+        tabNotes.classList.remove("active");
         
         container.classList.remove("hidden");
         textbookContainer.classList.add("hidden");
+        notesContainer.classList.add("hidden");
         searchInput.disabled = false;
         
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
@@ -789,9 +795,11 @@ document.addEventListener("DOMContentLoaded", () => {
         tabTextbook.classList.add("active");
         tabTree.classList.remove("active");
         tabFog.classList.remove("active");
+        tabNotes.classList.remove("active");
         
         container.classList.add("hidden");
         textbookContainer.classList.remove("hidden");
+        notesContainer.classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
         
@@ -800,6 +808,113 @@ document.addEventListener("DOMContentLoaded", () => {
 
         renderTextbookTOC();
     });
+
+    tabNotes.addEventListener("click", () => {
+        if (currentView === "notes") return;
+        currentView = "notes";
+        tabNotes.classList.add("active");
+        tabTree.classList.remove("active");
+        tabFog.classList.remove("active");
+        tabTextbook.classList.remove("active");
+        
+        container.classList.add("hidden");
+        textbookContainer.classList.add("hidden");
+        notesContainer.classList.remove("hidden");
+        searchInput.disabled = true;
+        closePopup();
+        
+        document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.add("hidden"));
+        document.getElementById("physics-divider").classList.add("hidden");
+
+        // Hide fog dashboard and guide panel
+        const fogDash = document.getElementById("fog-dashboard");
+        if (fogDash) fogDash.classList.add("hidden");
+        const fogGuidePanel = document.getElementById("fog-guide-panel");
+        if (fogGuidePanel) fogGuidePanel.classList.remove("open");
+        container.classList.remove("fog-view-active");
+
+        initNotesView();
+    });
+
+    // 10b. Short Notes View Logic
+    let notesInitialized = false;
+    function initNotesView() {
+        if (notesInitialized) return;
+        notesInitialized = true;
+
+        const notesTocItems = document.querySelectorAll(".notes-toc-item");
+        const notesFrame = document.getElementById("notes-frame");
+        const pdfToggleContainer = document.getElementById("pdf-toggle-container");
+        const notesViewHtmlBtn = document.getElementById("notes-view-html");
+        const notesViewPdfBtn = document.getElementById("notes-view-pdf");
+
+        let currentSelectedUnitItem = document.querySelector(".notes-toc-item.active");
+        let currentSelectedMode = "html";
+
+        function updateNotesContent() {
+            if (!currentSelectedUnitItem) return;
+            const sourceHtml = currentSelectedUnitItem.getAttribute("data-source");
+            const sourcePdf = currentSelectedUnitItem.getAttribute("data-pdf");
+
+            // If the item has a PDF option, show the mode toggle
+            if (sourcePdf) {
+                pdfToggleContainer.classList.remove("hidden");
+            } else {
+                pdfToggleContainer.classList.add("hidden");
+                // If it's a PDF-only resource (like Unit 5), we use "pdf" mode
+                if (sourceHtml && sourceHtml.toLowerCase().endsWith(".pdf")) {
+                    currentSelectedMode = "pdf";
+                } else {
+                    currentSelectedMode = "html";
+                }
+            }
+
+            // Apply active class to mode buttons
+            if (currentSelectedMode === "html") {
+                notesViewHtmlBtn.classList.add("active");
+                notesViewPdfBtn.classList.remove("active");
+                notesFrame.src = sourceHtml;
+            } else {
+                notesViewHtmlBtn.classList.remove("active");
+                notesViewPdfBtn.classList.add("active");
+                notesFrame.src = sourcePdf || sourceHtml; // Use sourceHtml if it is the PDF (e.g. Unit 5)
+            }
+        }
+
+        notesTocItems.forEach(item => {
+            item.addEventListener("click", () => {
+                notesTocItems.forEach(i => i.classList.remove("active"));
+                item.classList.add("active");
+                currentSelectedUnitItem = item;
+                
+                // If the item has NO pdf, reset mode to html
+                const src = item.getAttribute("data-source");
+                const hasPdf = item.getAttribute("data-pdf");
+                if (!hasPdf && !src.toLowerCase().endsWith(".pdf")) {
+                    currentSelectedMode = "html";
+                } else if (src.toLowerCase().endsWith(".pdf")) {
+                    currentSelectedMode = "pdf";
+                }
+                
+                updateNotesContent();
+            });
+        });
+
+        notesViewHtmlBtn.addEventListener("click", () => {
+            if (currentSelectedMode === "html") return;
+            currentSelectedMode = "html";
+            updateNotesContent();
+        });
+
+        notesViewPdfBtn.addEventListener("click", () => {
+            if (currentSelectedMode === "pdf") return;
+            currentSelectedMode = "pdf";
+            updateNotesContent();
+        });
+
+        // Load initial content
+        updateNotesContent();
+    }
 
     // 11. Nested Collapsible Textbook Sidebar TOC
     function renderTextbookTOC() {

@@ -39,6 +39,7 @@
                     <button class="tab-btn active" id="tab-tree"><i class="fa-solid fa-diagram-project"></i> Knowledge Tree</button>
                     <button class="tab-btn" id="tab-fog"><i class="fa-solid fa-compass"></i> Fog of War Explorer</button>
                     <button class="tab-btn" id="tab-textbook"><i class="fa-solid fa-book-open"></i> Textbook Viewer</button>
+                    <button class="tab-btn" id="tab-notes"><i class="fa-regular fa-file-lines"></i> Short Notes</button>
                 </div>
 
                 <div class="search-container">
@@ -186,6 +187,32 @@
                             <h2>Welcome to the EIPR Textbook Reader</h2>
                             <p>Select a Unit or Topic from the Table of Contents on the left to read the lossless, fully compiled course materials with rich text formatting.</p>
                         </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Short Notes Resource Viewer Container -->
+            <div id="notes-container" class="hidden">
+                <aside class="notes-sidebar glass">
+                    <h3>Units Short Notes</h3>
+                    <div class="notes-toc" id="notes-toc">
+                        <div class="notes-toc-item active" data-source="EIPR short notes/unit-1.html"><i class="fa-solid fa-book"></i> Unit 1 Notes (HTML)</div>
+                        <div class="notes-toc-item" data-source="EIPR short notes/unit-2.html" data-pdf="EIPR short notes/UNIT 2 — Entrepreneurship.pdf"><i class="fa-solid fa-book"></i> Unit 2 Notes (HTML / PDF)</div>
+                        <div class="notes-toc-item" data-source="EIPR short notes/unit-3.html"><i class="fa-solid fa-book"></i> Unit 3 Notes (Merged HTML)</div>
+                        <div class="notes-toc-item" data-source="EIPR short notes/unit-4.html"><i class="fa-solid fa-book"></i> Unit 4 Notes (Merged HTML)</div>
+                        <div class="notes-toc-item" data-source="EIPR short notes/UNIT 5 – Structured Notes.pdf"><i class="fa-solid fa-file-pdf"></i> Unit 5 Notes (PDF)</div>
+                    </div>
+                    <div class="pdf-toggle-container hidden" id="pdf-toggle-container">
+                        <span class="pdf-toggle-label">View Mode:</span>
+                        <div class="pdf-toggle-buttons">
+                            <button id="notes-view-html" class="notes-toggle-btn active">HTML</button>
+                            <button id="notes-view-pdf" class="notes-toggle-btn">PDF</button>
+                        </div>
+                    </div>
+                </aside>
+                <section class="notes-reader">
+                    <div class="notes-content-card glass" id="notes-content-card">
+                        <iframe id="notes-frame" src="EIPR short notes/unit-1.html" class="notes-iframe"></iframe>
                     </div>
                 </section>
             </div>
