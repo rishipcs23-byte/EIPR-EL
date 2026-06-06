@@ -33,21 +33,30 @@
                 <div class="logo">
                     <span class="logo-text"><i class="fa-solid fa-network-wired"></i> EIPR Explorer</span>
                 </div>
+                
+                <!-- View Tabs -->
+                <div class="view-tabs">
+                    <button class="tab-btn active" id="tab-graph"><i class="fa-solid fa-diagram-project"></i> Knowledge Graph</button>
+                    <button class="tab-btn" id="tab-textbook"><i class="fa-solid fa-book-open"></i> Textbook Viewer</button>
+                </div>
+
                 <div class="search-container">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
                     <input type="text" id="search-input" placeholder="Search topics, concepts, cases...">
                 </div>
                 <div class="graph-actions">
+                    <button class="control-btn" id="btn-theme" title="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
+                    <div class="divider"></div>
                     <button class="control-btn" id="btn-zoom-in" title="Zoom In"><i class="fa-solid fa-plus"></i></button>
                     <button class="control-btn" id="btn-zoom-out" title="Zoom Out"><i class="fa-solid fa-minus"></i></button>
                     <button class="control-btn" id="btn-zoom-fit" title="Fit to Screen"><i class="fa-solid fa-expand"></i></button>
                     <button class="control-btn" id="btn-reset" title="Reset Graph"><i class="fa-solid fa-rotate-left"></i></button>
-                    <div class="divider"></div>
+                    <div class="divider" id="physics-divider"></div>
                     <button class="control-btn active" id="btn-physics" title="Toggle Physics"><i class="fa-solid fa-atom"></i> Physics</button>
                 </div>
             </header>
 
-            <!-- Graph Canvas -->
+            <!-- Graph Canvas Container -->
             <div id="graph-container">
                 <svg id="graph-svg"></svg>
                 
@@ -78,6 +87,24 @@
                     </button>
                     <div class="popup-arrow"></div>
                 </div>
+            </div>
+
+            <!-- Textbook Viewer Container -->
+            <div id="textbook-container" class="hidden">
+                <aside class="textbook-sidebar glass">
+                    <h3>Table of Contents</h3>
+                    <div class="textbook-toc" id="textbook-toc"></div>
+                </aside>
+                <section class="textbook-reader">
+                    <div class="textbook-content-card glass" id="textbook-content-card">
+                        <!-- Dynamic Markdown-like content rendered here -->
+                        <div class="reader-welcome">
+                            <i class="fa-solid fa-book-open-reader welcome-icon"></i>
+                            <h2>Welcome to the EIPR Textbook Reader</h2>
+                            <p>Select a Unit or Topic from the Table of Contents on the left to read the lossless, fully compiled course materials with rich text formatting.</p>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>

@@ -1,6 +1,6 @@
 /**
- * EIPR Knowledge Explorer - Frontend Logic (Light Theme & Rectangular Nodes)
- * Interactive Force-Directed Graph using D3.js v7
+ * EIPR Knowledge Explorer - Frontend Logic
+ * Interactive Horizontal Tree Graph (D3.js) & Textbook Reader
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -10,27 +10,37 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // Helper to recursively prepare data
-    function prepareTree(node, parent = null) {
+    // Helper to recursively prepare data & compute depth
+    function prepareTree(node, depth = 0, parent = null) {
         node.parent = parent;
+        node.depth = depth;
         node.expanded = false; // Collapse by default
         
         // Cache child nodes
         if (node.children && node.children.length > 0) {
-            node.children.forEach(child => prepareTree(child, node));
+            node.children.forEach(child => prepareTree(child, depth + 1, node));
         } else {
             node.children = [];
         }
     }
 
     // Prepare our global tree hierarchy
-    prepareTree(hierarchyData);
-    // Expand root (Course) by default so EIPR starts visible
+    prepareTree(hierarchyData, 0);
+    // Expand root (Course) and units by default so the starting layer is visible
     hierarchyData.expanded = true;
+    hierarchyData.children.forEach(unit => {
+        unit.expanded = true;
+    });
 
     // 2. DOM Elements Selection
     const svg = d3.select("#graph-svg");
     const container = document.getElementById("graph-container");
+    const textbookContainer = document.getElementById("textbook-container");
+    
+    // Tabs
+    const tabGraph = document.getElementById("tab-graph");
+    const tabTextbook = document.getElementById("tab-textbook");
+    const searchInput = document.getElementById("search-input");
     
     // Floating Popup Card Elements
     const nodePopup = document.getElementById("node-popup");
@@ -41,8 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const popupCloseBtn = document.getElementById("popup-close-btn");
     const popupOpenModalBtn = document.getElementById("popup-open-modal-btn");
     
-    // Controls & Search
-    const searchInput = document.getElementById("search-input");
+    // Controls
+    const btnTheme = document.getElementById("btn-theme");
     const btnZoomIn = document.getElementById("btn-zoom-in");
     const btnZoomOut = document.getElementById("btn-zoom-out");
     const btnZoomFit = document.getElementById("btn-zoom-fit");
@@ -57,10 +67,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalText = document.getElementById("modal-text");
     const closeModalBtn = document.getElementById("close-modal-btn");
 
+    // Textbook Viewer Elements
+    const textbookToc = document.getElementById("textbook-toc");
+    const textbookContentCard = document.getElementById("textbook-content-card");
+
     let width = container.clientWidth;
     let height = container.clientHeight;
     let activePopupNode = null;
-    
+    let currentView = "graph"; // "graph" or "textbook"
+    let physicsEnabled = true;
+
     // Handle window resize
     window.addEventListener("resize", () => {
         width = container.clientWidth;
@@ -69,18 +85,18 @@ document.addEventListener("DOMContentLoaded", () => {
         updatePopupPosition();
     });
 
-    // 3. Radius & Dimensions Configuration
+    // 3. Node Type Colors & Dimensions
     const typeRadius = {
-        "course": 36,
-        "unit": 26,
-        "concept": 12,
-        "case_study": 10,
-        "example": 10,
-        "activity": 10
+        "course": 38,
+        "unit": 28
     };
 
-    const rectW = 170;
-    const rectH = 40;
+    const rectH = 34; // Constant height for all rectangles
+
+    // Dynamic width helper based on text length
+    function getRectWidth(title) {
+        return Math.max(120, title.length * 7.5 + 24);
+    }
 
     const typeColors = {
         "course": "#4285F4",
@@ -93,10 +109,9 @@ document.addEventListener("DOMContentLoaded", () => {
         "activity": "#00bfa5"
     };
 
-    // Keep track of active nodes and links
+    // Active nodes/links
     let visibleNodes = [];
     let visibleLinks = [];
-    let physicsEnabled = true;
 
     // Create main SVG group for zooming/panning
     const g = svg.append("g").attr("class", "graph-content");
@@ -111,30 +126,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     svg.call(zoom);
 
-    // 4. Force Simulation Setup
+    // 4. Horizontal Tree Force Simulation Setup
+    // By adding a strong forceX targeting depth columns, we get a left-to-right tree layout!
     const simulation = d3.forceSimulation()
         .force("link", d3.forceLink().id(d => d.id).distance(d => {
             const targetType = d.target.node_type;
-            if (targetType === "unit") return 160;
+            if (targetType === "unit") return 140;
             if (targetType === "topic") return 110;
-            if (targetType === "subtopic") return 80;
-            return 60;
+            return 80;
         }))
-        .force("charge", d3.forceManyBody().strength(d => {
-            if (d.node_type === "course") return -1200;
-            if (d.node_type === "unit") return -600;
-            if (d.node_type === "topic" || d.node_type === "subtopic") return -400;
-            return -120;
-        }))
-        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("charge", d3.forceManyBody().strength(-200))
+        .force("x", d3.forceX(d => 100 + d.depth * 240).strength(2.0)) // Strong X-column forces
+        .force("y", d3.forceY(height / 2).strength(0.25)) // Pull towards vertical center
         .force("collision", d3.forceCollide().radius(d => {
-            if (d.node_type === "topic" || d.node_type === "subtopic") {
-                return 95; // Larger radius to avoid overlapping rectangles
+            if (d.node_type === "course" || d.node_type === "unit") {
+                return (typeRadius[d.node_type] || 12) + 20;
             }
-            return (typeRadius[d.node_type] || 12) + 15;
-        }).strength(0.85));
+            // Dynamic collision radius based on computed rectangle width
+            const halfW = getRectWidth(d.title) / 2;
+            return Math.max(halfW + 15, 60);
+        }).strength(0.9));
 
-    // Define drag behaviors
+    // Drag behavior
     function drag(simulation) {
         function dragstarted(event, d) {
             if (!event.active && physicsEnabled) simulation.alphaTarget(0.3).restart();
@@ -163,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 5. Build/Update Graph Function
     function updateGraph() {
-        // Collect visible nodes and links from hierarchical state
         const nodesList = [];
         const linksList = [];
 
@@ -179,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         traverse(hierarchyData);
 
-        // Map existing positions to avoid reset jumps
+        // Map existing coordinates
         const nodeMap = new Map(visibleNodes.map(d => [d.id, d]));
         nodesList.forEach(node => {
             const oldNode = nodeMap.get(node.id);
@@ -188,21 +200,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 node.y = oldNode.y;
                 node.vx = oldNode.vx;
                 node.vy = oldNode.vy;
-            } else if (node.parent) {
-                // Spawn new nodes near parent
-                const parentNode = nodeMap.get(node.parent.id) || node.parent;
-                node.x = parentNode.x ? parentNode.x + (Math.random() - 0.5) * 40 : width / 2;
-                node.y = parentNode.y ? parentNode.y + (Math.random() - 0.5) * 40 : height / 2;
             } else {
-                node.x = width / 2;
-                node.y = height / 2;
+                // Determine layout column positions
+                node.x = 100 + node.depth * 240 + (Math.random() - 0.5) * 10;
+                node.y = node.parent && oldNode ? oldNode.y : height / 2 + (Math.random() - 0.5) * 200;
             }
         });
 
         visibleNodes = nodesList;
         visibleLinks = linksList;
 
-        // Render links
+        // Render Links
         let linkElements = g.selectAll(".link")
             .data(visibleLinks, d => `${d.source}-${d.target}`);
 
@@ -216,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         linkElements = linkEnter.merge(linkElements);
 
-        // Render nodes
+        // Render Nodes Group
         let nodeElements = g.selectAll(".node")
             .data(visibleNodes, d => d.id);
 
@@ -226,75 +234,63 @@ document.addEventListener("DOMContentLoaded", () => {
             .attr("class", d => `node node-${d.node_type}`)
             .call(drag(simulation));
 
-        // SHAPE BRANCHING: Circles for Course, Unit, Concept, and Leaf Blobs
-        const circles = nodeEnter.filter(d => 
-            d.node_type === "course" || 
-            d.node_type === "unit" || 
-            d.node_type === "concept" || 
-            d.node_type === "case_study" || 
-            d.node_type === "example" || 
-            d.node_type === "activity"
-        );
-
+        // Shape Branching: CIRCLES for Course & Unit
+        const circles = nodeEnter.filter(d => d.node_type === "course" || d.node_type === "unit");
+        
         circles.append("circle")
             .attr("class", "node-circle")
-            .attr("r", d => typeRadius[d.node_type] || 12)
-            .attr("fill", d => typeColors[d.node_type])
-            .attr("stroke", d => d3.rgb(typeColors[d.node_type]).darker(0.3));
+            .attr("r", d => typeRadius[d.node_type])
+            .attr("fill", d => d.node_type === "course" ? "rgba(66, 133, 244, 0.1)" : "rgba(234, 67, 53, 0.1)")
+            .attr("stroke", d => typeColors[d.node_type]);
 
         circles.append("text")
             .attr("class", "node-label")
-            .attr("dy", d => (typeRadius[d.node_type] || 12) + 16)
+            .attr("dy", d => typeRadius[d.node_type] + 16)
             .attr("text-anchor", "middle")
-            .attr("font-size", d => d.node_type === "course" ? "13px" : d.node_type === "unit" ? "12px" : "10px")
-            .text(d => d.title.length > 22 ? d.title.substring(0, 19) + "..." : d.title);
+            .attr("font-size", d => d.node_type === "course" ? "13px" : "12px")
+            .text(d => d.title);
 
-        // SHAPE BRANCHING: Rectangles with rounded corners for Topics and Subtopics
-        const rects = nodeEnter.filter(d => d.node_type === "topic" || d.node_type === "subtopic");
-        
+        // Shape Branching: RECTANGLES for Topics, Subtopics, Concepts, & Leaf Blobs
+        const rects = nodeEnter.filter(d => 
+            d.node_type !== "course" && d.node_type !== "unit"
+        );
+
         rects.append("rect")
             .attr("class", "node-rect")
-            .attr("x", -rectW / 2)
+            .attr("x", d => -getRectWidth(d.title) / 2)
             .attr("y", -rectH / 2)
-            .attr("width", rectW)
+            .attr("width", d => getRectWidth(d.title))
             .attr("height", rectH)
-            .attr("rx", 10)
-            .attr("ry", 10)
-            .attr("fill", "rgba(255, 255, 255, 0.85)")
+            .attr("rx", 8)
+            .attr("ry", 8)
             .attr("stroke", d => typeColors[d.node_type]);
 
         rects.append("text")
             .attr("class", "node-rect-text")
             .attr("dy", 4)
             .attr("text-anchor", "middle")
-            .text(d => d.title.length > 24 ? d.title.substring(0, 21) + "..." : d.title);
+            .text(d => d.title);
 
         nodeElements = nodeEnter.merge(nodeElements);
 
-        // Class toggling for collapsed states
+        // Class toggle for collapsed styles
         nodeElements.classed("has-children-collapsed", d => d.children && d.children.length > 0 && !d.expanded);
-        
-        // Interaction (Click opens/collapses & triggers connected popup preview)
+
+        // Bind interactions
         nodeElements.on("click", (event, d) => {
             event.stopPropagation();
-            
-            // Toggle child expansion
             if (d.children && d.children.length > 0) {
                 d.expanded = !d.expanded;
                 updateGraph();
             }
-
-            // Spawn connected popup for nodes with text content or preview info
             showPopup(d, event.currentTarget);
         });
 
-        // Double Click opens modal directly
         nodeElements.on("dblclick", (event, d) => {
             event.stopPropagation();
             showFullContent(d);
         });
 
-        // Restart D3 force simulation
         simulation.nodes(visibleNodes);
         simulation.force("link").links(visibleLinks);
         
@@ -306,7 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Tick actions to update link/node screen coordinate transforms
+    // Tick layout positioning
     function tickActions() {
         g.selectAll(".link")
             .attr("x1", d => d.source.x)
@@ -322,23 +318,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     simulation.on("tick", tickActions);
 
-    // 6. Connected Floating Popup Card Operations
+    // 6. Connected Preview Popup Card Operations
     function showPopup(node, nodeElement) {
         activePopupNode = node;
         
-        // Show active stroke on node
         g.selectAll(".node-circle").attr("stroke-width", 2.5);
         g.selectAll(".node-rect").attr("stroke-width", 1.5);
         
         d3.select(nodeElement).select(".node-circle").attr("stroke-width", 4.5);
         d3.select(nodeElement).select(".node-rect").attr("stroke-width", 3);
 
-        // Populate popup fields
         popupType.className = `badge ${node.node_type}`;
         popupType.textContent = node.node_type.replace("_", " ");
         popupTitle.textContent = node.title;
 
-        // Path breadcrumbs
+        // Paths
         popupPath.innerHTML = "";
         if (node.path && node.path.length > 0) {
             node.path.forEach((p, idx) => {
@@ -351,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Preview text
+        // Preview content
         if (node.content && node.content.length > 0) {
             const nonBlankContent = node.content.filter(line => line.trim().length > 0);
             if (nonBlankContent.length > 0) {
@@ -365,7 +359,6 @@ document.addEventListener("DOMContentLoaded", () => {
             popupOpenModalBtn.classList.add("hidden");
         }
 
-        // Compute coordinate positions relative to container
         nodePopup.classList.remove("hidden");
         updatePopupPosition();
     }
@@ -373,14 +366,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function updatePopupPosition() {
         if (!activePopupNode) return;
         
-        // Retrieve D3 group element representing the active node
         const nodeEl = g.selectAll(".node").filter(d => d.id === activePopupNode.id).node();
         if (!nodeEl) return;
         
         const rect = nodeEl.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
         
-        // Calculate offset (center of the node element on page viewport)
         const left = rect.left - containerRect.left + rect.width / 2;
         const top = rect.top - containerRect.top;
         
@@ -391,15 +382,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function closePopup() {
         activePopupNode = null;
         nodePopup.classList.add("hidden");
-        
-        // Reset node visual highlights
         g.selectAll(".node-circle").attr("stroke-width", 2.5);
         g.selectAll(".node-rect").attr("stroke-width", 1.5);
     }
 
     popupCloseBtn.addEventListener("click", closePopup);
     
-    // Close popup on clicking background
     container.addEventListener("click", (e) => {
         if (e.target.id === "graph-container" || e.target.id === "graph-svg") {
             closePopup();
@@ -412,7 +400,6 @@ document.addEventListener("DOMContentLoaded", () => {
         modalType.className = `badge ${node.node_type}`;
         modalType.textContent = node.node_type.replace("_", " ");
         
-        // Render path
         modalPath.innerHTML = "";
         if (node.path && node.path.length > 0) {
             node.path.forEach((p, idx) => {
@@ -425,7 +412,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Render full text body losslessly
         modalText.innerHTML = "";
         if (node.content && node.content.length > 0) {
             node.content.forEach(line => {
@@ -465,7 +451,168 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 8. Zoom and Toolbar Control Operations
+    // 8. Global Theme Toggle
+    btnTheme.addEventListener("click", () => {
+        const isDark = document.body.classList.toggle("dark-theme");
+        btnTheme.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+        btnTheme.title = isDark ? "Toggle Light Theme" : "Toggle Dark Theme";
+    });
+
+    // 9. Tab View Switching
+    tabGraph.addEventListener("click", () => {
+        if (currentView === "graph") return;
+        currentView = "graph";
+        tabGraph.classList.add("active");
+        tabTextbook.classList.remove("active");
+        
+        container.classList.remove("hidden");
+        textbookContainer.classList.add("hidden");
+        searchInput.disabled = false;
+        
+        // Show zoom buttons
+        document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
+        document.getElementById("physics-divider").classList.remove("hidden");
+    });
+
+    tabTextbook.addEventListener("click", () => {
+        if (currentView === "textbook") return;
+        currentView = "textbook";
+        tabTextbook.classList.add("active");
+        tabGraph.classList.remove("active");
+        
+        container.classList.add("hidden");
+        textbookContainer.classList.remove("hidden");
+        searchInput.disabled = true;
+        closePopup();
+        
+        // Hide graph actions
+        document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.add("hidden"));
+        document.getElementById("physics-divider").classList.add("hidden");
+
+        renderTextbookTOC();
+    });
+
+    // 10. Textbook Reader Dynamic Logic
+    function renderTextbookTOC() {
+        textbookToc.innerHTML = "";
+        
+        // Loop through units
+        hierarchyData.children.forEach(unit => {
+            const unitItem = document.createElement("div");
+            unitItem.className = "toc-unit-item";
+            unitItem.innerHTML = `<span><i class="fa-solid fa-folder-open"></i> ${unit.title}</span> <i class="fa-solid fa-chevron-down"></i>`;
+            textbookToc.appendChild(unitItem);
+
+            const childrenContainer = document.createElement("div");
+            childrenContainer.className = "toc-unit-children";
+            textbookToc.appendChild(childrenContainer);
+
+            // Populate unit topics
+            unit.children.forEach(topic => {
+                const topicItem = document.createElement("div");
+                topicItem.className = "toc-topic-item";
+                topicItem.innerHTML = `<i class="fa-regular fa-file-lines"></i> ${topic.title}`;
+                topicItem.addEventListener("click", () => {
+                    // Remove active from all
+                    document.querySelectorAll(".toc-topic-item").forEach(item => item.classList.remove("active"));
+                    topicItem.classList.add("active");
+                    renderTextbookContent(topic);
+                });
+                childrenContainer.appendChild(topicItem);
+            });
+
+            // Toggle collapsibility of units in TOC
+            unitItem.addEventListener("click", () => {
+                const isHidden = childrenContainer.classList.toggle("hidden");
+                unitItem.querySelector(".fa-chevron-down").style.transform = isHidden ? "rotate(-90deg)" : "rotate(0deg)";
+            });
+        });
+    }
+
+    function renderTextbookContent(node) {
+        textbookContentCard.innerHTML = "";
+
+        // Header / Path breadcrumbs
+        const path = document.createElement("div");
+        path.className = "path-container";
+        node.path.forEach((p, idx) => {
+            const span = document.createElement("span");
+            span.textContent = p;
+            path.appendChild(span);
+            if (idx < node.path.length - 1) {
+                path.appendChild(document.createTextNode(" > "));
+            }
+        });
+        textbookContentCard.appendChild(path);
+
+        // Generate dynamic HTML from this node downwards recursively
+        function renderNodeText(item) {
+            const wrapper = document.createElement("div");
+            wrapper.style.marginBottom = "30px";
+
+            // Heading based on node type
+            let headerTag = "h4";
+            let headingClass = "tb-concept-header";
+            
+            if (item.node_type === "unit") {
+                headerTag = "h1";
+                headingClass = "tb-unit-header";
+            } else if (item.node_type === "topic") {
+                headerTag = "h2";
+                headingClass = "tb-topic-header";
+            } else if (item.node_type === "subtopic") {
+                headerTag = "h3";
+                headingClass = "tb-subtopic-header";
+            }
+            
+            const titleEl = document.createElement(headerTag);
+            titleEl.className = headingClass;
+            titleEl.textContent = item.title;
+            wrapper.appendChild(titleEl);
+
+            // Append paragraphs
+            if (item.content && item.content.length > 0) {
+                let currentList = null;
+                item.content.forEach(line => {
+                    const trimmed = line.trim();
+                    if (trimmed.length > 0) {
+                        // Check for bullets/lists
+                        if (trimmed.startsWith("●") || trimmed.startsWith("•") || trimmed.startsWith("o") || trimmed.match(/^\d+\./)) {
+                            if (!currentList) {
+                                currentList = document.createElement("ul");
+                                currentList.className = "tb-bullet-list";
+                                wrapper.appendChild(currentList);
+                            }
+                            const li = document.createElement("li");
+                            li.className = "tb-bullet-item";
+                            li.textContent = line;
+                            currentList.appendChild(li);
+                        } else {
+                            currentList = null;
+                            const p = document.createElement("p");
+                            p.className = "tb-paragraph";
+                            p.textContent = line;
+                            wrapper.appendChild(p);
+                        }
+                    }
+                });
+            }
+
+            // Recurse down children to display entire hierarchy of the topic
+            if (item.children && item.children.length > 0) {
+                item.children.forEach(child => {
+                    wrapper.appendChild(renderNodeText(child));
+                });
+            }
+
+            return wrapper;
+        }
+
+        const formattedContent = renderNodeText(node);
+        textbookContentCard.appendChild(formattedContent);
+    }
+
+    // 11. Zoom and Controls Actions
     btnZoomIn.addEventListener("click", () => {
         svg.transition().duration(300).call(zoom.scaleBy, 1.3);
     });
@@ -482,7 +629,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let minY = d3.min(visibleNodes, d => d.y);
         let maxY = d3.max(visibleNodes, d => d.y);
 
-        const padding = 80;
+        const padding = 100;
         const graphW = (maxX - minX) || 100;
         const graphH = (maxY - minY) || 100;
         
@@ -491,7 +638,7 @@ document.addEventListener("DOMContentLoaded", () => {
             (height - padding * 2) / graphH
         );
 
-        const boundedScale = Math.max(0.15, Math.min(scale, 2));
+        const boundedScale = Math.max(0.15, Math.min(scale, 1.8));
         const midX = (minX + maxX) / 2;
         const midY = (minY + maxY) / 2;
 
@@ -503,16 +650,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     btnReset.addEventListener("click", () => {
-        // Collapse all nodes except root (Course)
         function collapseAll(node) {
-            node.expanded = (node.id === "course");
+            node.expanded = (node.id === "course" || node.node_type === "unit");
             if (node.children) {
                 node.children.forEach(collapseAll);
             }
         }
         collapseAll(hierarchyData);
         
-        // Reset node positions
         visibleNodes.forEach(d => {
             delete d.x;
             delete d.y;
@@ -537,11 +682,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 9. Real-time Search Operations
+    // 12. Real-time Search
     searchInput.addEventListener("input", (e) => {
         const query = e.target.value.toLowerCase().trim();
         if (!query) {
-            // Restore visual defaults
             g.selectAll(".node").style("opacity", 1);
             g.selectAll(".link").style("opacity", 0.25);
             return;
@@ -559,7 +703,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (matched) {
                 matchedNodeIds.add(node.id);
-                // Auto-expand parents
                 let p = node.parent;
                 while (p) {
                     p.expanded = true;
@@ -576,7 +719,6 @@ document.addEventListener("DOMContentLoaded", () => {
         searchTree(hierarchyData);
         updateGraph();
 
-        // Highlight matched nodes, dim others
         g.selectAll(".node")
             .style("opacity", d => matchedNodeIds.has(d.id) ? 1 : 0.15);
 
@@ -584,6 +726,6 @@ document.addEventListener("DOMContentLoaded", () => {
             .style("opacity", d => matchedNodeIds.has(d.source.id) && matchedNodeIds.has(d.target.id) ? 0.65 : 0.05);
     });
 
-    // Initialize the visual graph on startup
+    // Run graph startup
     updateGraph();
 });
