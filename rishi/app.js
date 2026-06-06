@@ -1,6 +1,6 @@
 /**
  * EIPR Knowledge Explorer - Frontend Logic
- * Dynamic Wrap Cards, Locked X layout, Nested TOC Dropdowns, Textbook Scroll Linking
+ * Dual-Mode Visualizations (Knowledge Tree & Fog of War), Collapsible TOC, textbook navigation.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -26,7 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Prepare our global tree hierarchy
     prepareTree(hierarchyData, 0);
-    // Expand Course (root) by default. Keep units collapsed.
+    
+    // START STATE: Expand Course (root) only. Keep Units collapsed by default.
     hierarchyData.expanded = true;
 
     // 2. DOM Elements Selection
@@ -35,7 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const textbookContainer = document.getElementById("textbook-container");
     
     // Tabs
-    const tabGraph = document.getElementById("tab-graph");
+    const tabTree = document.getElementById("tab-tree");
+    const tabFog = document.getElementById("tab-fog");
     const tabTextbook = document.getElementById("tab-textbook");
     const searchInput = document.getElementById("search-input");
     
@@ -54,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnZoomOut = document.getElementById("btn-zoom-out");
     const btnZoomFit = document.getElementById("btn-zoom-fit");
     const btnReset = document.getElementById("btn-reset");
+    const btnCollapse = document.getElementById("btn-collapse");
     const btnPhysics = document.getElementById("btn-physics");
     
     // Modal Elements
@@ -71,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let width = container.clientWidth;
     let height = container.clientHeight;
     let activePopupNode = null;
-    let currentView = "graph"; // "graph" or "textbook"
+    let currentView = "tree"; // "tree", "fog", or "textbook"
     let physicsEnabled = true;
 
     // Handle window resize
@@ -82,11 +85,13 @@ document.addEventListener("DOMContentLoaded", () => {
         updatePopupPosition();
     });
 
-    // 3. Dynamic Node Wrap & Dimensioning Calculations
+    // 3. Radius & Dimensions Configuration
     const typeRadius = {
         "course": 38,
         "unit": 28
     };
+
+    const rectH = 34; // Constant height for rectangles
 
     const typeColors = {
         "course": "#4285F4",
@@ -99,8 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
         "activity": "#00bfa5"
     };
 
-    // Words wrapping helper for long text titles in rectangles
-    function getWrappedLines(title, maxCharsPerLine = 24) {
+    // Helper to wrap text dynamically at a max length
+    function getWrappedLines(title, maxCharsPerLine = 22) {
         const words = title.split(/\s+/);
         const lines = [];
         let currentLine = "";
@@ -118,14 +123,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function getNodeDimensions(node) {
-        const lines = getWrappedLines(node.title, 24);
+        const lines = getWrappedLines(node.title, 22);
         const maxLen = Math.max(...lines.map(l => l.length));
-        const w = Math.max(120, Math.min(260, maxLen * 7.5 + 24));
+        const w = Math.max(110, Math.min(250, maxLen * 7.5 + 24));
         const h = Math.max(34, lines.length * 13 + 14);
         return { w, h, lines };
     }
 
-    // Active nodes/links
+    // Active nodes and links
     let visibleNodes = [];
     let visibleLinks = [];
 
@@ -142,22 +147,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     svg.call(zoom);
 
-    // 4. Force Simulation Setup (Horizontal Layer Columns Locked X-coordinates)
+    // 4. Force Simulation Setup
     const simulation = d3.forceSimulation()
         .force("link", d3.forceLink().id(d => d.id).distance(d => {
-            const targetType = d.target.node_type;
-            if (targetType === "unit") return 140;
-            if (targetType === "topic") return 110;
-            return 80;
+            if (currentView === "tree") {
+                const targetType = d.target.node_type;
+                if (targetType === "unit") return 140;
+                if (targetType === "topic") return 110;
+                return 80;
+            } else {
+                return 60; // Shorter links in radial mode
+            }
         }))
-        .force("charge", d3.forceManyBody().strength(-250))
-        .force("y", d3.forceY(height / 2).strength(0.25)) // Centered vertically
+        .force("charge", d3.forceManyBody().strength(d => {
+            if (currentView === "tree") return -200;
+            return d.node_type === "course" ? -800 : -150; // Radial mode repulsion
+        }))
+        .force("x", d3.forceX(width / 2).strength(d => currentView === "fog" ? 0.05 : 0))
+        .force("y", d3.forceY(height / 2).strength(d => currentView === "fog" ? 0.05 : 0.25))
         .force("collision", d3.forceCollide().radius(d => {
             if (d.node_type === "course" || d.node_type === "unit") {
                 return typeRadius[d.node_type] + 20;
             }
             const dim = getNodeDimensions(d);
-            return Math.max(dim.w / 2 + 10, dim.h / 2 + 15);
+            return Math.max(dim.w / 2 + 12, dim.h / 2 + 15);
         }).strength(0.85));
 
     // Drag behavior
@@ -170,8 +183,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         function dragged(event, d) {
-            // Keep X coordinate locked to its depth column during drag
-            d.fx = 80 + d.depth * 250;
+            if (currentView === "tree") {
+                // Constrained column position in tree mode
+                if (d.node_type === "course") d.fx = 80;
+                else if (d.node_type === "unit") d.fx = 240;
+                else if (d.node_type === "topic") {
+                    const col = d.parent.children.indexOf(d) % 2;
+                    d.fx = 420 + col * 185;
+                } else if (d.node_type === "subtopic") d.fx = 800;
+                else if (d.node_type === "concept") d.fx = 1000;
+                else d.fx = 1200;
+            } else {
+                d.fx = event.x;
+            }
             d.fy = event.y;
             updatePopupPosition();
         }
@@ -205,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         traverse(hierarchyData);
 
-        // Map existing coordinates
+        // Map existing positions
         const nodeMap = new Map(visibleNodes.map(d => [d.id, d]));
         nodesList.forEach(node => {
             const oldNode = nodeMap.get(node.id);
@@ -215,7 +239,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 node.vx = oldNode.vx;
                 node.vy = oldNode.vy;
             } else {
-                node.x = 80 + node.depth * 250;
+                if (currentView === "tree") {
+                    if (node.node_type === "course") node.x = 80;
+                    else if (node.node_type === "unit") node.x = 240;
+                    else if (node.node_type === "topic") {
+                        const col = node.parent.children.indexOf(node) % 2;
+                        node.x = 420 + col * 185;
+                    } else if (node.node_type === "subtopic") node.x = 800;
+                    else if (node.node_type === "concept") node.x = 1000;
+                    else node.x = 1200;
+                } else {
+                    node.x = width / 2 + (Math.random() - 0.5) * 200;
+                }
                 node.y = node.parent && oldNode ? oldNode.y : height / 2 + (Math.random() - 0.5) * 200;
             }
         });
@@ -223,7 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
         visibleNodes = nodesList;
         visibleLinks = linksList;
 
-        // Render Links
+        // Render Links (Path curved S-curve or straight line based on tab view)
         let linkElements = g.selectAll(".link")
             .data(visibleLinks, d => `${d.source}-${d.target}`);
 
@@ -233,7 +268,8 @@ document.addEventListener("DOMContentLoaded", () => {
             .attr("class", "link")
             .attr("stroke", "#bcc1c6")
             .attr("stroke-width", 1.5)
-            .attr("stroke-opacity", 0.25);
+            .attr("stroke-opacity", 0.25)
+            .attr("fill", "none");
 
         linkElements = linkEnter.merge(linkElements);
 
@@ -247,7 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .attr("class", d => `node node-${d.node_type}`)
             .call(drag(simulation));
 
-        // Shape Branching: CIRCLES for Course & Unit
+        // CIRCLES for Course & Unit
         const circles = nodeEnter.filter(d => d.node_type === "course" || d.node_type === "unit");
         
         circles.append("circle")
@@ -263,7 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .attr("font-size", d => d.node_type === "course" ? "13px" : "12px")
             .text(d => d.title);
 
-        // Shape Branching: RECTANGLES for Topics, Subtopics, Concepts, & Leaf Blobs
+        // RECTANGLES for Topics, Subtopics, Concepts & Leaves
         const rects = nodeEnter.filter(d => 
             d.node_type !== "course" && d.node_type !== "unit"
         );
@@ -278,7 +314,6 @@ document.addEventListener("DOMContentLoaded", () => {
             .attr("ry", 8)
             .attr("stroke", d => typeColors[d.node_type]);
 
-        // Render Multi-line text for wrapped lines
         rects.append("text")
             .attr("class", "node-rect-text")
             .attr("text-anchor", "middle")
@@ -297,10 +332,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         nodeElements = nodeEnter.merge(nodeElements);
 
-        // Class toggle for collapsed styles
         nodeElements.classed("has-children-collapsed", d => d.children && d.children.length > 0 && !d.expanded);
 
-        // Bind interactions
+        // Interactions
         nodeElements.on("click", (event, d) => {
             event.stopPropagation();
             if (d.children && d.children.length > 0) {
@@ -318,6 +352,15 @@ document.addEventListener("DOMContentLoaded", () => {
         simulation.nodes(visibleNodes);
         simulation.force("link").links(visibleLinks);
         
+        // Update simulation parameters based on layout mode
+        if (currentView === "tree") {
+            simulation.force("x", null);
+            simulation.force("y", d3.forceY(height / 2).strength(0.25));
+        } else {
+            simulation.force("x", d3.forceX(width / 2).strength(0.05));
+            simulation.force("y", d3.forceY(height / 2).strength(0.05));
+        }
+
         if (physicsEnabled) {
             simulation.alpha(0.3).restart();
         } else {
@@ -326,22 +369,38 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Tick layout positioning (Hard lock on depth columns)
+    // Tick layout positioning
     function tickActions() {
-        g.selectAll(".node").each(d => {
-            d.x = 80 + d.depth * 250;
-            d.vx = 0;
-        });
-
-        g.selectAll(".link")
-            .attr("d", d => {
-                const x1 = d.source.x;
-                const y1 = d.source.y;
-                const x2 = d.target.x;
-                const y2 = d.target.y;
-                // Horizontal S-curve (cubic bezier)
-                return `M ${x1} ${y1} C ${(x1 + x2) / 2} ${y1}, ${(x1 + x2) / 2} ${y2}, ${x2} ${y2}`;
+        if (currentView === "tree") {
+            g.selectAll(".node").each(d => {
+                if (d.node_type === "course") d.x = 80;
+                else if (d.node_type === "unit") d.x = 240;
+                else if (d.node_type === "topic") {
+                    // Cluster topics in a 2-column square block!
+                    const col = d.parent.children.indexOf(d) % 2;
+                    d.x = 420 + col * 185;
+                }
+                else if (d.node_type === "subtopic") d.x = 800;
+                else if (d.node_type === "concept") d.x = 1000;
+                else d.x = 1200;
+                
+                d.vx = 0;
             });
+
+            g.selectAll(".link")
+                .attr("d", d => {
+                    const x1 = d.source.x;
+                    const y1 = d.source.y;
+                    const x2 = d.target.x;
+                    const y2 = d.target.y;
+                    // Curved horizontal S-lines
+                    return `M ${x1} ${y1} C ${(x1 + x2) / 2} ${y1}, ${(x1 + x2) / 2} ${y2}, ${x2} ${y2}`;
+                });
+        } else {
+            // Straight lines for radial Fog of War mode
+            g.selectAll(".link")
+                .attr("d", d => `M ${d.source.x} ${d.source.y} L ${d.target.x} ${d.target.y}`);
+        }
 
         g.selectAll(".node")
             .attr("transform", d => `translate(${d.x}, ${d.y})`);
@@ -365,7 +424,7 @@ document.addEventListener("DOMContentLoaded", () => {
         popupType.textContent = node.node_type.replace("_", " ");
         popupTitle.textContent = node.title;
 
-        // Paths
+        // Path
         popupPath.innerHTML = "";
         if (node.path && node.path.length > 0) {
             node.path.forEach((p, idx) => {
@@ -487,13 +546,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 8. Navigation link from Graph Popups to Textbook Reader
     function navigateToTextbook(node) {
-        // Find ancestor at depth 2 (Topic) to render
         let topicNode = node;
         while (topicNode.depth > 2 && topicNode.parent) {
             topicNode = topicNode.parent;
         }
 
-        // Switch Tab View
         tabTextbook.click();
 
         // Expand nested TOC containers corresponding to path
@@ -516,15 +573,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Set active on matching Topic row in TOC
         document.querySelectorAll(".toc-header-row").forEach(row => row.classList.remove("active"));
         const activeTopicRow = document.querySelector(`[data-toc-id="${topicNode.id}"]`);
         if (activeTopicRow) activeTopicRow.classList.add("active");
 
-        // Render textbook contents
         renderTextbookContent(topicNode);
 
-        // Wait brief millisecond for DOM render then scroll to ID
         setTimeout(() => {
             const element = document.getElementById(`reader-${node.id}`);
             if (element) {
@@ -543,10 +597,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 10. Tab View Switching
-    tabGraph.addEventListener("click", () => {
-        if (currentView === "graph") return;
-        currentView = "graph";
-        tabGraph.classList.add("active");
+    tabTree.addEventListener("click", () => {
+        if (currentView === "tree") return;
+        currentView = "tree";
+        tabTree.classList.add("active");
+        tabFog.classList.remove("active");
         tabTextbook.classList.remove("active");
         
         container.classList.remove("hidden");
@@ -555,13 +610,35 @@ document.addEventListener("DOMContentLoaded", () => {
         
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
         document.getElementById("physics-divider").classList.remove("hidden");
+        
+        closePopup();
+        updateGraph();
+    });
+
+    tabFog.addEventListener("click", () => {
+        if (currentView === "fog") return;
+        currentView = "fog";
+        tabFog.classList.add("active");
+        tabTree.classList.remove("active");
+        tabTextbook.classList.remove("active");
+        
+        container.classList.remove("hidden");
+        textbookContainer.classList.add("hidden");
+        searchInput.disabled = false;
+        
+        document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
+        document.getElementById("physics-divider").classList.remove("hidden");
+        
+        closePopup();
+        updateGraph();
     });
 
     tabTextbook.addEventListener("click", () => {
         if (currentView === "textbook") return;
         currentView = "textbook";
         tabTextbook.classList.add("active");
-        tabGraph.classList.remove("active");
+        tabTree.classList.remove("active");
+        tabFog.classList.remove("active");
         
         container.classList.add("hidden");
         textbookContainer.classList.remove("hidden");
@@ -586,7 +663,6 @@ document.addEventListener("DOMContentLoaded", () => {
             row.className = "toc-header-row";
             row.setAttribute("data-toc-id", node.id);
 
-            // Icon by type
             let iconHtml = '<i class="fa-regular fa-file-lines"></i>';
             if (node.node_type === "unit") iconHtml = '<i class="fa-solid fa-book"></i>';
             else if (node.node_type === "topic") iconHtml = '<i class="fa-solid fa-folder-open"></i>';
@@ -594,7 +670,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             row.innerHTML = `<span>${iconHtml} ${node.title}</span>`;
 
-            // Expand icon if it has children
             const hasChildren = node.children && node.children.length > 0;
             if (hasChildren) {
                 const chevron = document.createElement("i");
@@ -605,27 +680,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 childrenBox.className = "toc-children-box";
                 childrenBox.style.maxHeight = "0px"; // Start collapsed
 
-                // Click chevron to toggle collapse without rendering
                 chevron.addEventListener("click", (e) => {
                     e.stopPropagation();
                     const isOpen = chevron.classList.toggle("open");
                     childrenBox.style.maxHeight = isOpen ? "1000px" : "0px";
                 });
 
-                // Clicking the row itself renders content
                 row.addEventListener("click", () => {
-                    // Activate row
                     document.querySelectorAll(".toc-header-row").forEach(r => r.classList.remove("active"));
                     row.classList.add("active");
                     
-                    // Render
                     let topicNode = node;
                     while (topicNode.depth > 2 && topicNode.parent) {
                         topicNode = topicNode.parent;
                     }
                     renderTextbookContent(topicNode);
 
-                    // If click subtopic, scroll to it
                     if (node.depth >= 2) {
                         setTimeout(() => {
                             const el = document.getElementById(`reader-${node.id}`);
@@ -636,13 +706,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 itemContainer.appendChild(row);
                 
-                // Recurse children
                 node.children.forEach(child => {
                     buildTOCNode(child, childrenBox);
                 });
                 itemContainer.appendChild(childrenBox);
             } else {
-                // Leaf Node click navigation
                 row.addEventListener("click", () => {
                     document.querySelectorAll(".toc-header-row").forEach(r => r.classList.remove("active"));
                     row.classList.add("active");
@@ -664,7 +732,6 @@ document.addEventListener("DOMContentLoaded", () => {
             containerElement.appendChild(itemContainer);
         }
 
-        // Loop through Units under root course
         hierarchyData.children.forEach(unit => {
             buildTOCNode(unit, textbookToc);
         });
@@ -674,7 +741,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderTextbookContent(node) {
         textbookContentCard.innerHTML = "";
 
-        // Path Breadcrumbs
+        // Path
         const path = document.createElement("div");
         path.className = "path-container";
         node.path.forEach((p, idx) => {
@@ -687,13 +754,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         textbookContentCard.appendChild(path);
 
-        // Recursive text parser to losslessly map tree to reader content
+        // Recursive text builder
         function renderNodeText(item) {
             const wrapper = document.createElement("div");
             wrapper.style.marginBottom = "30px";
             wrapper.id = `reader-${item.id}`;
 
-            // Heading by type
             let headerTag = "h4";
             let headingClass = "tb-concept-header";
             
@@ -713,7 +779,6 @@ document.addEventListener("DOMContentLoaded", () => {
             titleEl.textContent = item.title;
             wrapper.appendChild(titleEl);
 
-            // Append paragraphs
             if (item.content && item.content.length > 0) {
                 let currentList = null;
                 item.content.forEach(line => {
@@ -740,7 +805,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
-            // Recurse children topics
             if (item.children && item.children.length > 0) {
                 item.children.forEach(child => {
                     wrapper.appendChild(renderNodeText(child));
@@ -813,8 +877,7 @@ document.addEventListener("DOMContentLoaded", () => {
         svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
     });
 
-    // Collapse All listener
-    const btnCollapse = document.getElementById("btn-collapse");
+    // Collapse All
     btnCollapse.addEventListener("click", () => {
         function collapseAll(node) {
             node.expanded = (node.id === "course");
@@ -825,8 +888,6 @@ document.addEventListener("DOMContentLoaded", () => {
         collapseAll(hierarchyData);
         closePopup();
         updateGraph();
-        
-        // Refocus center
         btnZoomFit.click();
     });
 
