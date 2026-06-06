@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EIPR RPG – Entrepreneurship Valley</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="game-container">
+
+  <!-- WORLD CANVAS -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- TOP HUD -->
+  <div id="top-hud">
+    <div id="player-info">
+      <div class="hud-title">⚡ Entrepreneurship Valley</div>
+      <div id="xp-wrapper">
+        <span id="level-label">Level 1</span>
+        <div id="xp-bar"><div id="xp-fill"></div></div>
+        <span id="xp-text">0 / 100 XP</span>
+      </div>
+    </div>
+    <div id="session-info">
+      <span id="session-label">📖 Session 1</span>
+      <span id="day-label">🌤 Day 1</span>
+    </div>
+    <div id="hud-buttons">
+      <button class="hud-btn" id="btn-journal" title="Quest Journal (J)">📜</button>
+      <button class="hud-btn" id="btn-badges" title="Badges (B)">🏅</button>
+      <button class="hud-btn" id="btn-inventory" title="Inventory (I)">🎒</button>
+    </div>
+  </div>
+
+  <!-- QUEST PANEL (left) -->
+  <div id="quest-panel">
+    <div class="panel-title">📋 Active Quest</div>
+    <div id="quest-title">Talk to villagers and discover why Dreamer's Village is struggling.</div>
+    <ul id="quest-objectives">
+      <li id="obj-farmer">Talk to Farmer</li>
+      <li id="obj-teacher">Talk to Teacher</li>
+      <li id="obj-merchant">Talk to Merchant</li>
+      <li id="obj-student">Talk to Student</li>
+    </ul>
+    <div id="quest-hint">Press <kbd>E</kbd> near an NPC to talk</div>
+  </div>
+
+  <!-- MINIMAP (right top) -->
+  <div id="minimap-panel">
+    <div class="panel-title">🗺 Map</div>
+    <canvas id="minimap-canvas" width="200" height="160"></canvas>
+    <div id="zone-name">Dreamer's Village</div>
+  </div>
+
+  <!-- DIALOGUE BOX (bottom centre) -->
+  <div id="dialogue-box" style="display:none;">
+    <div id="dialogue-header">
+      <span id="npc-portrait">🧙</span>
+      <span id="npc-name">Village Elder</span>
+    </div>
+    <div id="dialogue-text"></div>
+    <div id="dialogue-choices" style="display:none;"></div>
+    <div id="dialogue-actions">
+      <button id="next-btn">Continue ▶</button>
+    </div>
+  </div>
+
+  <!-- INTERACTION HINT -->
+  <div id="interact-hint" style="display:none;">Press <kbd>E</kbd> to talk</div>
+
+  <!-- QUEST JOURNAL OVERLAY -->
+  <div id="journal-overlay" class="overlay hidden">
+    <div class="overlay-card">
+      <div class="overlay-header">
+        <h2>📜 Quest Journal</h2>
+        <button class="close-btn" data-target="journal-overlay">✕</button>
+      </div>
+      <div id="journal-content"></div>
+    </div>
+  </div>
+
+  <!-- BADGE OVERLAY -->
+  <div id="badge-overlay" class="overlay hidden">
+    <div class="overlay-card">
+      <div class="overlay-header">
+        <h2>🏅 Achievements</h2>
+        <button class="close-btn" data-target="badge-overlay">✕</button>
+      </div>
+      <div id="badge-grid"></div>
+    </div>
+  </div>
+
+  <!-- INVENTORY OVERLAY -->
+  <div id="inventory-overlay" class="overlay hidden">
+    <div class="overlay-card">
+      <div class="overlay-header">
+        <h2>🎒 Inventory</h2>
+        <button class="close-btn" data-target="inventory-overlay">✕</button>
+      </div>
+      <div id="inventory-grid"></div>
+    </div>
+  </div>
+
+  <!-- WHAT YOU LEARNT POPUP -->
+  <div id="learnt-popup" class="overlay hidden">
+    <div class="overlay-card learnt-card">
+      <div class="overlay-header">
+        <h2>💡 What You Learnt</h2>
+      </div>
+      <div id="learnt-content"></div>
+      <button id="learnt-close-btn">Awesome! Continue</button>
+    </div>
+  </div>
+
+  <!-- LEVEL UP POPUP -->
+  <div id="levelup-popup" class="hidden">
+    <div id="levelup-inner">
+      <div id="levelup-star">⭐</div>
+      <div id="levelup-text">Level Up!</div>
+      <div id="levelup-sub"></div>
+    </div>
+  </div>
+
+  <!-- DAY/NIGHT OVERLAY -->
+  <div id="daynight-overlay"></div>
+
+</div>
+
+<!-- Scripts load in dependency order -->
+<script src="quest.js"></script>
+<script src="assets.js"></script>
+<script src="npc.js"></script>
+<script src="dialogue.js"></script>
+<script src="world.js"></script>
+
+</body>
+</html>

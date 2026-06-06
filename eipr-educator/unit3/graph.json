@@ -1,0 +1,1371 @@
+{
+  "concepts": [
+    {
+      "id": "unit3.unit_iii",
+      "title": "UNIT III",
+      "node_type": "unit"
+    },
+    {
+      "id": "unit3.unit_iii.entrepreneurial_marketing_and_sales",
+      "title": "ENTREPRENEURIAL MARKETING AND SALES",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.overview",
+      "title": "Overview",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together",
+      "title": "How the 4Ps Work Together",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.product",
+      "title": "Product",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.product_lifecycle_plc",
+      "title": "Product Lifecycle (PLC)",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.introduction_stage",
+      "title": "a.\t Introduction Stage",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.growth_stage",
+      "title": "b.\tGrowth Stage",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.maturity_stage",
+      "title": "c.\tMaturity Stage",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.decline_stage",
+      "title": "d.\tDecline Stage",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.price",
+      "title": "Price",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.pricing_strategies",
+      "title": "•\tPricing Strategies",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.place_distribution",
+      "title": "Place (Distribution)",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.distribution_channels",
+      "title": "•\tDistribution Channels",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.promotion",
+      "title": "Promotion",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.promotional_tools",
+      "title": "•\tPromotional Tools",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.how_the_4ps_work_together.promotional_strategy",
+      "title": "•\tPromotional Strategy",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps",
+      "title": "Case Studies on 4P`s",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.product_apple_iphone",
+      "title": "Product: Apple iPhone",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.price_walmart",
+      "title": "Price: Walmart",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.place_starbucks",
+      "title": "Place: Starbucks",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.promotion_coca-cola",
+      "title": "Promotion: Coca-Cola",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.product_boat",
+      "title": "Product: boAt",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.price_jio",
+      "title": "Price: Jio",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.place_flipkart",
+      "title": "Place: Flipkart",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.promotion_zomato",
+      "title": "Promotion: Zomato",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.introduction_to_stp",
+      "title": "Introduction to STP",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.market_segmentation",
+      "title": "Market Segmentation",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.targeting",
+      "title": "Targeting",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.positioning",
+      "title": "Positioning",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.differentiation_strategies",
+      "title": "Differentiation Strategies",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.positioning_maps",
+      "title": "Positioning Maps",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.integration_of_stp_into_marketing_strategy",
+      "title": "Integration of STP into Marketing Strategy",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.case_study",
+      "title": "Case Study",
+      "node_type": "case_study"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.starbucks",
+      "title": "Starbucks",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.importance_of_stp_in_effective_marketing",
+      "title": "Importance of STP in Effective Marketing",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.maruti_suzuki_india_ltd",
+      "title": "Maruti Suzuki India Ltd.",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_on_4ps.hindustan_unilever_limited_hul",
+      "title": "Hindustan Unilever Limited (HUL)",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.branding_and_product_development_strategies",
+      "title": "Branding and Product Development Strategies",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.branding_and_product_development_strategies.branding_crafting_a_unique_market_identity",
+      "title": "Branding: Crafting a Unique Market Identity",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.branding_and_product_development_strategies.product_development_bringing_ideas_to_market",
+      "title": "Product Development: Bringing Ideas to Market",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.branding_and_product_development_strategies.integrating_branding_and_product_development_strategies",
+      "title": "Integrating Branding and Product Development Strategies",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.unique_value_proposition_uvp",
+      "title": "Unique Value Proposition (UVP)",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.unique_value_proposition_uvp.understanding_the_components_of_a_uvp",
+      "title": "Understanding the Components of a UVP",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.unique_value_proposition_uvp.steps_to_crafting_a_uvp",
+      "title": "Steps to Crafting a UVP",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.unique_value_proposition_uvp.common_uvp_formats",
+      "title": "Common UVP Formats",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.unique_value_proposition_uvp.examples_of_effective_uvps",
+      "title": "Examples of Effective UVPs",
+      "node_type": "example"
+    },
+    {
+      "id": "unit3.unit_iii.digital_marketing",
+      "title": "Digital Marketing",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing",
+      "title": "Case Study of Indian Companies Using Digital Marketing",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.amul_leveraging_social_media_for_brand_engagement",
+      "title": "Amul: Leveraging Social Media for Brand Engagement",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.zomato_creative_content_and_meme_marketing",
+      "title": "Zomato: Creative Content and Meme Marketing",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.nykaa_content-driven_digital_strategy_and_influencer_marketing",
+      "title": "Nykaa: Content-Driven Digital Strategy and Influencer Marketing",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.flipkart_data-driven_marketing_and_customer-centric_campaigns",
+      "title": "Flipkart: Data-Driven Marketing and Customer-Centric Campaigns",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.swiggy_personalization_and_customer_engagement_on_digital_platforms",
+      "title": "Swiggy: Personalization and Customer Engagement on Digital Platforms",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.cadbury_dairy_milk_hyperlocal_and_personalized_digital_campaigns",
+      "title": "Cadbury Dairy Milk: Hyperlocal and Personalized Digital Campaigns",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.entrepreneurial_finance_and_resource_management",
+      "title": "Entrepreneurial Finance and Resource Management",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.sources_of_financing",
+      "title": "SOURCES OF FINANCING",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.sources_of_financing.equity_financing",
+      "title": "Equity Financing",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.sources_of_financing.debt_financing",
+      "title": "Debt Financing",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.sources_of_financing.venture_capital_vc",
+      "title": "Venture Capital (VC)",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.sources_of_financing.angel_investors",
+      "title": "Angel Investors",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.sources_of_financing.crowdfunding",
+      "title": "Crowdfunding",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.few_case_studies",
+      "title": "FEW CASE STUDIES",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.few_case_studies.ola_cabs_venture_capital_vc_funding",
+      "title": "Ola Cabs: Venture Capital (VC) Funding",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.few_case_studies.zomato_angel_investors_and_venture_capital",
+      "title": "Zomato: Angel Investors and Venture Capital",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.few_case_studies.bira_91_equity_financing",
+      "title": "Bira 91: Equity Financing",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.few_case_studies.dream11_private_equity_and_venture_capital",
+      "title": "Dream11: Private Equity and Venture Capital",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.few_case_studies.ketto_crowdfunding",
+      "title": "Ketto: Crowdfunding",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.human_resource_management_hrm",
+      "title": "HUMAN RESOURCE MANAGEMENT (HRM)",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.human_resource_management_hrm.recruitment_in_entrepreneurship",
+      "title": "Recruitment in Entrepreneurship",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.human_resource_management_hrm.training_in_entrepreneurship",
+      "title": "Training in Entrepreneurship",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.human_resource_management_hrm.performance_evaluation_in_entrepreneurship",
+      "title": "Performance Evaluation in Entrepreneurship",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.human_resource_management_hrm.legal_and_ethical_issues_in_entrepreneurship",
+      "title": "Legal and Ethical Issues in Entrepreneurship",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.human_resource_management_hrm_case_studies",
+      "title": "Human Resource Management (HRM) Case Studies",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.human_resource_management_hrm_case_studies.zappos_building_a_unique_corporate_culture",
+      "title": "Zappos: Building a Unique Corporate Culture",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.human_resource_management_hrm_case_studies.google_people_operations_for_innovation",
+      "title": "Google: People Operations for Innovation",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.human_resource_management_hrm_case_studies.southwest_airlines_employee-centered_hrm",
+      "title": "Southwest Airlines: Employee-Centered HRM",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.human_resource_management_hrm_case_studies.toyota_the_toyota_way_and_hrm",
+      "title": "Toyota: The Toyota Way and HRM",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.human_resource_management_hrm_case_studies.ikea_employee_motivation_and_development",
+      "title": "IKEA: Employee Motivation and Development",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_management",
+      "title": "FINANCIAL MANAGEMENT",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_management.objectives_of_financial_management",
+      "title": "Objectives of Financial Management",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_management.key_functions_of_financial_management",
+      "title": "Key Functions of Financial Management",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_management.principles_of_financial_management",
+      "title": "Principles of Financial Management",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_management.importance_of_financial_management",
+      "title": "Importance of Financial Management",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_management.financial_management_tools_and_techniques",
+      "title": "Financial Management Tools and Techniques",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_management.challenges_in_financial_management",
+      "title": "Challenges in Financial Management",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.budgeting",
+      "title": "Budgeting",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.budgeting.objectives_of_budgeting",
+      "title": "Objectives of Budgeting",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.budgeting.types_of_budgeting",
+      "title": "Types of Budgeting",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.capital_budgeting",
+      "title": "CAPITAL BUDGETING",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.capital_budgeting.case_study_of_the_indian_entrepreneur_and_the_cunning_npv",
+      "title": "Case Study of the Indian Entrepreneur and the cunning NPV",
+      "node_type": "case_study"
+    },
+    {
+      "id": "unit3.unit_iii.capital_budgeting.steps_in_the_budgeting_process",
+      "title": "Steps in the Budgeting Process",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.capital_budgeting.advantages_of_budgeting",
+      "title": "Advantages of Budgeting",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.capital_budgeting.disadvantages_of_budgeting",
+      "title": "Disadvantages of Budgeting",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.capital_budgeting.budgeting_techniques_and_tools",
+      "title": "Budgeting Techniques and Tools",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.capital_budgeting.importance_of_budgeting",
+      "title": "Importance of Budgeting",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.cash_flow_management",
+      "title": "CASH FLOW MANAGEMENT",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.cash_flow_management.importance_of_cash_flow_management",
+      "title": "Importance of Cash Flow Management",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.cash_flow_management.types_of_cash_flow",
+      "title": "Types of Cash Flow",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.cash_flow_management.cash_flow_management_techniques",
+      "title": "Cash Flow Management Techniques",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.cash_flow_management.cash_flow_management_strategies",
+      "title": "Cash Flow Management Strategies",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.cash_flow_management.challenges_in_cash_flow_management",
+      "title": "Challenges in Cash Flow Management",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.cash_flow_management.cash_flow_management_in_personal_finance",
+      "title": "Cash Flow Management in Personal Finance",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_statements_analysis",
+      "title": "FINANCIAL STATEMENTS ANALYSIS",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_statements_analysis.objectives_of_financial_statement_analysis",
+      "title": "Objectives of Financial Statement Analysis",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_statements_analysis.key_financial_statements",
+      "title": "Key Financial Statements",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_statements_analysis.techniques_of_financial_statement_analysis",
+      "title": "Techniques of Financial Statement Analysis",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_statements_analysis.steps_in_financial_statement_analysis",
+      "title": "Steps in Financial Statement Analysis",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.financial_statements_analysis.limitations_of_financial_statement_analysis",
+      "title": "Limitations of Financial Statement Analysis",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.risk_management_and_insurance",
+      "title": "Risk Management and Insurance",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.risk_management_and_insurance.key_concepts_in_risk_management_and_insurance",
+      "title": "Key Concepts in Risk Management and Insurance",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.risk_management_and_insurance.goals_of_risk_management",
+      "title": "Goals of Risk Management",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.risk_management_and_insurance.steps_in_risk_management",
+      "title": "Steps in Risk Management",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.risk_management_and_insurance.risk_management_techniques",
+      "title": "Risk Management Techniques",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.risk_management_and_insurance.case_study_of_risk_management",
+      "title": "Case study of Risk Management",
+      "node_type": "case_study"
+    },
+    {
+      "id": "unit3.unit_iii.risk_management_and_insurance.camels_in_new_zealand",
+      "title": "CAMELS IN NEW ZEALAND",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.risk_management_and_insurance.types_of_insurance_as_risk_management_tools",
+      "title": "Types of Insurance as Risk Management Tools",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.risk_management_and_insurance.risk_management_in_insurance",
+      "title": "Risk Management in Insurance",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.risk_management_and_insurance.importance_of_insurance_in_risk_management",
+      "title": "Importance of Insurance in Risk Management",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.risk_management_and_insurance.challenges_in_risk_management_and_insurance",
+      "title": "Challenges in Risk Management and Insurance",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.risk_management_and_insurance.role_of_technology_in_risk_management_and_insurance",
+      "title": "Role of Technology in Risk Management and Insurance",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.unit_iii.legal_and_ethical_issues_in_entrepreneurship",
+      "title": "Legal and Ethical Issues in Entrepreneurship",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.intellectual_property_rights_ipr",
+      "title": "Intellectual Property Rights (IPR)",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.contracts",
+      "title": "Contracts",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.corporate_governance_activities",
+      "title": "Corporate Governance Activities",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_and_practical_applications",
+      "title": "Case Studies and Practical Applications",
+      "node_type": "topic"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_and_practical_applications.case_study_1_intellectual_property_rights_in_a_tech_startup",
+      "title": "Case Study 1: Intellectual Property Rights in a Tech Startup",
+      "node_type": "case_study"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_and_practical_applications.case_study_2_contractual_dispute_in_a_freelance_design_business",
+      "title": "Case Study 2: Contractual Dispute in a Freelance Design Business",
+      "node_type": "case_study"
+    },
+    {
+      "id": "unit3.unit_iii.case_studies_and_practical_applications.practical_applications",
+      "title": "Practical Applications",
+      "node_type": "subtopic"
+    },
+    {
+      "id": "unit3.apple_iphone",
+      "title": "Apple iPhone",
+      "node_type": "example"
+    },
+    {
+      "id": "unit3.walmart",
+      "title": "Walmart",
+      "node_type": "example"
+    },
+    {
+      "id": "unit3.starbucks",
+      "title": "Starbucks",
+      "node_type": "example"
+    },
+    {
+      "id": "unit3.coca-cola",
+      "title": "Coca-Cola",
+      "node_type": "example"
+    },
+    {
+      "id": "unit3.boat",
+      "title": "boAt",
+      "node_type": "example"
+    },
+    {
+      "id": "unit3.jio",
+      "title": "Jio",
+      "node_type": "example"
+    },
+    {
+      "id": "unit3.flipkart",
+      "title": "Flipkart",
+      "node_type": "example"
+    },
+    {
+      "id": "unit3.zomato",
+      "title": "Zomato",
+      "node_type": "example"
+    }
+  ],
+  "relationships": [
+    {
+      "from": "unit3.unit_iii.entrepreneurial_marketing_and_sales",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.overview",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.branding_and_product_development_strategies",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.unique_value_proposition_uvp",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.digital_marketing",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.entrepreneurial_finance_and_resource_management",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.sources_of_financing",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.few_case_studies",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.human_resource_management_hrm",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.human_resource_management_hrm_case_studies",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_management",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.budgeting",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.capital_budgeting",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.cash_flow_management",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_statements_analysis",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.risk_management_and_insurance",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.legal_and_ethical_issues_in_entrepreneurship",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.intellectual_property_rights_ipr",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.contracts",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.corporate_governance_activities",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_and_practical_applications",
+      "to": "unit3.unit_iii",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.product",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.product_lifecycle_plc",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.introduction_stage",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.growth_stage",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.maturity_stage",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.decline_stage",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.price",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.pricing_strategies",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.place_distribution",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.distribution_channels",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.promotion",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.promotional_tools",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.how_the_4ps_work_together.promotional_strategy",
+      "to": "unit3.unit_iii.how_the_4ps_work_together",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.product_apple_iphone",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.price_walmart",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.place_starbucks",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.promotion_coca-cola",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.product_boat",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.price_jio",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.place_flipkart",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.promotion_zomato",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.introduction_to_stp",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.market_segmentation",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.targeting",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.positioning",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.differentiation_strategies",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.positioning_maps",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.integration_of_stp_into_marketing_strategy",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.case_study",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.starbucks",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.importance_of_stp_in_effective_marketing",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.maruti_suzuki_india_ltd",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_on_4ps.hindustan_unilever_limited_hul",
+      "to": "unit3.unit_iii.case_studies_on_4ps",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.branding_and_product_development_strategies.branding_crafting_a_unique_market_identity",
+      "to": "unit3.unit_iii.branding_and_product_development_strategies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.branding_and_product_development_strategies.product_development_bringing_ideas_to_market",
+      "to": "unit3.unit_iii.branding_and_product_development_strategies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.branding_and_product_development_strategies.integrating_branding_and_product_development_strategies",
+      "to": "unit3.unit_iii.branding_and_product_development_strategies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.unique_value_proposition_uvp.understanding_the_components_of_a_uvp",
+      "to": "unit3.unit_iii.unique_value_proposition_uvp",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.unique_value_proposition_uvp.steps_to_crafting_a_uvp",
+      "to": "unit3.unit_iii.unique_value_proposition_uvp",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.unique_value_proposition_uvp.common_uvp_formats",
+      "to": "unit3.unit_iii.unique_value_proposition_uvp",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.unique_value_proposition_uvp.examples_of_effective_uvps",
+      "to": "unit3.unit_iii.unique_value_proposition_uvp",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.amul_leveraging_social_media_for_brand_engagement",
+      "to": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.zomato_creative_content_and_meme_marketing",
+      "to": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.nykaa_content-driven_digital_strategy_and_influencer_marketing",
+      "to": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.flipkart_data-driven_marketing_and_customer-centric_campaigns",
+      "to": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.swiggy_personalization_and_customer_engagement_on_digital_platforms",
+      "to": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing.cadbury_dairy_milk_hyperlocal_and_personalized_digital_campaigns",
+      "to": "unit3.unit_iii.case_study_of_indian_companies_using_digital_marketing",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.sources_of_financing.equity_financing",
+      "to": "unit3.unit_iii.sources_of_financing",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.sources_of_financing.debt_financing",
+      "to": "unit3.unit_iii.sources_of_financing",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.sources_of_financing.venture_capital_vc",
+      "to": "unit3.unit_iii.sources_of_financing",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.sources_of_financing.angel_investors",
+      "to": "unit3.unit_iii.sources_of_financing",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.sources_of_financing.crowdfunding",
+      "to": "unit3.unit_iii.sources_of_financing",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.few_case_studies.ola_cabs_venture_capital_vc_funding",
+      "to": "unit3.unit_iii.few_case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.few_case_studies.zomato_angel_investors_and_venture_capital",
+      "to": "unit3.unit_iii.few_case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.few_case_studies.bira_91_equity_financing",
+      "to": "unit3.unit_iii.few_case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.few_case_studies.dream11_private_equity_and_venture_capital",
+      "to": "unit3.unit_iii.few_case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.few_case_studies.ketto_crowdfunding",
+      "to": "unit3.unit_iii.few_case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.human_resource_management_hrm.recruitment_in_entrepreneurship",
+      "to": "unit3.unit_iii.human_resource_management_hrm",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.human_resource_management_hrm.training_in_entrepreneurship",
+      "to": "unit3.unit_iii.human_resource_management_hrm",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.human_resource_management_hrm.performance_evaluation_in_entrepreneurship",
+      "to": "unit3.unit_iii.human_resource_management_hrm",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.human_resource_management_hrm.legal_and_ethical_issues_in_entrepreneurship",
+      "to": "unit3.unit_iii.human_resource_management_hrm",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.human_resource_management_hrm_case_studies.zappos_building_a_unique_corporate_culture",
+      "to": "unit3.unit_iii.human_resource_management_hrm_case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.human_resource_management_hrm_case_studies.google_people_operations_for_innovation",
+      "to": "unit3.unit_iii.human_resource_management_hrm_case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.human_resource_management_hrm_case_studies.southwest_airlines_employee-centered_hrm",
+      "to": "unit3.unit_iii.human_resource_management_hrm_case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.human_resource_management_hrm_case_studies.toyota_the_toyota_way_and_hrm",
+      "to": "unit3.unit_iii.human_resource_management_hrm_case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.human_resource_management_hrm_case_studies.ikea_employee_motivation_and_development",
+      "to": "unit3.unit_iii.human_resource_management_hrm_case_studies",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_management.objectives_of_financial_management",
+      "to": "unit3.unit_iii.financial_management",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_management.key_functions_of_financial_management",
+      "to": "unit3.unit_iii.financial_management",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_management.principles_of_financial_management",
+      "to": "unit3.unit_iii.financial_management",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_management.importance_of_financial_management",
+      "to": "unit3.unit_iii.financial_management",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_management.financial_management_tools_and_techniques",
+      "to": "unit3.unit_iii.financial_management",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_management.challenges_in_financial_management",
+      "to": "unit3.unit_iii.financial_management",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.budgeting.objectives_of_budgeting",
+      "to": "unit3.unit_iii.budgeting",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.budgeting.types_of_budgeting",
+      "to": "unit3.unit_iii.budgeting",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.capital_budgeting.case_study_of_the_indian_entrepreneur_and_the_cunning_npv",
+      "to": "unit3.unit_iii.capital_budgeting",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.capital_budgeting.steps_in_the_budgeting_process",
+      "to": "unit3.unit_iii.capital_budgeting",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.capital_budgeting.advantages_of_budgeting",
+      "to": "unit3.unit_iii.capital_budgeting",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.capital_budgeting.disadvantages_of_budgeting",
+      "to": "unit3.unit_iii.capital_budgeting",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.capital_budgeting.budgeting_techniques_and_tools",
+      "to": "unit3.unit_iii.capital_budgeting",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.capital_budgeting.importance_of_budgeting",
+      "to": "unit3.unit_iii.capital_budgeting",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.cash_flow_management.importance_of_cash_flow_management",
+      "to": "unit3.unit_iii.cash_flow_management",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.cash_flow_management.types_of_cash_flow",
+      "to": "unit3.unit_iii.cash_flow_management",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.cash_flow_management.cash_flow_management_techniques",
+      "to": "unit3.unit_iii.cash_flow_management",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.cash_flow_management.cash_flow_management_strategies",
+      "to": "unit3.unit_iii.cash_flow_management",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.cash_flow_management.challenges_in_cash_flow_management",
+      "to": "unit3.unit_iii.cash_flow_management",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.cash_flow_management.cash_flow_management_in_personal_finance",
+      "to": "unit3.unit_iii.cash_flow_management",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_statements_analysis.objectives_of_financial_statement_analysis",
+      "to": "unit3.unit_iii.financial_statements_analysis",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_statements_analysis.key_financial_statements",
+      "to": "unit3.unit_iii.financial_statements_analysis",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_statements_analysis.techniques_of_financial_statement_analysis",
+      "to": "unit3.unit_iii.financial_statements_analysis",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_statements_analysis.steps_in_financial_statement_analysis",
+      "to": "unit3.unit_iii.financial_statements_analysis",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.financial_statements_analysis.limitations_of_financial_statement_analysis",
+      "to": "unit3.unit_iii.financial_statements_analysis",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.risk_management_and_insurance.key_concepts_in_risk_management_and_insurance",
+      "to": "unit3.unit_iii.risk_management_and_insurance",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.risk_management_and_insurance.goals_of_risk_management",
+      "to": "unit3.unit_iii.risk_management_and_insurance",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.risk_management_and_insurance.steps_in_risk_management",
+      "to": "unit3.unit_iii.risk_management_and_insurance",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.risk_management_and_insurance.risk_management_techniques",
+      "to": "unit3.unit_iii.risk_management_and_insurance",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.risk_management_and_insurance.case_study_of_risk_management",
+      "to": "unit3.unit_iii.risk_management_and_insurance",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.risk_management_and_insurance.camels_in_new_zealand",
+      "to": "unit3.unit_iii.risk_management_and_insurance",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.risk_management_and_insurance.types_of_insurance_as_risk_management_tools",
+      "to": "unit3.unit_iii.risk_management_and_insurance",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.risk_management_and_insurance.risk_management_in_insurance",
+      "to": "unit3.unit_iii.risk_management_and_insurance",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.risk_management_and_insurance.importance_of_insurance_in_risk_management",
+      "to": "unit3.unit_iii.risk_management_and_insurance",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.risk_management_and_insurance.challenges_in_risk_management_and_insurance",
+      "to": "unit3.unit_iii.risk_management_and_insurance",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.risk_management_and_insurance.role_of_technology_in_risk_management_and_insurance",
+      "to": "unit3.unit_iii.risk_management_and_insurance",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_and_practical_applications.case_study_1_intellectual_property_rights_in_a_tech_startup",
+      "to": "unit3.unit_iii.case_studies_and_practical_applications",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_and_practical_applications.case_study_2_contractual_dispute_in_a_freelance_design_business",
+      "to": "unit3.unit_iii.case_studies_and_practical_applications",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.unit_iii.case_studies_and_practical_applications.practical_applications",
+      "to": "unit3.unit_iii.case_studies_and_practical_applications",
+      "type": "part_of"
+    },
+    {
+      "from": "unit3.apple_iphone",
+      "to": "unit3.unit_iii.how_the_4ps_work_together.product",
+      "type": "example_of"
+    },
+    {
+      "from": "unit3.walmart",
+      "to": "unit3.unit_iii.how_the_4ps_work_together.price",
+      "type": "example_of"
+    },
+    {
+      "from": "unit3.starbucks",
+      "to": "unit3.unit_iii.how_the_4ps_work_together.place_distribution",
+      "type": "example_of"
+    },
+    {
+      "from": "unit3.coca-cola",
+      "to": "unit3.unit_iii.how_the_4ps_work_together.promotion",
+      "type": "example_of"
+    },
+    {
+      "from": "unit3.boat",
+      "to": "unit3.unit_iii.how_the_4ps_work_together.product",
+      "type": "example_of"
+    },
+    {
+      "from": "unit3.jio",
+      "to": "unit3.unit_iii.how_the_4ps_work_together.price",
+      "type": "example_of"
+    },
+    {
+      "from": "unit3.flipkart",
+      "to": "unit3.unit_iii.how_the_4ps_work_together.place_distribution",
+      "type": "example_of"
+    },
+    {
+      "from": "unit3.zomato",
+      "to": "unit3.unit_iii.how_the_4ps_work_together.promotion",
+      "type": "example_of"
+    }
+  ]
+}
