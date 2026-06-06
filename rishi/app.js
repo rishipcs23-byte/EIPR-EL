@@ -1,5 +1,5 @@
 /**
- * EIPR Knowledge Explorer - Frontend Logic
+ * EIPR Knowledge Explorer - Frontend Logic (Light Theme & Rectangular Nodes)
  * Interactive Force-Directed Graph using D3.js v7
  */
 
@@ -31,16 +31,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. DOM Elements Selection
     const svg = d3.select("#graph-svg");
     const container = document.getElementById("graph-container");
-    const welcomeCard = document.getElementById("welcome-message");
-    const detailsCard = document.getElementById("node-details");
     
-    // Sidebar Details
-    const detailType = document.getElementById("detail-type");
-    const detailTitle = document.getElementById("detail-title");
-    const detailPath = document.getElementById("detail-path");
-    const detailId = document.getElementById("detail-id");
-    const detailContent = document.getElementById("detail-content");
-    const openModalBtn = document.getElementById("open-modal-btn");
+    // Floating Popup Card Elements
+    const nodePopup = document.getElementById("node-popup");
+    const popupType = document.getElementById("popup-type");
+    const popupTitle = document.getElementById("popup-title");
+    const popupPath = document.getElementById("popup-path");
+    const popupContent = document.getElementById("popup-content");
+    const popupCloseBtn = document.getElementById("popup-close-btn");
+    const popupOpenModalBtn = document.getElementById("popup-open-modal-btn");
     
     // Controls & Search
     const searchInput = document.getElementById("search-input");
@@ -60,25 +59,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let width = container.clientWidth;
     let height = container.clientHeight;
+    let activePopupNode = null;
     
     // Handle window resize
     window.addEventListener("resize", () => {
         width = container.clientWidth;
         height = container.clientHeight;
         svg.attr("width", width).attr("height", height);
+        updatePopupPosition();
     });
 
-    // 3. Node Type Radius & Styling Helpers
+    // 3. Radius & Dimensions Configuration
     const typeRadius = {
         "course": 36,
         "unit": 26,
-        "topic": 18,
-        "subtopic": 14,
-        "concept": 10,
-        "case_study": 8,
-        "example": 8,
-        "activity": 8
+        "concept": 12,
+        "case_study": 10,
+        "example": 10,
+        "activity": 10
     };
+
+    const rectW = 170;
+    const rectH = 40;
 
     const typeColors = {
         "course": "#4285F4",
@@ -86,15 +88,14 @@ document.addEventListener("DOMContentLoaded", () => {
         "topic": "#FBBC05",
         "subtopic": "#34A853",
         "concept": "#8A3FFC",
-        "case_study": "#00FAC6",
-        "example": "#00FAC6",
-        "activity": "#00FAC6"
+        "case_study": "#00bfa5",
+        "example": "#00bfa5",
+        "activity": "#00bfa5"
     };
 
     // Keep track of active nodes and links
     let visibleNodes = [];
     let visibleLinks = [];
-    let selectedNode = null;
     let physicsEnabled = true;
 
     // Create main SVG group for zooming/panning
@@ -105,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .scaleExtent([0.1, 4])
         .on("zoom", (event) => {
             g.attr("transform", event.transform);
+            updatePopupPosition();
         });
 
     svg.call(zoom);
@@ -113,18 +115,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const simulation = d3.forceSimulation()
         .force("link", d3.forceLink().id(d => d.id).distance(d => {
             const targetType = d.target.node_type;
-            if (targetType === "unit") return 150;
-            if (targetType === "topic") return 90;
+            if (targetType === "unit") return 160;
+            if (targetType === "topic") return 110;
+            if (targetType === "subtopic") return 80;
             return 60;
         }))
         .force("charge", d3.forceManyBody().strength(d => {
             if (d.node_type === "course") return -1200;
             if (d.node_type === "unit") return -600;
-            if (d.node_type === "topic") return -300;
+            if (d.node_type === "topic" || d.node_type === "subtopic") return -400;
             return -120;
         }))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(d => typeRadius[d.node_type] || 10).strength(0.8));
+        .force("collision", d3.forceCollide().radius(d => {
+            if (d.node_type === "topic" || d.node_type === "subtopic") {
+                return 95; // Larger radius to avoid overlapping rectangles
+            }
+            return (typeRadius[d.node_type] || 12) + 15;
+        }).strength(0.85));
 
     // Define drag behaviors
     function drag(simulation) {
@@ -132,11 +140,13 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!event.active && physicsEnabled) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
             d.fy = d.y;
+            closePopup();
         }
         
         function dragged(event, d) {
             d.fx = event.x;
             d.fy = event.y;
+            updatePopupPosition();
         }
         
         function dragended(event, d) {
@@ -181,8 +191,8 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (node.parent) {
                 // Spawn new nodes near parent
                 const parentNode = nodeMap.get(node.parent.id) || node.parent;
-                node.x = parentNode.x ? parentNode.x + (Math.random() - 0.5) * 20 : width / 2;
-                node.y = parentNode.y ? parentNode.y + (Math.random() - 0.5) * 20 : height / 2;
+                node.x = parentNode.x ? parentNode.x + (Math.random() - 0.5) * 40 : width / 2;
+                node.y = parentNode.y ? parentNode.y + (Math.random() - 0.5) * 40 : height / 2;
             } else {
                 node.x = width / 2;
                 node.y = height / 2;
@@ -200,9 +210,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const linkEnter = linkElements.enter().append("line")
             .attr("class", "link")
-            .attr("stroke", "#ffffff")
+            .attr("stroke", "#bcc1c6")
             .attr("stroke-width", 1.5)
-            .attr("stroke-opacity", 0.2);
+            .attr("stroke-opacity", 0.25);
 
         linkElements = linkEnter.merge(linkElements);
 
@@ -216,51 +226,75 @@ document.addEventListener("DOMContentLoaded", () => {
             .attr("class", d => `node node-${d.node_type}`)
             .call(drag(simulation));
 
-        // Node circle
-        nodeEnter.append("circle")
-            .attr("class", "node-circle")
-            .attr("r", d => typeRadius[d.node_type] || 10)
-            .attr("fill", d => typeColors[d.node_type] || "#ffffff")
-            .attr("stroke", d => d3.rgb(typeColors[d.node_type]).brighter(0.6))
-            .style("cursor", "pointer");
+        // SHAPE BRANCHING: Circles for Course, Unit, Concept, and Leaf Blobs
+        const circles = nodeEnter.filter(d => 
+            d.node_type === "course" || 
+            d.node_type === "unit" || 
+            d.node_type === "concept" || 
+            d.node_type === "case_study" || 
+            d.node_type === "example" || 
+            d.node_type === "activity"
+        );
 
-        // Text label
-        nodeEnter.append("text")
+        circles.append("circle")
+            .attr("class", "node-circle")
+            .attr("r", d => typeRadius[d.node_type] || 12)
+            .attr("fill", d => typeColors[d.node_type])
+            .attr("stroke", d => d3.rgb(typeColors[d.node_type]).darker(0.3));
+
+        circles.append("text")
             .attr("class", "node-label")
-            .attr("dy", d => (typeRadius[d.node_type] || 10) + 15)
+            .attr("dy", d => (typeRadius[d.node_type] || 12) + 16)
             .attr("text-anchor", "middle")
-            .attr("fill", "#ffffff")
-            .attr("font-size", d => d.node_type === "course" ? "14px" : d.node_type === "unit" ? "12px" : "10px")
-            .text(d => d.title.length > 25 ? d.title.substring(0, 22) + "..." : d.title);
+            .attr("font-size", d => d.node_type === "course" ? "13px" : d.node_type === "unit" ? "12px" : "10px")
+            .text(d => d.title.length > 22 ? d.title.substring(0, 19) + "..." : d.title);
+
+        // SHAPE BRANCHING: Rectangles with rounded corners for Topics and Subtopics
+        const rects = nodeEnter.filter(d => d.node_type === "topic" || d.node_type === "subtopic");
+        
+        rects.append("rect")
+            .attr("class", "node-rect")
+            .attr("x", -rectW / 2)
+            .attr("y", -rectH / 2)
+            .attr("width", rectW)
+            .attr("height", rectH)
+            .attr("rx", 10)
+            .attr("ry", 10)
+            .attr("fill", "rgba(255, 255, 255, 0.85)")
+            .attr("stroke", d => typeColors[d.node_type]);
+
+        rects.append("text")
+            .attr("class", "node-rect-text")
+            .attr("dy", 4)
+            .attr("text-anchor", "middle")
+            .text(d => d.title.length > 24 ? d.title.substring(0, 21) + "..." : d.title);
 
         nodeElements = nodeEnter.merge(nodeElements);
 
-        // Update visual states based on collapse status
+        // Class toggling for collapsed states
         nodeElements.classed("has-children-collapsed", d => d.children && d.children.length > 0 && !d.expanded);
-        nodeElements.select("circle")
-            .attr("stroke-dasharray", d => d.children && d.children.length > 0 && !d.expanded ? "4 2" : "none");
-
-        // Node Interaction (Click and Double Click)
+        
+        // Interaction (Click opens/collapses & triggers connected popup preview)
         nodeElements.on("click", (event, d) => {
             event.stopPropagation();
             
-            // Single click selects node and reveals in sidebar
-            selectNode(d);
-
-            // Toggle expansion of children on click
+            // Toggle child expansion
             if (d.children && d.children.length > 0) {
                 d.expanded = !d.expanded;
                 updateGraph();
             }
+
+            // Spawn connected popup for nodes with text content or preview info
+            showPopup(d, event.currentTarget);
         });
 
+        // Double Click opens modal directly
         nodeElements.on("dblclick", (event, d) => {
             event.stopPropagation();
-            // Double click opens the Modal with original full notes
             showFullContent(d);
         });
 
-        // 6. Restart Simulation
+        // Restart D3 force simulation
         simulation.nodes(visibleNodes);
         simulation.force("link").links(visibleLinks);
         
@@ -268,12 +302,11 @@ document.addEventListener("DOMContentLoaded", () => {
             simulation.alpha(0.3).restart();
         } else {
             simulation.stop();
-            // Manually position once if physics is off
             tickActions();
         }
     }
 
-    // Tick action for Force simulation
+    // Tick actions to update link/node screen coordinate transforms
     function tickActions() {
         g.selectAll(".link")
             .attr("x1", d => d.source.x)
@@ -283,66 +316,103 @@ document.addEventListener("DOMContentLoaded", () => {
 
         g.selectAll(".node")
             .attr("transform", d => `translate(${d.x}, ${d.y})`);
+            
+        updatePopupPosition();
     }
 
     simulation.on("tick", tickActions);
 
-    // 7. Sidebar Details Rendering
-    function selectNode(node) {
-        selectedNode = node;
+    // 6. Connected Floating Popup Card Operations
+    function showPopup(node, nodeElement) {
+        activePopupNode = node;
         
-        // Remove active outline from all nodes, add glow to selected
+        // Show active stroke on node
         g.selectAll(".node-circle").attr("stroke-width", 2.5);
-        g.selectAll(".node")
-            .filter(d => d.id === node.id)
-            .select(".node-circle")
-            .attr("stroke-width", 5);
+        g.selectAll(".node-rect").attr("stroke-width", 1.5);
+        
+        d3.select(nodeElement).select(".node-circle").attr("stroke-width", 4.5);
+        d3.select(nodeElement).select(".node-rect").attr("stroke-width", 3);
 
-        welcomeCard.classList.add("hidden");
-        detailsCard.classList.remove("hidden");
+        // Populate popup fields
+        popupType.className = `badge ${node.node_type}`;
+        popupType.textContent = node.node_type.replace("_", " ");
+        popupTitle.textContent = node.title;
 
-        detailType.className = `badge ${node.node_type}`;
-        detailType.textContent = node.node_type.replace("_", " ");
-        detailTitle.textContent = node.title;
-        detailId.textContent = node.id;
-
-        // Render path
-        detailPath.innerHTML = "";
+        // Path breadcrumbs
+        popupPath.innerHTML = "";
         if (node.path && node.path.length > 0) {
             node.path.forEach((p, idx) => {
                 const span = document.createElement("span");
                 span.textContent = p;
-                detailPath.appendChild(span);
+                popupPath.appendChild(span);
                 if (idx < node.path.length - 1) {
-                    const arrow = document.createTextNode(" > ");
-                    detailPath.appendChild(arrow);
+                    popupPath.appendChild(document.createTextNode(" > "));
                 }
             });
         }
 
-        // Content Preview
+        // Preview text
         if (node.content && node.content.length > 0) {
-            // Filter empty lines and join
             const nonBlankContent = node.content.filter(line => line.trim().length > 0);
             if (nonBlankContent.length > 0) {
-                detailContent.textContent = nonBlankContent.slice(0, 3).join("\n\n") + (nonBlankContent.length > 3 ? "\n\n..." : "");
+                popupContent.textContent = nonBlankContent.slice(0, 3).join("\n\n");
             } else {
-                detailContent.textContent = "No text content direct in this node. Double click or explore its children nodes.";
+                popupContent.textContent = "Click 'View Full Notes' or expand sub-nodes to inspect details.";
             }
-            openModalBtn.classList.remove("hidden");
+            popupOpenModalBtn.classList.remove("hidden");
         } else {
-            detailContent.textContent = "This structural node contains no direct text content. Expand it to view sub-nodes.";
-            openModalBtn.classList.add("hidden");
+            popupContent.textContent = "This structural node contains no direct text content. Click to expand and explore children.";
+            popupOpenModalBtn.classList.add("hidden");
         }
+
+        // Compute coordinate positions relative to container
+        nodePopup.classList.remove("hidden");
+        updatePopupPosition();
     }
 
-    // 8. Full Content Modal
+    function updatePopupPosition() {
+        if (!activePopupNode) return;
+        
+        // Retrieve D3 group element representing the active node
+        const nodeEl = g.selectAll(".node").filter(d => d.id === activePopupNode.id).node();
+        if (!nodeEl) return;
+        
+        const rect = nodeEl.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        
+        // Calculate offset (center of the node element on page viewport)
+        const left = rect.left - containerRect.left + rect.width / 2;
+        const top = rect.top - containerRect.top;
+        
+        nodePopup.style.left = `${left}px`;
+        nodePopup.style.top = `${top}px`;
+    }
+
+    function closePopup() {
+        activePopupNode = null;
+        nodePopup.classList.add("hidden");
+        
+        // Reset node visual highlights
+        g.selectAll(".node-circle").attr("stroke-width", 2.5);
+        g.selectAll(".node-rect").attr("stroke-width", 1.5);
+    }
+
+    popupCloseBtn.addEventListener("click", closePopup);
+    
+    // Close popup on clicking background
+    container.addEventListener("click", (e) => {
+        if (e.target.id === "graph-container" || e.target.id === "graph-svg") {
+            closePopup();
+        }
+    });
+
+    // 7. Full Content Modal Operations
     function showFullContent(node) {
         modalTitle.textContent = node.title;
         modalType.className = `badge ${node.node_type}`;
         modalType.textContent = node.node_type.replace("_", " ");
         
-        // Render path in modal
+        // Render path
         modalPath.innerHTML = "";
         if (node.path && node.path.length > 0) {
             node.path.forEach((p, idx) => {
@@ -355,13 +425,12 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Render full body text losslessly
+        // Render full text body losslessly
         modalText.innerHTML = "";
         if (node.content && node.content.length > 0) {
             node.content.forEach(line => {
                 const trimmed = line.trim();
                 if (trimmed.length > 0) {
-                    // Check if it looks like a bullet or list item
                     if (trimmed.startsWith("●") || trimmed.startsWith("•") || trimmed.startsWith("o") || trimmed.match(/^\d+\./)) {
                         const li = document.createElement("li");
                         li.textContent = line;
@@ -380,7 +449,6 @@ document.addEventListener("DOMContentLoaded", () => {
         contentModal.classList.add("show");
     }
 
-    // Close Modal Event Listeners
     closeModalBtn.addEventListener("click", () => {
         contentModal.classList.remove("show");
     });
@@ -391,13 +459,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    openModalBtn.addEventListener("click", () => {
-        if (selectedNode) {
-            showFullContent(selectedNode);
+    popupOpenModalBtn.addEventListener("click", () => {
+        if (activePopupNode) {
+            showFullContent(activePopupNode);
         }
     });
 
-    // 9. Zoom and Controls implementation
+    // 8. Zoom and Toolbar Control Operations
     btnZoomIn.addEventListener("click", () => {
         svg.transition().duration(300).call(zoom.scaleBy, 1.3);
     });
@@ -409,13 +477,12 @@ document.addEventListener("DOMContentLoaded", () => {
     btnZoomFit.addEventListener("click", () => {
         if (visibleNodes.length === 0) return;
 
-        // Calculate bounding box of all visible nodes
         let minX = d3.min(visibleNodes, d => d.x);
         let maxX = d3.max(visibleNodes, d => d.x);
         let minY = d3.min(visibleNodes, d => d.y);
         let maxY = d3.max(visibleNodes, d => d.y);
 
-        const padding = 60;
+        const padding = 80;
         const graphW = (maxX - minX) || 100;
         const graphH = (maxY - minY) || 100;
         
@@ -424,7 +491,7 @@ document.addEventListener("DOMContentLoaded", () => {
             (height - padding * 2) / graphH
         );
 
-        const boundedScale = Math.max(0.15, Math.min(scale, 2.5));
+        const boundedScale = Math.max(0.15, Math.min(scale, 2));
         const midX = (minX + maxX) / 2;
         const midY = (minY + maxY) / 2;
 
@@ -445,7 +512,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         collapseAll(hierarchyData);
         
-        // Reset positions
+        // Reset node positions
         visibleNodes.forEach(d => {
             delete d.x;
             delete d.y;
@@ -453,17 +520,12 @@ document.addEventListener("DOMContentLoaded", () => {
             delete d.vy;
         });
 
-        selectedNode = null;
-        welcomeCard.classList.remove("hidden");
-        detailsCard.classList.add("hidden");
-
+        closePopup();
         updateGraph();
         
-        // Reset zoom
         svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
     });
 
-    // Toggle physics behavior
     btnPhysics.addEventListener("click", () => {
         physicsEnabled = !physicsEnabled;
         btnPhysics.classList.toggle("active", physicsEnabled);
@@ -475,33 +537,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 10. Search Functionality
+    // 9. Real-time Search Operations
     searchInput.addEventListener("input", (e) => {
         const query = e.target.value.toLowerCase().trim();
         if (!query) {
-            // Remove search highlighting
-            g.selectAll(".node-circle").style("opacity", 1);
-            g.selectAll(".node-label").style("opacity", 1);
+            // Restore visual defaults
+            g.selectAll(".node").style("opacity", 1);
             g.selectAll(".link").style("opacity", 0.25);
             return;
         }
 
-        // Filter and highlight
         const matchedNodeIds = new Set();
         
-        // Find nodes matching query and their parent path
         function searchTree(node) {
             let matched = node.title.toLowerCase().includes(query) || 
                           node.id.toLowerCase().includes(query);
             
-            // Also search content
             if (node.content && node.content.some(line => line.toLowerCase().includes(query))) {
                 matched = true;
             }
 
             if (matched) {
                 matchedNodeIds.add(node.id);
-                // Also expand parents so matching nodes are visible
+                // Auto-expand parents
                 let p = node.parent;
                 while (p) {
                     p.expanded = true;
@@ -518,18 +576,14 @@ document.addEventListener("DOMContentLoaded", () => {
         searchTree(hierarchyData);
         updateGraph();
 
-        // Highlight matched nodes and dim others
-        g.selectAll(".node-circle")
-            .style("opacity", d => matchedNodeIds.has(d.id) ? 1 : 0.2)
-            .style("stroke-width", d => matchedNodeIds.has(d.id) && d.title.toLowerCase().includes(query) ? 5 : 2.5);
-
-        g.selectAll(".node-label")
-            .style("opacity", d => matchedNodeIds.has(d.id) ? 1 : 0.2);
+        // Highlight matched nodes, dim others
+        g.selectAll(".node")
+            .style("opacity", d => matchedNodeIds.has(d.id) ? 1 : 0.15);
 
         g.selectAll(".link")
-            .style("opacity", d => matchedNodeIds.has(d.source.id) && matchedNodeIds.has(d.target.id) ? 0.6 : 0.05);
+            .style("opacity", d => matchedNodeIds.has(d.source.id) && matchedNodeIds.has(d.target.id) ? 0.65 : 0.05);
     });
 
-    // Initialize the visual graph
+    // Initialize the visual graph on startup
     updateGraph();
 });

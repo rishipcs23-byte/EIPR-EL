@@ -26,61 +26,13 @@
 
     <!-- App Container -->
     <div class="app-container">
-        <!-- Sidebar Panel -->
-        <aside class="sidebar glass">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <span class="logo-text"><i class="fa-solid fa-network-wired"></i> EIPR Explorer</span>
-                </div>
-                <p class="subtitle">Entrepreneurship & Intellectual Property Rights</p>
-            </div>
-            
-            <div class="node-info-section">
-                <div id="welcome-message" class="info-card">
-                    <h3>Interactive Knowledge Graph</h3>
-                    <p>Click nodes to expand/collapse. Double-click a topic or concept node to view its original contents in full detail.</p>
-                    <div class="legend">
-                        <div class="legend-item"><span class="color-dot" style="background: #4285F4;"></span> Course</div>
-                        <div class="legend-item"><span class="color-dot" style="background: #EA4335;"></span> Unit</div>
-                        <div class="legend-item"><span class="color-dot" style="background: #FBBC05;"></span> Topic</div>
-                        <div class="legend-item"><span class="color-dot" style="background: #34A853;"></span> Subtopic</div>
-                        <div class="legend-item"><span class="color-dot" style="background: #a142f4;"></span> Concept</div>
-                        <div class="legend-item"><span class="color-dot" style="background: #00fa9a;"></span> Case/Example/Activity</div>
-                    </div>
-                </div>
-
-                <div id="node-details" class="info-card hidden">
-                    <div class="badge" id="detail-type">Topic</div>
-                    <h2 id="detail-title">Introduction</h2>
-                    <div class="path-container" id="detail-path">
-                        <span>UNIT 1</span> &gt; <span>Introduction</span>
-                    </div>
-                    
-                    <div class="detail-metadata">
-                        <div class="meta-item">
-                            <span class="meta-label">ID:</span>
-                            <span class="meta-value" id="detail-id">unit1.intro</span>
-                        </div>
-                    </div>
-
-                    <div class="content-preview-container">
-                        <h3>Content Preview</h3>
-                        <div class="content-preview" id="detail-content">
-                            Click to expand and explore the contents of this node.
-                        </div>
-                    </div>
-                    
-                    <button class="btn btn-primary" id="open-modal-btn">
-                        <i class="fa-solid fa-expand"></i> View Full Notes
-                    </button>
-                </div>
-            </div>
-        </aside>
-
         <!-- Main Visualization Area -->
         <main class="main-content">
             <!-- Top Bar controls -->
             <header class="top-bar glass">
+                <div class="logo">
+                    <span class="logo-text"><i class="fa-solid fa-network-wired"></i> EIPR Explorer</span>
+                </div>
                 <div class="search-container">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
                     <input type="text" id="search-input" placeholder="Search topics, concepts, cases...">
@@ -98,6 +50,34 @@
             <!-- Graph Canvas -->
             <div id="graph-container">
                 <svg id="graph-svg"></svg>
+                
+                <!-- Floating Legend -->
+                <div class="floating-legend glass">
+                    <h4>Legend</h4>
+                    <div class="legend-item"><span class="color-dot" style="background: #4285F4;"></span> Course</div>
+                    <div class="legend-item"><span class="color-dot" style="background: #EA4335;"></span> Unit</div>
+                    <div class="legend-item"><span class="color-dot" style="background: #FBBC05;"></span> Topic</div>
+                    <div class="legend-item"><span class="color-dot" style="background: #34A853;"></span> Subtopic</div>
+                    <div class="legend-item"><span class="color-dot" style="background: #8A3FFC;"></span> Concept</div>
+                    <div class="legend-item"><span class="color-dot" style="background: #00FAC6;"></span> Case/Example/Activity</div>
+                </div>
+
+                <!-- Floating Connected Preview Card -->
+                <div id="node-popup" class="node-popup-card glass hidden">
+                    <div class="popup-header">
+                        <span id="popup-type" class="badge">Concept</span>
+                        <button class="popup-close-btn" id="popup-close-btn">&times;</button>
+                    </div>
+                    <h3 id="popup-title">Title Here</h3>
+                    <div id="popup-path" class="path-container"></div>
+                    <div class="popup-content-wrapper">
+                        <div id="popup-content" class="popup-content">Content preview goes here...</div>
+                    </div>
+                    <button class="btn btn-primary btn-sm" id="popup-open-modal-btn">
+                        <i class="fa-solid fa-expand"></i> View Full Notes
+                    </button>
+                    <div class="popup-arrow"></div>
+                </div>
             </div>
         </main>
     </div>
