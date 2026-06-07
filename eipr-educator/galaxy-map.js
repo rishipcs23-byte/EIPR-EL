@@ -38,6 +38,13 @@ const GalaxyMap = (() => {
     // Simulated Bot Pilots (for co-op demonstration)
     const bots = [];
 
+    // ─── Teacher Mode ───────────────────────────────────────────────────────────
+    let isTeacherMode = false;
+    let teacherWsClient = null;           // Separate WS connection for teacher
+    let teacherWsConnected = false;
+    // Global student registry (teacher only): playerId -> record
+    const globalStudents = new Map();
+
     // ─── WebSocket Multiplayer (LAN relay) ─────────────────────────────────────
     // ws:// relay server — defaults to same host, port 3001
     let wsServerHost = window.location.hostname || 'localhost';
@@ -258,6 +265,9 @@ const GalaxyMap = (() => {
                         SpaceExplorer.setChartedCourse(data.nodeIds);
                     }
                 }
+            } else if (data.type === 'MISSION_BROADCAST') {
+                // Student received a teacher mission broadcast
+                showMissionToast(data);
             }
         };
 
@@ -276,6 +286,182 @@ const GalaxyMap = (() => {
         };
     }
 
+    // ─── Teacher WebSocket (connects on __TEACHER__ party) ─────────────────────
+    function connectTeacherWebSocket() {
+        if (!scene) return; // only connect when 3D map is active
+        if (teacherWsClient) { try { teacherWsClient.close(); } catch(e){} teacherWsClient = null; }
+
+        const wsUrl = `ws://${wsServerHost}:${WS_PORT}?party=__TEACHER__`;
+        console.log(`[Teacher] Connecting to ${wsUrl}`);
+
+        let ws;
+        try { ws = new WebSocket(wsUrl); } catch(e) {
+            console.error('[Teacher] WebSocket creation failed:', e);
+            return;
+        }
+        teacherWsClient = ws;
+
+        ws.onopen = () => {
+            console.log('[Teacher] Teacher WS connected');
+            teacherWsConnected = true;
+            const el = document.getElementById('teacher-ws-indicator');
+            if (el) { el.textContent = '● ONLINE'; el.style.color = '#34A853'; }
+        };
+
+        ws.onmessage = (e) => {
+            let data;
+            try { data = JSON.parse(e.data); } catch(err) { return; }
+            if (!data) return;
+
+            if (data.type === 'GLOBAL_ROSTER') {
+                handleGlobalRoster(data.roster || []);
+            } else if (data.type === 'GLOBAL_POS_UPDATE') {
+                handleGlobalPosUpdate(data);
+            } else if (data.type === 'MISSION_BROADCAST_ACK') {
+                // Teacher's broadcast was confirmed
+                const btn = document.getElementById('teacher-broadcast-btn');
+                if (btn) {
+                    btn.classList.add('sent');
+                    btn.innerHTML = `<i class="fa-solid fa-check"></i>&nbsp; Sent to ${data.recipientCount} Students!`;
+                    setTimeout(() => {
+                        btn.classList.remove('sent');
+                        btn.innerHTML = `<i class="fa-solid fa-satellite-dish"></i>&nbsp; Broadcast Mission to All Students`;
+                    }, 3000);
+                }
+                // Increment missions sent counter
+                const counter = document.getElementById('teacher-stat-missions');
+                if (counter) counter.textContent = (parseInt(counter.textContent) || 0) + 1;
+            }
+        };
+
+        ws.onclose = () => {
+            console.warn('[Teacher] Teacher WS closed');
+            teacherWsConnected = false;
+            teacherWsClient = null;
+            const el = document.getElementById('teacher-ws-indicator');
+            if (el) { el.textContent = '○ OFFLINE'; el.style.color = '#EA4335'; }
+            // Reconnect after 3 seconds
+            if (isTeacherMode) {
+                setTimeout(() => connectTeacherWebSocket(), 3000);
+            }
+        };
+
+        ws.onerror = () => {
+            teacherWsConnected = false;
+        };
+    }
+
+    function handleGlobalRoster(roster) {
+        // Remove students who are no longer present
+        const activeIds = new Set(roster.map(r => r.playerId));
+        globalStudents.forEach((student, id) => {
+            if (!activeIds.has(id)) {
+                removeGlobalStudent(id);
+            }
+        });
+
+        // Add/update students
+        roster.forEach(r => {
+            if (!r.playerId) return;
+            if (!globalStudents.has(r.playerId)) {
+                // New student — spawn their ship
+                const student = { ...r, shipMesh: null, tagEl: null };
+                globalStudents.set(r.playerId, student);
+                spawnGlobalStudentShip(student);
+            } else {
+                // Update existing
+                const existing = globalStudents.get(r.playerId);
+                Object.assign(existing, r);
+            }
+        });
+
+        // Update teacher dashboard roster
+        updateTeacherRosterUI(roster);
+
+        // Update stats
+        const studentStat = document.getElementById('teacher-stat-students');
+        if (studentStat) studentStat.textContent = roster.length;
+
+        const parties = new Set(roster.map(r => r.partyCode).filter(c => c && c !== '__TEACHER__'));
+        const partyStat = document.getElementById('teacher-stat-parties');
+        if (partyStat) partyStat.textContent = parties.size;
+    }
+
+    function handleGlobalPosUpdate(data) {
+        const student = globalStudents.get(data.playerId);
+        if (student && student.shipMesh) {
+            student.shipMesh.position.set(data.position.x, data.position.y, data.position.z);
+            student.shipMesh.quaternion.set(data.quaternion.x, data.quaternion.y, data.quaternion.z, data.quaternion.w);
+            student.position = data.position;
+            student.quaternion = data.quaternion;
+        }
+    }
+
+    // Spawn gold-aura ship for a global student (visible only to teacher)
+    function spawnGlobalStudentShip(student) {
+        if (!scene || !student.shipSpecs) return;
+        const ship = createProceduralShipMesh(student.shipSpecs);
+
+        // Gold ring aura to distinguish from party members
+        const ringGeo = new THREE.TorusGeometry(9, 0.8, 8, 32);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0xFBBC05, transparent: true, opacity: 0.6 });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = Math.PI / 2;
+        ship.add(ring);
+
+        if (student.position) {
+            ship.position.set(student.position.x, student.position.y, student.position.z);
+        } else {
+            ship.position.set(0, 50, 600);
+        }
+        scene.add(ship);
+        student.shipMesh = ship;
+    }
+
+    function removeGlobalStudent(playerId) {
+        const student = globalStudents.get(playerId);
+        if (student) {
+            if (student.shipMesh && scene) scene.remove(student.shipMesh);
+            globalStudents.delete(playerId);
+        }
+    }
+
+    function updateTeacherRosterUI(roster) {
+        const tbody = document.getElementById('teacher-roster-tbody');
+        if (!tbody) return;
+
+        if (roster.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3">
+                <div class="teacher-roster-empty">
+                    <i class="fa-solid fa-satellite-dish"></i>
+                    <p>No students connected.<br>Start the server and share your IP with students.</p>
+                </div>
+            </td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = '';
+        roster.forEach(r => {
+            const hue = r.shipSpecs ? r.shipSpecs.hue : 180;
+            const partyDisplay = r.partyCode && r.partyCode !== '__TEACHER__' ? r.partyCode : 'SOLO';
+            const isSolo = partyDisplay === 'SOLO';
+            const shipName = r.shipSpecs ? r.shipSpecs.name : 'Unknown';
+            const initials = (r.playerName || '??').substring(0, 2).toUpperCase();
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <div class="tr-name-cell">
+                        <div class="tr-avatar" style="background:hsl(${hue},85%,48%)">${initials}</div>
+                        <span>${r.playerName || 'Unknown Pilot'}</span>
+                    </div>
+                </td>
+                <td style="font-size:11px;color:rgba(255,255,255,0.55);">${shipName}</td>
+                <td><span class="tr-party-badge ${isSolo ? 'solo' : ''}">${partyDisplay}</span></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
     function scheduleWsReconnect(partyCode) {
         if (wsReconnectTimer) return;
         wsReconnectTimer = setTimeout(() => {
@@ -289,6 +475,13 @@ const GalaxyMap = (() => {
         if (!wsClient || wsClient.readyState !== WebSocket.OPEN) return;
         try { wsClient.send(JSON.stringify(data)); } catch(e) {}
     }
+
+    // Teacher-specific send (over teacher WS)
+    function teacherWsSend(data) {
+        if (!teacherWsClient || teacherWsClient.readyState !== WebSocket.OPEN) return;
+        try { teacherWsClient.send(JSON.stringify(data)); } catch(e) {}
+    }
+
 
     function broadcastState() {
         if (!currentPartyCode) return;
@@ -1428,6 +1621,11 @@ const GalaxyMap = (() => {
 
         // Final resize to ensure correct dimensions after full init
         setTimeout(() => handleResize(), 100);
+
+        // If teacher mode was activated before init(), connect teacher WS now
+        if (isTeacherMode) {
+            connectTeacherWebSocket();
+        }
     }
 
     const raycaster = new THREE.Raycaster();
@@ -1633,6 +1831,49 @@ ${contentText}`;
         }
     }
 
+    // ─── Mission Toast (shown on students when teacher broadcasts) ─────────────
+    let missionToastTimer = null;
+    function showMissionToast(data) {
+        const toast = document.getElementById('mission-toast');
+        const title = document.getElementById('mission-toast-title');
+        const sub = document.getElementById('mission-toast-sub');
+        if (!toast) return;
+
+        if (title) title.textContent = data.nodeTitle || 'Mission Assigned';
+        if (sub) sub.textContent = `Type: ${data.nodeType || 'topic'} · Unit ${data.unitNum || '?'} · Navigate to it in Space Explorer!`;
+
+        toast.classList.add('visible');
+
+        // Also add to Space Explorer mission HUD if available
+        if (typeof SpaceExplorer !== 'undefined' && SpaceExplorer.addMission) {
+            SpaceExplorer.addMission({ id: data.nodeId, title: data.nodeTitle, type: data.nodeType, fromTeacher: true });
+        }
+
+        // Auto-dismiss after 8 seconds
+        if (missionToastTimer) clearTimeout(missionToastTimer);
+        missionToastTimer = setTimeout(() => {
+            toast.classList.remove('visible');
+        }, 8000);
+    }
+
+    // ─── Teacher Mode Activation ────────────────────────────────────────────────
+    function activateTeacherMode(serverHost) {
+        isTeacherMode = true;
+        if (serverHost) wsServerHost = serverHost;
+
+        // Mark galaxy canvas as teacher-mode
+        const mapView = document.getElementById('galaxy-map-view');
+        if (mapView) mapView.classList.add('teacher-mode-active');
+
+        // Connect teacher WebSocket (if scene is already loaded, connect immediately)
+        if (scene) {
+            connectTeacherWebSocket();
+        }
+        // Otherwise it will be connected when init() is called
+
+        console.log('[Teacher] Teacher mode activated');
+    }
+
     // Public API
     return {
         init,
@@ -1641,9 +1882,12 @@ ${contentText}`;
         handleResize,
         broadcastPosition,
         broadcastChartedCourse,
+        activateTeacherMode,
+        teacherBroadcastMission: (data) => teacherWsSend({ type: 'BROADCAST_MISSION', ...data }),
         getPartyCode: () => currentPartyCode,
         getShipSpecs: () => myShipSpecs,
         getPartyMembers: () => partyMembers,
-        getPlayerId: () => myPlayerId
+        getPlayerId: () => myPlayerId,
+        isTeacher: () => isTeacherMode
     };
 })();

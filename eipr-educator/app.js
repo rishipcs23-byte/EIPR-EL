@@ -1951,4 +1951,196 @@ ${contentText}`;
             GalaxyMap.init(hierarchyData);
         }, 600);
     }
+
+    // ─── Teacher Mode Setup ────────────────────────────────────────────────────
+    const TEACHER_PASSWORD = 'EIPR_TEACHER';
+    let teacherUnlocked = false;
+    let teacherSelectedNode = null;
+    let teacherAllNodes = []; // flat list of all hierarchy nodes for search
+
+    // Flatten entire hierarchy for mission broadcaster
+    function flattenAll(node, list = []) {
+        if (!node) return list;
+        list.push(node);
+        if (node.children) node.children.forEach(c => flattenAll(c, list));
+        return list;
+    }
+    teacherAllNodes = flattenAll(hierarchyData).filter(n => n.node_type !== 'course');
+
+    const tabTeacher = document.getElementById('tab-teacher');
+    const teacherViewContainer = document.getElementById('teacher-view-container');
+    const teacherPasswordModal = document.getElementById('teacher-password-modal');
+    const tpmInput = document.getElementById('tpm-password-input');
+    const tpmErrorMsg = document.getElementById('tpm-error-msg');
+    const tpmUnlockBtn = document.getElementById('tpm-unlock-btn');
+    const tpmCancelBtn = document.getElementById('tpm-cancel-btn');
+    const teacherOpenGalaxyBtn = document.getElementById('teacher-open-galaxy-btn');
+    const teacherMissionSearch = document.getElementById('teacher-mission-search');
+    const teacherNodeList = document.getElementById('teacher-node-list');
+    const teacherSelectedPreview = document.getElementById('teacher-selected-preview');
+    const teacherBroadcastBtn = document.getElementById('teacher-broadcast-btn');
+
+    function allContainers() {
+        return [
+            container, textbookContainer, notesContainer,
+            spaceContainer, galaxyContainer, lobbyContainer, teacherViewContainer
+        ];
+    }
+
+    function activateTeacherTab() {
+        // Deactivate all tab buttons
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        if (tabTeacher) tabTeacher.classList.add('active');
+
+        // Hide all containers
+        allContainers().forEach(c => { if (c) c.classList.add('hidden'); });
+
+        // Show teacher container
+        if (teacherViewContainer) teacherViewContainer.classList.remove('hidden');
+
+        // Pause other engines
+        if (typeof SpaceExplorer !== 'undefined') SpaceExplorer.pause();
+        if (typeof GalaxyMap !== 'undefined') GalaxyMap.pause();
+
+        // Render mission node list
+        renderTeacherNodeList('');
+    }
+
+    function renderTeacherNodeList(query) {
+        if (!teacherNodeList) return;
+        const q = query.toLowerCase().trim();
+        const filtered = q
+            ? teacherAllNodes.filter(n => (n.title || '').toLowerCase().includes(q) || (n.node_type || '').toLowerCase().includes(q))
+            : teacherAllNodes;
+
+        teacherNodeList.innerHTML = '';
+        const limit = Math.min(filtered.length, 200);
+        for (let i = 0; i < limit; i++) {
+            const node = filtered[i];
+            const color = getNodeColor(node);
+            const unitNum = getUnitNumber(node);
+            const div = document.createElement('div');
+            div.className = 'teacher-node-item' + (teacherSelectedNode && teacherSelectedNode.id === node.id ? ' selected' : '');
+            div.innerHTML = `
+                <div class="teacher-node-dot" style="background:${color};box-shadow:0 0 6px ${color}"></div>
+                <div class="teacher-node-info">
+                    <div class="teacher-node-title">${node.title || 'Untitled'}</div>
+                    <div class="teacher-node-meta">${node.node_type || 'node'}${unitNum ? ' · Unit ' + unitNum : ''}</div>
+                </div>
+            `;
+            div.addEventListener('click', () => {
+                teacherSelectedNode = node;
+                document.querySelectorAll('.teacher-node-item').forEach(el => el.classList.remove('selected'));
+                div.classList.add('selected');
+                if (teacherSelectedPreview) {
+                    teacherSelectedPreview.innerHTML = `Selected: <span class="preview-title">${node.title}</span> (${node.node_type || 'node'})`;
+                }
+                if (teacherBroadcastBtn) teacherBroadcastBtn.disabled = false;
+            });
+            teacherNodeList.appendChild(div);
+        }
+
+        if (limit === 0) {
+            teacherNodeList.innerHTML = '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.3);font-size:13px;">No nodes match your search.</div>';
+        }
+    }
+
+    if (teacherMissionSearch) {
+        teacherMissionSearch.addEventListener('input', e => renderTeacherNodeList(e.target.value));
+    }
+
+    if (teacherBroadcastBtn) {
+        teacherBroadcastBtn.addEventListener('click', () => {
+            if (!teacherSelectedNode) return;
+            const unitNum = getUnitNumber(teacherSelectedNode);
+            if (typeof GalaxyMap !== 'undefined') {
+                GalaxyMap.teacherBroadcastMission({
+                    nodeId:    teacherSelectedNode.id,
+                    nodeTitle: teacherSelectedNode.title,
+                    nodeType:  teacherSelectedNode.node_type,
+                    unitNum:   unitNum
+                });
+            }
+        });
+    }
+
+    if (teacherOpenGalaxyBtn) {
+        teacherOpenGalaxyBtn.addEventListener('click', () => {
+            if (tabGalaxy) tabGalaxy.click();
+        });
+    }
+
+    // ── Password Modal ──────────────────────────────────────────────────
+    function showTeacherModal() {
+        if (teacherPasswordModal) {
+            teacherPasswordModal.classList.remove('hidden');
+            if (tpmInput) { tpmInput.value = ''; tpmInput.focus(); }
+            if (tpmErrorMsg) tpmErrorMsg.textContent = '';
+        }
+    }
+
+    function hideTeacherModal() {
+        if (teacherPasswordModal) teacherPasswordModal.classList.add('hidden');
+    }
+
+    function tryUnlock() {
+        const val = tpmInput ? tpmInput.value : '';
+        if (val === TEACHER_PASSWORD) {
+            teacherUnlocked = true;
+            if (tabTeacher) {
+                tabTeacher.classList.add('teacher-unlocked');
+                const lockIcon = tabTeacher.querySelector('.teacher-lock-icon');
+                if (lockIcon) { lockIcon.classList.remove('fa-lock'); lockIcon.classList.add('fa-unlock'); }
+            }
+            hideTeacherModal();
+            // Activate teacher mode in galaxy map
+            if (typeof GalaxyMap !== 'undefined') {
+                const hostInput = document.getElementById('ws-server-host');
+                const host = hostInput ? hostInput.value.trim() : '';
+                GalaxyMap.activateTeacherMode(host || undefined);
+            }
+            activateTeacherTab();
+        } else {
+            if (tpmInput) {
+                tpmInput.classList.add('tpm-error');
+                setTimeout(() => tpmInput.classList.remove('tpm-error'), 500);
+            }
+            if (tpmErrorMsg) tpmErrorMsg.textContent = 'Incorrect password. Try again.';
+        }
+    }
+
+    if (tabTeacher) {
+        tabTeacher.addEventListener('click', () => {
+            if (teacherUnlocked) {
+                activateTeacherTab();
+            } else {
+                showTeacherModal();
+            }
+        });
+    }
+
+    if (tpmUnlockBtn) tpmUnlockBtn.addEventListener('click', tryUnlock);
+    if (tpmCancelBtn) tpmCancelBtn.addEventListener('click', hideTeacherModal);
+    if (tpmInput) {
+        tpmInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') tryUnlock();
+            if (e.key === 'Escape') hideTeacherModal();
+        });
+    }
+    // Click outside the card to cancel
+    if (teacherPasswordModal) {
+        teacherPasswordModal.addEventListener('click', e => {
+            if (e.target === teacherPasswordModal) hideTeacherModal();
+        });
+    }
+
+    // ── Mission Toast close button ───────────────────────────────────────────────────
+    const missionToastClose = document.getElementById('mission-toast-close');
+    if (missionToastClose) {
+        missionToastClose.addEventListener('click', () => {
+            const toast = document.getElementById('mission-toast');
+            if (toast) toast.classList.remove('visible');
+        });
+    }
 });
+

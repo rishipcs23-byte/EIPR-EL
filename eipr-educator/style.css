@@ -4597,6 +4597,616 @@ body.dark-theme .space-hud {
     display: none !important;
 }
 
+/* ==========================================================================
+   UNIT ACCENT COLOUR LEGEND (Galaxy Map)
+   ========================================================================== */
 
+#galaxy-unit-legend {
+    position: absolute;
+    bottom: 28px;
+    right: 20px;
+    background: rgba(2, 2, 12, 0.80);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 14px;
+    padding: 14px 18px;
+    z-index: 15;
+    min-width: 160px;
+    pointer-events: none;
+}
 
+#galaxy-unit-legend .gul-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 10px;
+}
+
+.gul-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 6px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.gul-item:last-child { margin-bottom: 0; }
+
+.gul-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px currentColor;
+}
+
+/* ==========================================================================
+   TEACHER TAB — Lock Icon / Unlock Animation
+   ========================================================================== */
+
+#tab-teacher {
+    position: relative;
+}
+
+#tab-teacher .teacher-lock-icon {
+    font-size: 10px;
+    margin-left: 4px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+#tab-teacher.teacher-unlocked .teacher-lock-icon {
+    color: #FBBC05;
+    opacity: 1;
+}
+
+/* ==========================================================================
+   TEACHER PASSWORD MODAL
+   ========================================================================== */
+
+#teacher-password-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tpm-card {
+    background: rgba(10, 10, 28, 0.95);
+    border: 1px solid rgba(251, 188, 5, 0.25);
+    border-radius: 20px;
+    padding: 40px 48px;
+    width: 420px;
+    max-width: 94vw;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(251, 188, 5, 0.06);
+    text-align: center;
+    animation: tpm-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes tpm-in {
+    from { opacity: 0; transform: scale(0.85) translateY(20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.tpm-icon {
+    font-size: 40px;
+    color: #FBBC05;
+    filter: drop-shadow(0 0 16px rgba(251, 188, 5, 0.5));
+    margin-bottom: 16px;
+}
+
+.tpm-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #fff;
+    margin-bottom: 6px;
+}
+
+.tpm-subtitle {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 28px;
+}
+
+.tpm-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1.5px solid rgba(251, 188, 5, 0.2);
+    border-radius: 10px;
+    padding: 12px 18px;
+    color: #fff;
+    font-family: 'Outfit', monospace;
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 16px;
+}
+
+.tpm-input:focus {
+    border-color: #FBBC05;
+    box-shadow: 0 0 16px rgba(251, 188, 5, 0.2);
+}
+
+.tpm-input.tpm-error {
+    border-color: #EA4335 !important;
+    animation: tpm-shake 0.4s ease;
+}
+
+@keyframes tpm-shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+}
+
+.tpm-error-msg {
+    font-size: 12px;
+    color: #EA4335;
+    margin-top: -10px;
+    margin-bottom: 14px;
+    min-height: 18px;
+    transition: opacity 0.2s;
+}
+
+.tpm-btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.tpm-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 28px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tpm-btn-primary {
+    background: linear-gradient(135deg, #FBBC05, #F4A409);
+    color: #000;
+}
+.tpm-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(251,188,5,0.35); }
+
+.tpm-btn-cancel {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.tpm-btn-cancel:hover { background: rgba(255,255,255,0.12); }
+
+/* ==========================================================================
+   TEACHER DASHBOARD CONTAINER
+   ========================================================================== */
+
+#teacher-view-container { position: relative; }
+
+#teacher-container {
+    position: absolute;
+    inset: 0;
+    background: #020208;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: 'Outfit', sans-serif;
+}
+
+.teacher-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 28px;
+    background: rgba(251, 188, 5, 0.06);
+    border-bottom: 1px solid rgba(251, 188, 5, 0.15);
+}
+
+.teacher-header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.teacher-header-logo i {
+    color: #FBBC05;
+    filter: drop-shadow(0 0 8px rgba(251,188,5,0.6));
+}
+
+.teacher-header-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(251,188,5,0.15);
+    color: #FBBC05;
+    border: 1px solid rgba(251,188,5,0.3);
+    text-transform: uppercase;
+}
+
+.teacher-stats-bar {
+    display: flex;
+    gap: 0;
+}
+
+.teacher-stat {
+    flex: 1;
+    text-align: center;
+    padding: 8px 0;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.5px;
+}
+.teacher-stat:last-child { border-right: none; }
+
+.teacher-stat-val {
+    display: block;
+    font-size: 22px;
+    font-weight: 800;
+    color: #FBBC05;
+    line-height: 1.1;
+    margin-bottom: 2px;
+}
+
+/* Teacher layout: two columns */
+.teacher-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 0;
+    overflow: hidden;
+}
+
+/* Left: Student roster */
+.teacher-roster-panel {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+}
+
+.teacher-panel-title {
+    padding: 14px 20px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.teacher-panel-title i { color: #FBBC05; }
+
+.teacher-roster-table-wrap {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 12px;
+}
+
+.teacher-roster-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.teacher-roster-table th {
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.teacher-roster-table td {
+    padding: 10px 10px;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.85);
+}
+
+.teacher-roster-table tr:hover td {
+    background: rgba(251, 188, 5, 0.04);
+}
+
+.tr-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: #000;
+    flex-shrink: 0;
+}
+
+.tr-name-cell { display: flex; align-items: center; gap: 10px; }
+
+.tr-party-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 8px;
+    background: rgba(0,250,198,0.12);
+    color: #00fac6;
+    border: 1px solid rgba(0,250,198,0.2);
+    letter-spacing: 0.5px;
+}
+
+.tr-party-badge.solo {
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.4);
+    border-color: rgba(255,255,255,0.08);
+}
+
+.teacher-roster-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255,255,255,0.25);
+    font-size: 13px;
+}
+
+.teacher-roster-empty i {
+    font-size: 36px;
+    display: block;
+    margin-bottom: 14px;
+    color: rgba(251, 188, 5, 0.3);
+}
+
+/* Right: Mission broadcaster */
+.teacher-mission-panel {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: rgba(4, 4, 18, 0.6);
+}
+
+.teacher-mission-search {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.teacher-mission-search input {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(251,188,5,0.15);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.teacher-mission-search input:focus {
+    border-color: #FBBC05;
+}
+
+.teacher-node-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 8px;
+}
+
+.teacher-node-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-bottom: 3px;
+}
+
+.teacher-node-item:hover {
+    background: rgba(251, 188, 5, 0.08);
+}
+
+.teacher-node-item.selected {
+    background: rgba(251, 188, 5, 0.15);
+    border: 1px solid rgba(251, 188, 5, 0.3);
+}
+
+.teacher-node-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.teacher-node-info { flex: 1; min-width: 0; }
+
+.teacher-node-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.teacher-node-meta {
+    font-size: 10px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.teacher-broadcast-footer {
+    padding: 14px 16px;
+    border-top: 1px solid rgba(251,188,5,0.12);
+    background: rgba(0,0,0,0.3);
+}
+
+.teacher-selected-preview {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 10px;
+    min-height: 16px;
+}
+
+.teacher-selected-preview .preview-title {
+    color: #FBBC05;
+    font-weight: 600;
+}
+
+.teacher-broadcast-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #FBBC05, #F4A409);
+    color: #000;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+}
+
+.teacher-broadcast-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(251, 188, 5, 0.4);
+}
+
+.teacher-broadcast-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.teacher-broadcast-btn.sent {
+    background: linear-gradient(135deg, #34A853, #2d9147);
+    color: #fff;
+}
+
+/* ==========================================================================
+   MISSION TOAST — Received by Students
+   ========================================================================== */
+
+#mission-toast {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: rgba(10, 10, 28, 0.96);
+    border: 1.5px solid rgba(251, 188, 5, 0.4);
+    border-radius: 16px;
+    padding: 16px 24px;
+    min-width: 360px;
+    max-width: 90vw;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 30px rgba(251,188,5,0.1);
+    z-index: 9500;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#mission-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.mission-toast-icon {
+    font-size: 28px;
+    color: #FBBC05;
+    filter: drop-shadow(0 0 10px rgba(251,188,5,0.6));
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.mission-toast-body { flex: 1; }
+
+.mission-toast-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #FBBC05;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.mission-toast-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 3px;
+}
+
+.mission-toast-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+}
+
+.mission-toast-close {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.4);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: color 0.15s;
+}
+
+.mission-toast-close:hover { color: #fff; }
+
+/* ==========================================================================
+   TEACHER GALAXY MAP — Global Student Ship Aura
+   ========================================================================== */
+
+/* Applied via JS as class on the canvas container when teacher mode is on */
+.teacher-mode-active #galaxy-map-status-bar::after {
+    content: '👨‍🏫 TEACHER VIEW';
+    font-size: 10px;
+    font-weight: 700;
+    color: #FBBC05;
+    letter-spacing: 1px;
+    margin-left: 10px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    background: rgba(251,188,5,0.12);
+    border: 1px solid rgba(251,188,5,0.25);
+}
 

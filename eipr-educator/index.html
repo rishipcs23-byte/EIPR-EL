@@ -56,6 +56,7 @@
                     <button class="tab-btn" id="tab-space"><i class="fa-solid fa-rocket"></i> Space Explorer</button>
                     <button class="tab-btn" id="tab-lobby"><i class="fa-solid fa-satellite"></i> Co-op Lobby</button>
                     <button class="tab-btn" id="tab-galaxy"><i class="fa-solid fa-globe"></i> Galaxy Map</button>
+                    <button class="tab-btn" id="tab-teacher"><i class="fa-solid fa-chalkboard-user"></i> Teacher<i class="fa-solid fa-lock teacher-lock-icon"></i></button>
                 </div>
 
                 <div class="search-container">
@@ -517,7 +518,15 @@
                             <div id="galaxy-hud-summary" style="max-height: 250px; overflow-y: auto; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.95); scrollbar-width: thin; padding-right: 4px;">Click a celestial node to analyze...</div>
                         </div>
                     </div>
-
+                    <!-- Unit Accent Colour Legend -->
+                    <div id="galaxy-unit-legend">
+                        <div class="gul-title">Unit Colours</div>
+                        <div class="gul-item"><div class="gul-dot" style="background:hsl(210,90%,55%);color:hsl(210,90%,55%)"></div>Unit 1 — Law of IP</div>
+                        <div class="gul-item"><div class="gul-dot" style="background:hsl(330,90%,60%);color:hsl(330,90%,60%)"></div>Unit 2 — Entrepreneurship</div>
+                        <div class="gul-item"><div class="gul-dot" style="background:hsl(270,85%,62%);color:hsl(270,85%,62%)"></div>Unit 3 — Intrapreneurship</div>
+                        <div class="gul-item"><div class="gul-dot" style="background:hsl(150,88%,45%);color:hsl(150,88%,45%)"></div>Unit 4 — Finance</div>
+                        <div class="gul-item"><div class="gul-dot" style="background:hsl(30,92%,55%);color:hsl(30,92%,55%)"></div>Unit 5 — Regulatory</div>
+                    </div>
                     <!-- Double-click hint tooltip -->
                     <div id="galaxy-click-hint" style="
                         position: absolute;
@@ -549,6 +558,88 @@
                     <div id="galaxy-canvas-wrapper"></div>
                 </div><!-- /galaxy-map-view -->
             </div><!-- /galaxy-container -->
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <!-- TEACHER DASHBOARD                                          -->
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <div id="teacher-view-container" class="hidden">
+                <div id="teacher-container">
+                    <!-- Header -->
+                    <div class="teacher-header">
+                        <div class="teacher-header-logo">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                            EIPR <em style="font-style:normal;color:#FBBC05;">COMMAND CENTRE</em>
+                        </div>
+                        <span class="teacher-header-badge">TEACHER MODE</span>
+                        <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+                            <button id="teacher-open-galaxy-btn" class="glb-btn glb-btn-launch" style="padding:8px 18px;font-size:13px;">
+                                <i class="fa-solid fa-globe"></i> Open Galaxy Map
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Stats bar -->
+                    <div class="teacher-stats-bar">
+                        <div class="teacher-stat"><span class="teacher-stat-val" id="teacher-stat-students">0</span>Students Online</div>
+                        <div class="teacher-stat"><span class="teacher-stat-val" id="teacher-stat-parties">0</span>Active Parties</div>
+                        <div class="teacher-stat"><span class="teacher-stat-val" id="teacher-stat-missions">0</span>Missions Sent</div>
+                        <div class="teacher-stat" id="teacher-ws-status-cell">
+                            <span class="teacher-stat-val" style="font-size:14px;" id="teacher-ws-indicator">&#9675; OFFLINE</span>
+                            Server Link
+                        </div>
+                    </div>
+
+                    <!-- Body: 2-column -->
+                    <div class="teacher-body">
+
+                        <!-- LEFT: Global Student Roster -->
+                        <div class="teacher-roster-panel">
+                            <div class="teacher-panel-title">
+                                <i class="fa-solid fa-users"></i>
+                                Global Student Roster
+                                <span style="margin-left:auto;font-size:10px;color:rgba(255,255,255,0.25);font-weight:400;letter-spacing:0;">Live — updates automatically</span>
+                            </div>
+                            <div class="teacher-roster-table-wrap">
+                                <table class="teacher-roster-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Pilot</th>
+                                            <th>Ship</th>
+                                            <th>Party</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="teacher-roster-tbody">
+                                        <tr><td colspan="3">
+                                            <div class="teacher-roster-empty">
+                                                <i class="fa-solid fa-satellite-dish"></i>
+                                                <p>No students connected.<br>Start the server and share your IP with students.</p>
+                                            </div>
+                                        </td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT: Mission Broadcaster -->
+                        <div class="teacher-mission-panel">
+                            <div class="teacher-panel-title">
+                                <i class="fa-solid fa-satellite-dish"></i>
+                                Mission Broadcaster
+                            </div>
+                            <div class="teacher-mission-search">
+                                <input type="text" id="teacher-mission-search" placeholder="&#128269; Search topics, units, concepts..." autocomplete="off">
+                            </div>
+                            <div class="teacher-node-list" id="teacher-node-list"></div>
+                            <div class="teacher-broadcast-footer">
+                                <div class="teacher-selected-preview" id="teacher-selected-preview">No node selected — pick one from the list above.</div>
+                                <button class="teacher-broadcast-btn" id="teacher-broadcast-btn" disabled>
+                                    <i class="fa-solid fa-satellite-dish"></i>&nbsp; Broadcast Mission to All Students
+                                </button>
+                            </div>
+                        </div>
+
+                    </div><!-- /teacher-body -->
+                </div><!-- /teacher-container -->
+            </div><!-- /teacher-view-container -->
         </main>
     </div>
 
@@ -706,6 +797,32 @@
             </div>
 
         </div>
+    </div>
+
+    <!-- Teacher Password Modal -->
+    <div id="teacher-password-modal" class="hidden">
+        <div class="tpm-card">
+            <div class="tpm-icon"><i class="fa-solid fa-user-shield"></i></div>
+            <div class="tpm-title">TEACHER ACCESS</div>
+            <div class="tpm-subtitle">Enter the teacher password to unlock the command centre</div>
+            <input type="password" id="tpm-password-input" class="tpm-input" placeholder="••••••••••••" autocomplete="off" maxlength="32">
+            <div class="tpm-error-msg" id="tpm-error-msg"></div>
+            <div class="tpm-btn-row">
+                <button class="tpm-btn tpm-btn-cancel" id="tpm-cancel-btn">Cancel</button>
+                <button class="tpm-btn tpm-btn-primary" id="tpm-unlock-btn"><i class="fa-solid fa-unlock"></i> Unlock</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission Toast (received by students) -->
+    <div id="mission-toast">
+        <div class="mission-toast-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+        <div class="mission-toast-body">
+            <div class="mission-toast-label">&#128225; Teacher Mission Broadcast</div>
+            <div class="mission-toast-title" id="mission-toast-title">Mission Title</div>
+            <div class="mission-toast-sub" id="mission-toast-sub">Navigate to this node in Space Explorer</div>
+        </div>
+        <button class="mission-toast-close" id="mission-toast-close">&times;</button>
     </div>
 
     <!-- Data and Application Code -->
