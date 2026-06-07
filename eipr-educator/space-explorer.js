@@ -922,15 +922,20 @@ ${contentText}`;
         const right = new THREE.Vector3(1, 0, 0).applyQuaternion(shipGroup.quaternion);
         const up = new THREE.Vector3(0, 1, 0).applyQuaternion(shipGroup.quaternion);
 
-        // Update Throttle based on W/S keys, reset on X
+        // Update Throttle based on W/S keys, reset on X, decay when released
         if (keys.w && !isScanning) {
-            currentThrottle = Math.min(100, currentThrottle + 60 * delta); // Increase throttle by 60% per second
-        }
-        if (keys.s && !isScanning) {
-            currentThrottle = Math.max(-50, currentThrottle - 60 * delta); // Decrease throttle by 60% per second
-        }
-        if (keys.x && !isScanning) {
+            currentThrottle = Math.min(100, currentThrottle + 180 * delta); // Faster response
+        } else if (keys.s && !isScanning) {
+            currentThrottle = Math.max(-50, currentThrottle - 180 * delta);
+        } else if (keys.x && !isScanning) {
             currentThrottle = 0;
+        } else if (!isScanning) {
+            // Decay to 0 when no key is pressed
+            if (currentThrottle > 0) {
+                currentThrottle = Math.max(0, currentThrottle - 120 * delta);
+            } else if (currentThrottle < 0) {
+                currentThrottle = Math.min(0, currentThrottle + 120 * delta);
+            }
         }
 
         // Gently set throttle to zero and stop when contacting a node (scanning)
