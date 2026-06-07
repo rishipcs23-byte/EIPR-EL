@@ -1063,6 +1063,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tabSpace.classList.remove("active");
         tabGalaxy.classList.remove("active");
         tabLobby.classList.remove("active");
+        if (tabTeacher) tabTeacher.classList.remove("active");
         
         container.classList.remove("hidden");
         textbookContainer.classList.add("hidden");
@@ -1070,6 +1071,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.add("hidden");
         galaxyContainer.classList.add("hidden");
         lobbyContainer.classList.add("hidden");
+        if (teacherViewContainer) teacherViewContainer.classList.add("hidden");
         searchInput.disabled = false;
 
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
@@ -1103,6 +1105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tabSpace.classList.remove("active");
         tabGalaxy.classList.remove("active");
         tabLobby.classList.remove("active");
+        if (tabTeacher) tabTeacher.classList.remove("active");
         
         container.classList.remove("hidden");
         textbookContainer.classList.add("hidden");
@@ -1110,6 +1113,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.add("hidden");
         galaxyContainer.classList.add("hidden");
         lobbyContainer.classList.add("hidden");
+        if (teacherViewContainer) teacherViewContainer.classList.add("hidden");
         searchInput.disabled = false;
 
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
@@ -1155,6 +1159,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tabSpace.classList.remove("active");
         tabGalaxy.classList.remove("active");
         tabLobby.classList.remove("active");
+        if (tabTeacher) tabTeacher.classList.remove("active");
         
         container.classList.add("hidden");
         textbookContainer.classList.remove("hidden");
@@ -1162,6 +1167,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.add("hidden");
         galaxyContainer.classList.add("hidden");
         lobbyContainer.classList.add("hidden");
+        if (teacherViewContainer) teacherViewContainer.classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
 
@@ -1188,6 +1194,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tabSpace.classList.remove("active");
         tabGalaxy.classList.remove("active");
         tabLobby.classList.remove("active");
+        if (tabTeacher) tabTeacher.classList.remove("active");
         
         container.classList.add("hidden");
         textbookContainer.classList.add("hidden");
@@ -1195,6 +1202,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.add("hidden");
         galaxyContainer.classList.add("hidden");
         lobbyContainer.classList.add("hidden");
+        if (teacherViewContainer) teacherViewContainer.classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
         
@@ -1228,6 +1236,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tabNotes.classList.remove("active");
         tabGalaxy.classList.remove("active");
         tabLobby.classList.remove("active");
+        if (tabTeacher) tabTeacher.classList.remove("active");
         
         container.classList.add("hidden");
         textbookContainer.classList.add("hidden");
@@ -1235,6 +1244,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.remove("hidden");
         galaxyContainer.classList.add("hidden");
         lobbyContainer.classList.add("hidden");
+        if (teacherViewContainer) teacherViewContainer.classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
         
@@ -1267,6 +1277,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tabNotes.classList.remove("active");
         tabSpace.classList.remove("active");
         tabLobby.classList.remove("active");
+        if (tabTeacher) tabTeacher.classList.remove("active");
         
         container.classList.add("hidden");
         textbookContainer.classList.add("hidden");
@@ -1274,6 +1285,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.add("hidden");
         galaxyContainer.classList.remove("hidden");
         lobbyContainer.classList.add("hidden");
+        if (teacherViewContainer) teacherViewContainer.classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
         
@@ -1307,6 +1319,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tabNotes.classList.remove("active");
         tabSpace.classList.remove("active");
         tabGalaxy.classList.remove("active");
+        if (tabTeacher) tabTeacher.classList.remove("active");
         
         container.classList.add("hidden");
         textbookContainer.classList.add("hidden");
@@ -1314,6 +1327,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.add("hidden");
         galaxyContainer.classList.add("hidden");
         lobbyContainer.classList.remove("hidden");
+        if (teacherViewContainer) teacherViewContainer.classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
         
@@ -1955,7 +1969,7 @@ ${contentText}`;
     // ─── Teacher Mode Setup ────────────────────────────────────────────────────
     const TEACHER_PASSWORD = 'EIPR_TEACHER';
     let teacherUnlocked = false;
-    let teacherSelectedNode = null;
+    const teacherSelectedNodeIds = new Set();
     let teacherAllNodes = []; // flat list of all hierarchy nodes for search
 
     // Flatten entire hierarchy for mission broadcaster
@@ -2019,23 +2033,36 @@ ${contentText}`;
             const node = filtered[i];
             const color = getNodeColor(node);
             const unitNum = getUnitNumber(node);
+            const isSelected = teacherSelectedNodeIds.has(node.id);
             const div = document.createElement('div');
-            div.className = 'teacher-node-item' + (teacherSelectedNode && teacherSelectedNode.id === node.id ? ' selected' : '');
+            div.className = 'teacher-node-item' + (isSelected ? ' selected' : '');
             div.innerHTML = `
+                <input type="checkbox" class="teacher-node-checkbox" style="margin-right:12px;accent-color:#FBBC05;" ${isSelected ? 'checked' : ''}>
                 <div class="teacher-node-dot" style="background:${color};box-shadow:0 0 6px ${color}"></div>
                 <div class="teacher-node-info">
                     <div class="teacher-node-title">${node.title || 'Untitled'}</div>
                     <div class="teacher-node-meta">${node.node_type || 'node'}${unitNum ? ' · Unit ' + unitNum : ''}</div>
                 </div>
             `;
-            div.addEventListener('click', () => {
-                teacherSelectedNode = node;
-                document.querySelectorAll('.teacher-node-item').forEach(el => el.classList.remove('selected'));
-                div.classList.add('selected');
-                if (teacherSelectedPreview) {
-                    teacherSelectedPreview.innerHTML = `Selected: <span class="preview-title">${node.title}</span> (${node.node_type || 'node'})`;
+            div.addEventListener('click', (e) => {
+                // Prevent duplicate click when clicking checkbox itself
+                if (e.target.tagName === 'INPUT') {
+                    if (e.target.checked) {
+                        teacherSelectedNodeIds.add(node.id);
+                    } else {
+                        teacherSelectedNodeIds.delete(node.id);
+                    }
+                } else {
+                    const cb = div.querySelector('input[type="checkbox"]');
+                    cb.checked = !cb.checked;
+                    if (cb.checked) {
+                        teacherSelectedNodeIds.add(node.id);
+                    } else {
+                        teacherSelectedNodeIds.delete(node.id);
+                    }
                 }
-                if (teacherBroadcastBtn) teacherBroadcastBtn.disabled = false;
+                div.classList.toggle('selected', teacherSelectedNodeIds.has(node.id));
+                updateSelectedPreviewUI();
             });
             teacherNodeList.appendChild(div);
         }
@@ -2045,19 +2072,45 @@ ${contentText}`;
         }
     }
 
+    function updateSelectedPreviewUI() {
+        if (!teacherSelectedPreview) return;
+        if (teacherSelectedNodeIds.size === 0) {
+            teacherSelectedPreview.innerHTML = 'No nodes selected — pick one or more from the list above.';
+            if (teacherBroadcastBtn) teacherBroadcastBtn.disabled = true;
+        } else {
+            const selected = teacherAllNodes.filter(n => teacherSelectedNodeIds.has(n.id));
+            if (selected.length === 1) {
+                teacherSelectedPreview.innerHTML = `Selected: <span class="preview-title" style="color:#FBBC05;font-weight:600;">${selected[0].title}</span> (${selected[0].node_type})`;
+            } else {
+                const titles = selected.map(s => s.title);
+                teacherSelectedPreview.innerHTML = `Selected: <span class="preview-title" style="color:#FBBC05;font-weight:600;">${selected.length} nodes</span> (${titles.slice(0, 2).join(', ')}${titles.length > 2 ? ' + ' + (titles.length - 2) + ' more' : ''})`;
+            }
+            if (teacherBroadcastBtn) teacherBroadcastBtn.disabled = false;
+        }
+    }
+
     if (teacherMissionSearch) {
         teacherMissionSearch.addEventListener('input', e => renderTeacherNodeList(e.target.value));
     }
 
     if (teacherBroadcastBtn) {
         teacherBroadcastBtn.addEventListener('click', () => {
-            if (!teacherSelectedNode) return;
-            const unitNum = getUnitNumber(teacherSelectedNode);
+            if (teacherSelectedNodeIds.size === 0) return;
+            const selected = teacherAllNodes.filter(n => teacherSelectedNodeIds.has(n.id));
+            const nodeIds = selected.map(n => n.id);
+            const firstNode = selected[0];
+            const unitNum = getUnitNumber(firstNode);
+            const nodeTitle = selected.length === 1 
+                ? firstNode.title
+                : `${firstNode.title} + ${selected.length - 1} others`;
+            const nodeType = selected.length === 1 ? firstNode.node_type : 'course';
+
             if (typeof GalaxyMap !== 'undefined') {
                 GalaxyMap.teacherBroadcastMission({
-                    nodeId:    teacherSelectedNode.id,
-                    nodeTitle: teacherSelectedNode.title,
-                    nodeType:  teacherSelectedNode.node_type,
+                    nodeId:    firstNode.id,
+                    nodeIds:   nodeIds,
+                    nodeTitle: nodeTitle,
+                    nodeType:  nodeType,
                     unitNum:   unitNum
                 });
             }

@@ -286,9 +286,257 @@ const GalaxyMap = (() => {
         };
     }
 
+    // ─── Teacher Mode ───────────────────────────────────────────────────────────
+    let isTeacherMode = false;
+    let teacherWsClient = null;           // Separate WS connection for teacher
+    let teacherWsConnected = false;
+    // Global student registry (teacher only): playerId -> record
+    const globalStudents = new Map();
+    const studentCompletions = new Map(); // playerId -> Set of completed nodeIds
+
+    // ─── WebSocket Multiplayer (LAN relay) ─────────────────────────────────────
+    // ws:// relay server — defaults to same host, port 3001
+    let wsServerHost = window.location.hostname || 'localhost';
+    let wsClient = null;
+    let wsReconnectTimer = null;
+    let wsConnected = false;
+    let wsReconnectDelay = 1500; // ms, doubles on each failure
+    const WS_PORT = 3001;
+    const WS_MAX_RECONNECT = 12000; // cap backoff at 12s
+
+    // Node configuration
+    const typeConfigs = {
+        "course":    { color: 0x4285F4, size: 10, glow: true },
+        "unit":      { color: 0xEA4335, size: 7,  glow: true },
+        "topic":     { color: 0xFBBC05, size: 4.5,glow: false },
+        "subtopic":  { color: 0x34A853, size: 3,  glow: false },
+        "concept":   { color: 0x8A3FFC, size: 2.2,glow: false },
+        "default":   { color: 0x00FAC6, size: 2,  glow: false }
+    };
+    const defNodeTypes = ["case_study", "example", "activity"];
+
+    // ─── Ship Procedural Generator ─────────────────────────────────────────────
+    function generateShipSpecs() {
+        const hullTypes = ["Dreadnought", "Interceptor", "Scout Cruiser", "Wasp Fighter", "Apex Sentinel"];
+        const wings = ["Swept Wings", "Delta Wings", "Stabilizer Ring", "Dual Folding Wings"];
+        const cores = ["Singularity Drive", "Plasma Reactor", "Antimatter Burner", "Hyper-drive Engine"];
+        const systems = ["Lidar Sensor Spire", "Nanite Autorepair", "Tactical Deflectors", "EMP Discharger"];
+        
+        const hull = hullTypes[Math.floor(Math.random() * hullTypes.length)];
+        const wing = wings[Math.floor(Math.random() * wings.length)];
+        const core = cores[Math.floor(Math.random() * cores.length)];
+        const system = systems[Math.floor(Math.random() * systems.length)];
+        const hue = Math.floor(Math.random() * 360);
+
+        return {
+            hull,
+            wing,
+            core,
+            system,
+            hue,
+            name: `${hull.split(' ')[0]} ${wing.split(' ')[0]}-${Math.floor(10 + Math.random() * 89)}`
+        };
+    }
+
+    function renderShipSpecsUI() {
+        const container = document.getElementById("procedural-ship-specs");
+        if (container && myShipSpecs) {
+            container.innerHTML = `
+                <div class="spec-item"><span>Ship Name:</span> <span class="spec-val" style="color: hsl(${myShipSpecs.hue}, 100%, 70%)">${myShipSpecs.name}</span></div>
+                <div class="spec-item"><span>Hull Frame:</span> <span class="spec-val">${myShipSpecs.hull}</span></div>
+                <div class="spec-item"><span>Wing Type:</span> <span class="spec-val">${myShipSpecs.wing}</span></div>
+                <div class="spec-item"><span>Power Core:</span> <span class="spec-val">${myShipSpecs.core}</span></div>
+                <div class="spec-item"><span>Sub-system:</span> <span class="spec-val">${myShipSpecs.system}</span></div>
+            `;
+        }
+    }
+
+    // Creates a unique procedural spaceship mesh based on specs
+    function createProceduralShipMesh(specs) {
+        const group = new THREE.Group();
+        const baseColor = new THREE.Color(`hsl(${specs.hue}, 80%, 45%)`);
+        const accentColor = new THREE.Color(`hsl(${(specs.hue + 120) % 360}, 90%, 60%)`);
+        
+        const shipMat = new THREE.MeshStandardMaterial({
+            color: baseColor,
+            roughness: 0.3,
+            metalness: 0.8
+        });
+        const accentMat = new THREE.MeshStandardMaterial({
+            color: accentColor,
+            roughness: 0.2,
+            metalness: 0.7
+        });
+        const glassMat = new THREE.MeshBasicMaterial({
+            color: 0x00fac6,
+            transparent: true,
+            opacity: 0.75
+        });
+
+        // 1. Fuselage/Body
+        let bodyGeo;
+        if (specs.hull.includes("Interceptor")) {
+            bodyGeo = new THREE.ConeGeometry(3, 16, 4);
+        } else if (specs.hull.includes("Dreadnought")) {
+            bodyGeo = new THREE.BoxGeometry(4, 3, 18);
+        } else {
+            bodyGeo = new THREE.CylinderGeometry(1.2, 2.5, 14, 5);
+        }
+        bodyGeo.rotateX(Math.PI / 2);
+        const body = new THREE.Mesh(bodyGeo, shipMat);
+        group.add(body);
+
+        // 2. Cockpit
+        const cockpitGeo = new THREE.SphereGeometry(1.4, 8, 8);
+        cockpitGeo.scale(1, 0.8, 2);
+        const cockpit = new THREE.Mesh(cockpitGeo, glassMat);
+        cockpit.position.set(0, 1.2, -3);
+        group.add(cockpit);
+
+        // 3. Wings
+        if (specs.wing.includes("Ring")) {
+            const ringGeo = new THREE.TorusGeometry(6, 0.6, 8, 24);
+            const ring = new THREE.Mesh(ringGeo, accentMat);
+            ring.position.set(0, 0, 2);
+            group.add(ring);
+        } else if (specs.wing.includes("Delta")) {
+            const wingGeo = new THREE.ConeGeometry(8, 6, 3);
+            wingGeo.rotateX(Math.PI / 2);
+            const wing = new THREE.Mesh(wingGeo, accentMat);
+            wing.position.set(0, -0.4, 1.5);
+            group.add(wing);
+        } else {
+            // Standard sweeping wings
+            const wingLeftGeo = new THREE.BoxGeometry(11, 0.3, 4);
+            const wingLeft = new THREE.Mesh(wingLeftGeo, accentMat);
+            wingLeft.position.set(-6, -0.2, 1);
+            wingLeft.rotation.y = -Math.PI / 6;
+            wingLeft.rotation.z = -Math.PI / 24;
+            group.add(wingLeft);
+
+            const wingRight = wingLeft.clone();
+            wingRight.position.x = 6;
+            wingRight.rotation.y = Math.PI / 6;
+            wingRight.rotation.z = Math.PI / 24;
+            group.add(wingRight);
+        }
+
+        // 4. Engines
+        const engineGeo = new THREE.CylinderGeometry(0.8, 1.2, 3, 6);
+        engineGeo.rotateX(Math.PI / 2);
+        const engineMat = new THREE.MeshBasicMaterial({ color: accentColor });
+        
+        const leftEngine = new THREE.Mesh(engineGeo, shipMat);
+        leftEngine.position.set(-1.5, -0.5, 7);
+        const flameLeft = new THREE.Mesh(new THREE.ConeGeometry(0.6, 2, 6), engineMat);
+        flameLeft.rotateX(-Math.PI / 2);
+        flameLeft.position.set(0, 0, 2);
+        leftEngine.add(flameLeft);
+        group.add(leftEngine);
+
+        const rightEngine = leftEngine.clone();
+        rightEngine.position.x = 1.5;
+        group.add(rightEngine);
+
+        // Add a PointLight flare inside the engines
+        const engineLight = new THREE.PointLight(accentColor, 2, 20);
+        engineLight.position.set(0, -0.5, 9);
+        group.add(engineLight);
+
+        // Scale down for map display
+        group.scale.set(0.6, 0.6, 0.6);
+        return group;
+    }
+
+    function setWsStatus(connected) {
+        wsConnected = connected;
+        const chips = [document.getElementById('ws-status-chip'), document.getElementById('ws-status-chip-map')];
+        chips.forEach(el => {
+            if (!el) return;
+            if (connected) {
+                el.innerHTML = '&#9679; ONLINE';
+                el.className = 'glb-status-chip online';
+                el.style.color = ''; // reset inline styles if any
+            } else {
+                el.innerHTML = '&#9675; OFFLINE';
+                el.className = 'glb-status-chip offline';
+                el.style.color = '';
+            }
+        });
+    }
+
+    function connectWebSocket(partyCode) {
+        if (wsReconnectTimer) { clearTimeout(wsReconnectTimer); wsReconnectTimer = null; }
+        if (wsClient) { try { wsClient.close(); } catch(e){} wsClient = null; }
+
+        const wsUrl = `ws://${wsServerHost}:${WS_PORT}?party=${encodeURIComponent(partyCode)}`;
+        console.log(`[GalaxyMap] Connecting to ${wsUrl}`);
+        setWsStatus(false);
+
+        let ws;
+        try {
+            ws = new WebSocket(wsUrl);
+        } catch (e) {
+            console.error('[GalaxyMap] WebSocket creation failed:', e);
+            scheduleWsReconnect(partyCode);
+            return;
+        }
+        wsClient = ws;
+
+        ws.onopen = () => {
+            console.log('[GalaxyMap] WebSocket connected');
+            setWsStatus(true);
+            wsReconnectDelay = 1500; // reset backoff
+            broadcastState();
+        };
+
+        ws.onmessage = (e) => {
+            let data;
+            try { data = JSON.parse(e.data); } catch(err) { return; }
+            if (!data) return;
+
+            // Server welcome — nothing to do
+            if (data.type === 'SERVER_WELCOME') return;
+
+            // Guard: only process messages for our current party
+            if (data.partyCode && data.partyCode !== currentPartyCode) return;
+
+            if (data.type === 'MEMBER_STATE') {
+                handleMemberState(data);
+            } else if (data.type === 'MEMBER_POS') {
+                handleMemberPosition(data);
+            } else if (data.type === 'MEMBER_LEAVE') {
+                removePartyMember(data.memberId);
+            } else if (data.type === 'LEADER_CHART_COURSE') {
+                if (myPlayerId !== data.leaderId) {
+                    partyLeaderId = data.leaderId;
+                    if (typeof SpaceExplorer !== 'undefined') {
+                        SpaceExplorer.setChartedCourse(data.nodeIds);
+                    }
+                }
+            } else if (data.type === 'MISSION_BROADCAST') {
+                // Student received a teacher mission broadcast
+                showMissionToast(data);
+            }
+        };
+
+        ws.onclose = (ev) => {
+            console.warn('[GalaxyMap] WebSocket closed:', ev.code, ev.reason);
+            setWsStatus(false);
+            wsClient = null;
+            if (currentPartyCode) {
+                scheduleWsReconnect(currentPartyCode);
+            }
+        };
+
+        ws.onerror = (err) => {
+            console.error('[GalaxyMap] WebSocket error:', err);
+            setWsStatus(false);
+        };
+    }
+
     // ─── Teacher WebSocket (connects on __TEACHER__ party) ─────────────────────
     function connectTeacherWebSocket() {
-        if (!scene) return; // only connect when 3D map is active
         if (teacherWsClient) { try { teacherWsClient.close(); } catch(e){} teacherWsClient = null; }
 
         const wsUrl = `ws://${wsServerHost}:${WS_PORT}?party=__TEACHER__`;
@@ -317,6 +565,14 @@ const GalaxyMap = (() => {
                 handleGlobalRoster(data.roster || []);
             } else if (data.type === 'GLOBAL_POS_UPDATE') {
                 handleGlobalPosUpdate(data);
+            } else if (data.type === 'MISSION_COMPLETE') {
+                // Track completion
+                if (!studentCompletions.has(data.playerId)) {
+                    studentCompletions.set(data.playerId, new Set());
+                }
+                studentCompletions.get(data.playerId).add(data.nodeId);
+                // Re-render UI
+                handleGlobalRoster(Array.from(globalStudents.values()));
             } else if (data.type === 'MISSION_BROADCAST_ACK') {
                 // Teacher's broadcast was confirmed
                 const btn = document.getElementById('teacher-broadcast-btn');
@@ -431,7 +687,7 @@ const GalaxyMap = (() => {
         if (!tbody) return;
 
         if (roster.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="3">
+            tbody.innerHTML = `<tr><td colspan="4">
                 <div class="teacher-roster-empty">
                     <i class="fa-solid fa-satellite-dish"></i>
                     <p>No students connected.<br>Start the server and share your IP with students.</p>
@@ -448,6 +704,12 @@ const GalaxyMap = (() => {
             const shipName = r.shipSpecs ? r.shipSpecs.name : 'Unknown';
             const initials = (r.playerName || '??').substring(0, 2).toUpperCase();
             const tr = document.createElement('tr');
+            
+            const completions = studentCompletions.has(r.playerId) ? studentCompletions.get(r.playerId).size : 0;
+            const completionsDisplay = completions > 0 
+                ? `<span class="completion-badge" style="background:rgba(251,188,5,0.2);color:#FBBC05;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:bold;border:1px solid rgba(251,188,5,0.4);">${completions} ✓</span>`
+                : `<span style="color:rgba(255,255,255,0.25);">0 completed</span>`;
+
             tr.innerHTML = `
                 <td>
                     <div class="tr-name-cell">
@@ -457,6 +719,7 @@ const GalaxyMap = (() => {
                 </td>
                 <td style="font-size:11px;color:rgba(255,255,255,0.55);">${shipName}</td>
                 <td><span class="tr-party-badge ${isSolo ? 'solo' : ''}">${partyDisplay}</span></td>
+                <td>${completionsDisplay}</td>
             `;
             tbody.appendChild(tr);
         });
@@ -1664,6 +1927,14 @@ const GalaxyMap = (() => {
     async function selectNodeOnMap(nodeData, mesh) {
         lastSelectedNodeId = nodeData.id;
 
+        // Check if the node is part of an active charted course/mission
+        if (typeof SpaceExplorer !== "undefined" && SpaceExplorer.getChartedCourse) {
+            const course = SpaceExplorer.getChartedCourse();
+            if (course && course.has(nodeData.id)) {
+                reportMissionComplete(nodeData.id, nodeData.title);
+            }
+        }
+
         // Hide the first-use hint permanently once user has selected a node
         const hint = document.getElementById('galaxy-click-hint');
         if (hint) { hint.style.opacity = '0'; setTimeout(() => hint.style.display = 'none', 500); }
@@ -1844,9 +2115,14 @@ ${contentText}`;
 
         toast.classList.add('visible');
 
-        // Also add to Space Explorer mission HUD if available
-        if (typeof SpaceExplorer !== 'undefined' && SpaceExplorer.addMission) {
-            SpaceExplorer.addMission({ id: data.nodeId, title: data.nodeTitle, type: data.nodeType, fromTeacher: true });
+        // Also add to Space Explorer mission HUD and set charted course
+        if (typeof SpaceExplorer !== 'undefined') {
+            if (SpaceExplorer.addMission) {
+                SpaceExplorer.addMission({ id: data.nodeId, title: data.nodeTitle, type: data.nodeType, fromTeacher: true });
+            }
+            if (SpaceExplorer.setChartedCourse) {
+                SpaceExplorer.setChartedCourse(data.nodeIds || [data.nodeId]);
+            }
         }
 
         // Auto-dismiss after 8 seconds
@@ -1874,6 +2150,17 @@ ${contentText}`;
         console.log('[Teacher] Teacher mode activated');
     }
 
+    function reportMissionComplete(nodeId, nodeTitle) {
+        wsSend({
+            type: 'MISSION_COMPLETE',
+            partyCode: currentPartyCode,
+            memberId: myPlayerId,
+            memberName: myPlayerName,
+            nodeId: nodeId,
+            nodeTitle: nodeTitle
+        });
+    }
+
     // Public API
     return {
         init,
@@ -1888,6 +2175,8 @@ ${contentText}`;
         getShipSpecs: () => myShipSpecs,
         getPartyMembers: () => partyMembers,
         getPlayerId: () => myPlayerId,
-        isTeacher: () => isTeacherMode
+        isTeacher: () => isTeacherMode,
+        getGlobalStudents: () => globalStudents,
+        reportMissionComplete
     };
 })();

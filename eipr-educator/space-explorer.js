@@ -793,6 +793,11 @@ const SpaceExplorer = (() => {
         if (chartedCourse.has(nodeData.id)) {
             visitedChartedNodes.add(nodeData.id);
             updateMissionObjectivesHUD();
+            
+            // Report completion to teacher
+            if (typeof GalaxyMap !== "undefined" && GalaxyMap.reportMissionComplete) {
+                GalaxyMap.reportMissionComplete(nodeData.id, nodeData.title);
+            }
         }
         
         wobbleMesh = mesh;
@@ -1036,7 +1041,9 @@ ${contentText}`;
     }
 
     function updateCoopPlayers() {
-        if (typeof GalaxyMap === "undefined" || !GalaxyMap.getPartyCode()) {
+        const isTeacher = typeof GalaxyMap !== "undefined" && GalaxyMap.isTeacher && GalaxyMap.isTeacher();
+        
+        if (!isTeacher && (typeof GalaxyMap === "undefined" || !GalaxyMap.getPartyCode())) {
             coopMembers.forEach((val, id) => {
                 if (val.shipMesh) scene.remove(val.shipMesh);
                 if (val.tagEl && val.tagEl.parentNode) val.tagEl.parentNode.removeChild(val.tagEl);
@@ -1045,13 +1052,18 @@ ${contentText}`;
             return;
         }
 
-        const partyMembers = GalaxyMap.getPartyMembers();
         const myPlayerId = GalaxyMap.getPlayerId ? GalaxyMap.getPlayerId() : null;
-        if (!partyMembers) return;
+
+        // If teacher, render global roster. If student, render party members.
+        const sourceMap = isTeacher 
+            ? (GalaxyMap.getGlobalStudents ? GalaxyMap.getGlobalStudents() : new Map())
+            : (GalaxyMap.getPartyMembers ? GalaxyMap.getPartyMembers() : new Map());
+
+        if (!sourceMap) return;
 
         // 1. Remove members who left
         coopMembers.forEach((val, id) => {
-            if (!partyMembers.has(id)) {
+            if (!sourceMap.has(id)) {
                 if (val.shipMesh) scene.remove(val.shipMesh);
                 if (val.tagEl && val.tagEl.parentNode) val.tagEl.parentNode.removeChild(val.tagEl);
                 coopMembers.delete(id);
@@ -1059,27 +1071,48 @@ ${contentText}`;
         });
 
         // 2. Add / Update active members
-        partyMembers.forEach((member, id) => {
+        sourceMap.forEach((member, id) => {
             if (id === myPlayerId) return; // skip self
 
             let coop = coopMembers.get(id);
             if (!coop) {
-                // Spawn new co-op ship mesh
-                const mesh = createProceduralShipMesh(member.shipSpecs);
+                const shipSpecs = member.shipSpecs || { hull: "Interceptor", wing: "Swept Wings", core: "Plasma reactor", system: "EMP", hue: 180, name: "Pilot" };
+                // Spawn new ship mesh
+                const mesh = createProceduralShipMesh(shipSpecs);
+                
+                // If teacher, add gold aura ring around the student's ship
+                if (isTeacher) {
+                    const ringGeo = new THREE.TorusGeometry(6, 0.5, 8, 32);
+                    const ringMat = new THREE.MeshBasicMaterial({ color: 0xFBBC05, transparent: true, opacity: 0.6 });
+                    const ring = new THREE.Mesh(ringGeo, ringMat);
+                    ring.rotation.x = Math.PI / 2;
+                    mesh.add(ring);
+                }
+
                 scene.add(mesh);
 
                 // Spawn tag element
                 const tag = document.createElement("div");
-                tag.className = "galaxy-member-tag"; // reuse the lobby/galaxy tag styling
-                tag.style.borderColor = "#4285F4"; // light blue for co-op members
-                tag.innerHTML = `<i class="fa-solid fa-user-astronaut"></i> ${member.name} (${member.shipSpecs.name})`;
+                tag.className = "galaxy-member-tag"; // reuse tag styling
+                tag.style.borderColor = isTeacher ? "#FBBC05" : "#4285F4"; // gold for teacher global roster, blue for party
+                
+                const memberName = member.playerName || member.name || "Pilot";
+                const shipName = shipSpecs.name || "Unknown Ship";
+                
+                if (isTeacher) {
+                    const partyCode = member.partyCode && member.partyCode !== "__TEACHER__" ? member.partyCode : "SOLO";
+                    tag.innerHTML = `<i class="fa-solid fa-user-astronaut"></i> [${partyCode}] ${memberName} (${shipName})`;
+                } else {
+                    tag.innerHTML = `<i class="fa-solid fa-user-astronaut"></i> ${memberName} (${shipName})`;
+                }
+                
                 canvasContainer.appendChild(tag);
 
                 coop = {
                     id: id,
                     shipMesh: mesh,
                     tagEl: tag,
-                    lastSeen: member.lastSeen
+                    lastSeen: member.lastSeen || Date.now()
                 };
                 coopMembers.set(id, coop);
             }
@@ -1091,7 +1124,7 @@ ${contentText}`;
             if (member.quaternion) {
                 coop.shipMesh.quaternion.set(member.quaternion.x, member.quaternion.y, member.quaternion.z, member.quaternion.w);
             }
-            coop.lastSeen = member.lastSeen;
+            coop.lastSeen = member.lastSeen || Date.now();
         });
 
         // 3. Project and position tags
@@ -1416,6 +1449,7 @@ ${contentText}`;
         setChartedCourse,
         clearChartedCourse,
         flattenHierarchy,
+        getChartedCourse: () => chartedCourse,
         getShipTransform: () => {
             return {
                 position: { x: shipGroup.position.x, y: shipGroup.position.y, z: shipGroup.position.z },

@@ -208,6 +208,20 @@ wss.on('connection', (ws, req) => {
                 break;
             }
 
+            case 'MISSION_COMPLETE': {
+                // Student reports a mission node completion -> relay to teachers
+                sendToTeachers({
+                    type: 'MISSION_COMPLETE',
+                    playerId: client.playerId || data.memberId,
+                    playerName: client.playerName || data.memberName,
+                    partyCode: client.partyCode || data.partyCode,
+                    nodeId: data.nodeId,
+                    nodeTitle: data.nodeTitle,
+                    timestamp: Date.now()
+                });
+                break;
+            }
+
             default: {
                 // Default: relay within party only
                 relayToParty(partyCode, ws, rawData.toString());

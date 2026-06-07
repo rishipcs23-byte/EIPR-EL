@@ -18,27 +18,49 @@ This interactive neural-network-like graph explores the entire losslessly compil
 
 ## How to Run the Application
 
-Follow these simple steps to start the local server and explore the graph:
+To fully run the application, you need to run two servers: the **HTTP Web Server** (for the frontend/UI) and the **WebSocket Relay Server** (for multiplayer/classroom features).
 
-### Step 1: Start the Local HTTP Server
+### 1. Start the HTTP Web Server (Frontend)
 
-You can run a lightweight server in the directory containing `index.html` using Python:
+To serve the frontend user interface, run a lightweight HTTP server in the project directory:
 
 ```bash
-# Navigate to the rishi project directory
+# Navigate to the project directory
 cd eipr-educator
 
-# Start the python HTTP server
+# Option A: Start using Python (Recommended)
 python -m http.server 8000
+
+# Option B: Start using Node (e.g., live-server, http-server if installed globally)
+npx http-server -p 8000
 ```
 
-### Step 2: Open in Your Browser
-
-Open your favorite web browser and navigate to:
-
+Once started, open your web browser and navigate to:
 ```text
 http://localhost:8000
 ```
+
+---
+
+### 2. Start the WebSocket Relay Server (Multiplayer Backend)
+
+To enable LAN multiplayer, party/classroom coordination, and teacher controls, start the WebSocket relay server:
+
+```bash
+# Navigate to the project directory
+cd eipr-educator
+
+# Install dependencies (only required once)
+npm install
+
+# Start the WebSocket server
+npm start
+```
+
+This starts the multiplayer server on port **3001**.
+- **Local Address**: `ws://localhost:3001`
+- **LAN Address**: The server console will output your local network IP (e.g., `ws://192.168.x.x:3001`). Share this IP address with students/players so they can connect via the in-game UI connection panel.
+
 
 ---
 
