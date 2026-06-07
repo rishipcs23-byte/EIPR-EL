@@ -44,6 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("search-input");
     const notesContainer = document.getElementById("notes-container");
     const spaceContainer = document.getElementById("space-container");
+    const tabGalaxy = document.getElementById("tab-galaxy");
+    const galaxyContainer = document.getElementById("galaxy-container");
+    const tabLobby = document.getElementById("tab-lobby");
+    const lobbyContainer = document.getElementById("lobby-container");
     
     // Floating Popup Card Elements
     const nodePopup = document.getElementById("node-popup");
@@ -80,6 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let activePopupNode = null;
     let currentView = "tree"; // "tree", "fog", or "textbook"
     let physicsEnabled = true;
+    let selectMode = false;
+    const selectedCourseNodes = new Set();
 
     // Initialize default dark theme
     document.body.classList.add("dark-theme");
@@ -112,16 +118,79 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const rectH = 34; // Constant height for rectangles
 
-    const typeColors = {
-        "course": "#4285F4",
-        "unit": "#EA4335",
-        "topic": "#FBBC05",
-        "subtopic": "#34A853",
-        "concept": "#8A3FFC",
-        "case_study": "#00bfa5",
-        "example": "#00bfa5",
-        "activity": "#00bfa5"
+    const UNIT_HUES = {
+        1: 210, // Unit 1: Blue
+        2: 330, // Unit 2: Pink/Magenta
+        3: 270, // Unit 3: Purple
+        4: 150, // Unit 4: Green
+        5: 30   // Unit 5: Golden Amber
     };
+
+    function getUnitNumber(node) {
+        if (!node) return null;
+        if (node.path && node.path.length > 0) {
+            for (const p of node.path) {
+                if (typeof p === 'string') {
+                    const match = p.match(/UNIT\s*(\d+)/i);
+                    if (match) return parseInt(match[1], 10);
+                }
+            }
+        }
+        if (node.id) {
+            const match = node.id.match(/unit[-_]?(\d+)/i);
+            if (match) return parseInt(match[1], 10);
+        }
+        if (node.parent) {
+            return getUnitNumber(node.parent);
+        }
+        return null;
+    }
+
+    function getNodeColor(node) {
+        if (!node) return "#00fac6";
+        if (node.node_type === "course") {
+            return "#00fac6"; // Cyber Cyan for course root
+        }
+        const unitNum = getUnitNumber(node);
+        if (unitNum && UNIT_HUES[unitNum] !== undefined) {
+            const baseHue = UNIT_HUES[unitNum];
+            let h = baseHue;
+            let s = 85;
+            let l = 55;
+            switch (node.node_type) {
+                case "unit":
+                    h = baseHue;
+                    s = 95;
+                    l = 50;
+                    break;
+                case "topic":
+                    h = baseHue;
+                    s = 90;
+                    l = 60;
+                    break;
+                case "subtopic":
+                    h = (baseHue + 12) % 360;
+                    s = 85;
+                    l = 68;
+                    break;
+                case "concept":
+                    h = (baseHue + 24) % 360;
+                    s = 80;
+                    l = 76;
+                    break;
+                case "case_study":
+                case "example":
+                case "activity":
+                default:
+                    h = (baseHue - 15 + 360) % 360;
+                    s = 90;
+                    l = 65;
+                    break;
+            }
+            return `hsl(${h}, ${s}%, ${l}%)`;
+        }
+        return "#00fac6";
+    }
 
     // Helper to wrap text dynamically at a max length
     function getWrappedLines(title, maxCharsPerLine = 22) {
@@ -458,8 +527,11 @@ document.addEventListener("DOMContentLoaded", () => {
         circles.append("circle")
             .attr("class", "node-circle")
             .attr("r", d => typeRadius[d.node_type])
-            .attr("fill", d => d.node_type === "course" ? "rgba(66, 133, 244, 0.1)" : "rgba(234, 67, 53, 0.1)")
-            .attr("stroke", d => typeColors[d.node_type]);
+            .attr("fill", d => {
+                const color = getNodeColor(d);
+                return color.replace("hsl", "hsla").replace(")", ", 0.08)");
+            })
+            .attr("stroke", d => getNodeColor(d));
 
         circles.append("text")
             .attr("class", "node-label")
@@ -481,7 +553,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .attr("height", d => getNodeDimensions(d).h)
             .attr("rx", 8)
             .attr("ry", 8)
-            .attr("stroke", d => typeColors[d.node_type]);
+            .attr("stroke", d => getNodeColor(d));
 
         rects.append("text")
             .attr("class", "node-rect-text")
@@ -542,6 +614,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 .classed("fog-open", false);
         }
 
+        // ─── Chart Course selection styling ───
+        if (selectMode) {
+            nodeElements
+                .classed("selected-course-node", d => selectedCourseNodes.has(d.id))
+                .classed("dimmed-course-node", d => selectedCourseNodes.size > 0 && !selectedCourseNodes.has(d.id));
+        } else {
+            nodeElements
+                .classed("selected-course-node", false)
+                .classed("dimmed-course-node", false);
+        }
+
         // Interactions
         nodeElements.on("click", (event, d) => {
             event.stopPropagation();
@@ -587,7 +670,19 @@ document.addEventListener("DOMContentLoaded", () => {
         nodeElements.on("contextmenu", (event, d) => {
             event.preventDefault();
             event.stopPropagation();
-            showNodeContextMenu(event.clientX, event.clientY, d, event.currentTarget);
+            if (selectMode) {
+                if (d.node_type === "course" || d.node_type === "unit") {
+                    return;
+                }
+                if (selectedCourseNodes.has(d.id)) {
+                    selectedCourseNodes.delete(d.id);
+                } else {
+                    selectedCourseNodes.add(d.id);
+                }
+                updateGraph();
+            } else {
+                showNodeContextMenu(event.clientX, event.clientY, d, event.currentTarget);
+            }
         });
 
         simulation.nodes(visibleNodes);
@@ -894,6 +989,69 @@ document.addEventListener("DOMContentLoaded", () => {
         btnTheme.title = isDark ? "Toggle Light Theme" : "Toggle Dark Theme";
     });
 
+    // Chart Course Banner Action Event Listeners
+    const btnChartCourse = document.getElementById("btn-chart-course");
+    const chartCourseBanner = document.getElementById("chart-course-banner");
+    const btnLaunchCourse = document.getElementById("btn-launch-course");
+    const btnCancelCourse = document.getElementById("btn-cancel-course");
+
+    if (btnChartCourse) {
+        btnChartCourse.addEventListener("click", () => {
+            if (currentView !== "tree") {
+                alert("Please switch to the Knowledge Tree tab to chart a course.");
+                return;
+            }
+            selectMode = !selectMode;
+            btnChartCourse.classList.toggle("active", selectMode);
+            if (chartCourseBanner) {
+                chartCourseBanner.classList.toggle("hidden", !selectMode);
+            }
+            if (!selectMode) {
+                selectedCourseNodes.clear();
+            }
+            closePopup();
+            updateGraph();
+        });
+    }
+
+    if (btnCancelCourse) {
+        btnCancelCourse.addEventListener("click", () => {
+            selectMode = false;
+            if (btnChartCourse) btnChartCourse.classList.remove("active");
+            if (chartCourseBanner) chartCourseBanner.classList.add("hidden");
+            selectedCourseNodes.clear();
+            updateGraph();
+        });
+    }
+
+    if (btnLaunchCourse) {
+        btnLaunchCourse.addEventListener("click", () => {
+            if (selectedCourseNodes.size === 0) {
+                alert("Please select at least one concept/topic target to chart a course.");
+                return;
+            }
+            if (typeof SpaceExplorer !== "undefined") {
+                const nodeIds = Array.from(selectedCourseNodes);
+                SpaceExplorer.setChartedCourse(nodeIds);
+                
+                // Broadcast charted course to the co-op party if GalaxyMap is connected
+                if (typeof GalaxyMap !== "undefined" && GalaxyMap.broadcastChartedCourse) {
+                    GalaxyMap.broadcastChartedCourse(nodeIds);
+                }
+                
+                // Clear selection states
+                selectMode = false;
+                if (btnChartCourse) btnChartCourse.classList.remove("active");
+                if (chartCourseBanner) chartCourseBanner.classList.add("hidden");
+                selectedCourseNodes.clear();
+                updateGraph();
+
+                // Trigger click on Space tab to fly
+                tabSpace.click();
+            }
+        });
+    }
+
     // 10. Tab View Switching
     tabTree.addEventListener("click", () => {
         if (currentView === "tree") return;
@@ -903,11 +1061,15 @@ document.addEventListener("DOMContentLoaded", () => {
         tabTextbook.classList.remove("active");
         tabNotes.classList.remove("active");
         tabSpace.classList.remove("active");
+        tabGalaxy.classList.remove("active");
+        tabLobby.classList.remove("active");
         
         container.classList.remove("hidden");
         textbookContainer.classList.add("hidden");
         notesContainer.classList.add("hidden");
         spaceContainer.classList.add("hidden");
+        galaxyContainer.classList.add("hidden");
+        lobbyContainer.classList.add("hidden");
         searchInput.disabled = false;
 
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
@@ -923,6 +1085,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (typeof SpaceExplorer !== "undefined") {
             SpaceExplorer.pause();
         }
+        if (typeof GalaxyMap !== "undefined") {
+            GalaxyMap.pause();
+        }
         
         closePopup();
         updateGraph();
@@ -936,11 +1101,15 @@ document.addEventListener("DOMContentLoaded", () => {
         tabTextbook.classList.remove("active");
         tabNotes.classList.remove("active");
         tabSpace.classList.remove("active");
+        tabGalaxy.classList.remove("active");
+        tabLobby.classList.remove("active");
         
         container.classList.remove("hidden");
         textbookContainer.classList.add("hidden");
         notesContainer.classList.add("hidden");
         spaceContainer.classList.add("hidden");
+        galaxyContainer.classList.add("hidden");
+        lobbyContainer.classList.add("hidden");
         searchInput.disabled = false;
 
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
@@ -958,6 +1127,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (typeof SpaceExplorer !== "undefined") {
             SpaceExplorer.pause();
+        }
+        if (typeof GalaxyMap !== "undefined") {
+            GalaxyMap.pause();
         }
         
         closePopup();
@@ -981,11 +1153,15 @@ document.addEventListener("DOMContentLoaded", () => {
         tabFog.classList.remove("active");
         tabNotes.classList.remove("active");
         tabSpace.classList.remove("active");
+        tabGalaxy.classList.remove("active");
+        tabLobby.classList.remove("active");
         
         container.classList.add("hidden");
         textbookContainer.classList.remove("hidden");
         notesContainer.classList.add("hidden");
         spaceContainer.classList.add("hidden");
+        galaxyContainer.classList.add("hidden");
+        lobbyContainer.classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
 
@@ -994,6 +1170,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (typeof SpaceExplorer !== "undefined") {
             SpaceExplorer.pause();
+        }
+        if (typeof GalaxyMap !== "undefined") {
+            GalaxyMap.pause();
         }
 
         renderTextbookTOC();
@@ -1007,11 +1186,15 @@ document.addEventListener("DOMContentLoaded", () => {
         tabFog.classList.remove("active");
         tabTextbook.classList.remove("active");
         tabSpace.classList.remove("active");
+        tabGalaxy.classList.remove("active");
+        tabLobby.classList.remove("active");
         
         container.classList.add("hidden");
         textbookContainer.classList.add("hidden");
         notesContainer.classList.remove("hidden");
         spaceContainer.classList.add("hidden");
+        galaxyContainer.classList.add("hidden");
+        lobbyContainer.classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
         
@@ -1028,6 +1211,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (typeof SpaceExplorer !== "undefined") {
             SpaceExplorer.pause();
         }
+        if (typeof GalaxyMap !== "undefined") {
+            GalaxyMap.pause();
+        }
 
         initNotesView();
     });
@@ -1040,11 +1226,15 @@ document.addEventListener("DOMContentLoaded", () => {
         tabFog.classList.remove("active");
         tabTextbook.classList.remove("active");
         tabNotes.classList.remove("active");
+        tabGalaxy.classList.remove("active");
+        tabLobby.classList.remove("active");
         
         container.classList.add("hidden");
         textbookContainer.classList.add("hidden");
         notesContainer.classList.add("hidden");
         spaceContainer.classList.remove("hidden");
+        galaxyContainer.classList.add("hidden");
+        lobbyContainer.classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
         
@@ -1060,10 +1250,90 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (typeof SpaceExplorer !== "undefined") {
             SpaceExplorer.init(hierarchyData);
+            SpaceExplorer.handleResize();
         }
-    });e");
+        if (typeof GalaxyMap !== "undefined") {
+            GalaxyMap.pause();
+        }
+    });
 
-        initNotesView();
+    tabGalaxy.addEventListener("click", () => {
+        if (currentView === "galaxy") return;
+        currentView = "galaxy";
+        tabGalaxy.classList.add("active");
+        tabTree.classList.remove("active");
+        tabFog.classList.remove("active");
+        tabTextbook.classList.remove("active");
+        tabNotes.classList.remove("active");
+        tabSpace.classList.remove("active");
+        tabLobby.classList.remove("active");
+        
+        container.classList.add("hidden");
+        textbookContainer.classList.add("hidden");
+        notesContainer.classList.add("hidden");
+        spaceContainer.classList.add("hidden");
+        galaxyContainer.classList.remove("hidden");
+        lobbyContainer.classList.add("hidden");
+        searchInput.disabled = true;
+        closePopup();
+        
+        document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.add("hidden"));
+        document.getElementById("physics-divider").classList.add("hidden");
+
+        // Hide fog dashboard and guide panel
+        const fogDash = document.getElementById("fog-dashboard");
+        if (fogDash) fogDash.classList.add("hidden");
+        const fogGuidePanel = document.getElementById("fog-guide-panel");
+        if (fogGuidePanel) fogGuidePanel.classList.remove("open");
+        container.classList.remove("fog-view-active");
+
+        if (typeof SpaceExplorer !== "undefined") {
+            SpaceExplorer.pause();
+        }
+
+        if (typeof GalaxyMap !== "undefined") {
+            GalaxyMap.init(hierarchyData);
+            GalaxyMap.handleResize();
+        }
+    });
+
+    tabLobby.addEventListener("click", () => {
+        if (currentView === "lobby") return;
+        currentView = "lobby";
+        tabLobby.classList.add("active");
+        tabTree.classList.remove("active");
+        tabFog.classList.remove("active");
+        tabTextbook.classList.remove("active");
+        tabNotes.classList.remove("active");
+        tabSpace.classList.remove("active");
+        tabGalaxy.classList.remove("active");
+        
+        container.classList.add("hidden");
+        textbookContainer.classList.add("hidden");
+        notesContainer.classList.add("hidden");
+        spaceContainer.classList.add("hidden");
+        galaxyContainer.classList.add("hidden");
+        lobbyContainer.classList.remove("hidden");
+        searchInput.disabled = true;
+        closePopup();
+        
+        document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.add("hidden"));
+        document.getElementById("physics-divider").classList.add("hidden");
+
+        // Hide fog dashboard and guide panel
+        const fogDash = document.getElementById("fog-dashboard");
+        if (fogDash) fogDash.classList.add("hidden");
+        const fogGuidePanel = document.getElementById("fog-guide-panel");
+        if (fogGuidePanel) fogGuidePanel.classList.remove("open");
+        container.classList.remove("fog-view-active");
+
+        if (typeof SpaceExplorer !== "undefined") {
+            SpaceExplorer.pause();
+        }
+
+        if (typeof GalaxyMap !== "undefined") {
+            GalaxyMap.init(hierarchyData);
+        }
     });
 
     // 10b. Short Notes View Logic
@@ -1669,4 +1939,208 @@ ${contentText}`;
 
     // Run graph startup
     updateGraph();
+
+    // Preload Space Explorer & Galaxy Map asynchronously in the background
+    if (typeof SpaceExplorer !== "undefined") {
+        setTimeout(() => {
+            SpaceExplorer.init(hierarchyData);
+        }, 300);
+    }
+    if (typeof GalaxyMap !== "undefined") {
+        setTimeout(() => {
+            GalaxyMap.init(hierarchyData);
+        }, 600);
+    }
+
+    // ─── Teacher Mode Setup ────────────────────────────────────────────────────
+    const TEACHER_PASSWORD = 'EIPR_TEACHER';
+    let teacherUnlocked = false;
+    let teacherSelectedNode = null;
+    let teacherAllNodes = []; // flat list of all hierarchy nodes for search
+
+    // Flatten entire hierarchy for mission broadcaster
+    function flattenAll(node, list = []) {
+        if (!node) return list;
+        list.push(node);
+        if (node.children) node.children.forEach(c => flattenAll(c, list));
+        return list;
+    }
+    teacherAllNodes = flattenAll(hierarchyData).filter(n => n.node_type !== 'course');
+
+    const tabTeacher = document.getElementById('tab-teacher');
+    const teacherViewContainer = document.getElementById('teacher-view-container');
+    const teacherPasswordModal = document.getElementById('teacher-password-modal');
+    const tpmInput = document.getElementById('tpm-password-input');
+    const tpmErrorMsg = document.getElementById('tpm-error-msg');
+    const tpmUnlockBtn = document.getElementById('tpm-unlock-btn');
+    const tpmCancelBtn = document.getElementById('tpm-cancel-btn');
+    const teacherOpenGalaxyBtn = document.getElementById('teacher-open-galaxy-btn');
+    const teacherMissionSearch = document.getElementById('teacher-mission-search');
+    const teacherNodeList = document.getElementById('teacher-node-list');
+    const teacherSelectedPreview = document.getElementById('teacher-selected-preview');
+    const teacherBroadcastBtn = document.getElementById('teacher-broadcast-btn');
+
+    function allContainers() {
+        return [
+            container, textbookContainer, notesContainer,
+            spaceContainer, galaxyContainer, lobbyContainer, teacherViewContainer
+        ];
+    }
+
+    function activateTeacherTab() {
+        // Deactivate all tab buttons
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        if (tabTeacher) tabTeacher.classList.add('active');
+
+        // Hide all containers
+        allContainers().forEach(c => { if (c) c.classList.add('hidden'); });
+
+        // Show teacher container
+        if (teacherViewContainer) teacherViewContainer.classList.remove('hidden');
+
+        // Pause other engines
+        if (typeof SpaceExplorer !== 'undefined') SpaceExplorer.pause();
+        if (typeof GalaxyMap !== 'undefined') GalaxyMap.pause();
+
+        // Render mission node list
+        renderTeacherNodeList('');
+    }
+
+    function renderTeacherNodeList(query) {
+        if (!teacherNodeList) return;
+        const q = query.toLowerCase().trim();
+        const filtered = q
+            ? teacherAllNodes.filter(n => (n.title || '').toLowerCase().includes(q) || (n.node_type || '').toLowerCase().includes(q))
+            : teacherAllNodes;
+
+        teacherNodeList.innerHTML = '';
+        const limit = Math.min(filtered.length, 200);
+        for (let i = 0; i < limit; i++) {
+            const node = filtered[i];
+            const color = getNodeColor(node);
+            const unitNum = getUnitNumber(node);
+            const div = document.createElement('div');
+            div.className = 'teacher-node-item' + (teacherSelectedNode && teacherSelectedNode.id === node.id ? ' selected' : '');
+            div.innerHTML = `
+                <div class="teacher-node-dot" style="background:${color};box-shadow:0 0 6px ${color}"></div>
+                <div class="teacher-node-info">
+                    <div class="teacher-node-title">${node.title || 'Untitled'}</div>
+                    <div class="teacher-node-meta">${node.node_type || 'node'}${unitNum ? ' · Unit ' + unitNum : ''}</div>
+                </div>
+            `;
+            div.addEventListener('click', () => {
+                teacherSelectedNode = node;
+                document.querySelectorAll('.teacher-node-item').forEach(el => el.classList.remove('selected'));
+                div.classList.add('selected');
+                if (teacherSelectedPreview) {
+                    teacherSelectedPreview.innerHTML = `Selected: <span class="preview-title">${node.title}</span> (${node.node_type || 'node'})`;
+                }
+                if (teacherBroadcastBtn) teacherBroadcastBtn.disabled = false;
+            });
+            teacherNodeList.appendChild(div);
+        }
+
+        if (limit === 0) {
+            teacherNodeList.innerHTML = '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.3);font-size:13px;">No nodes match your search.</div>';
+        }
+    }
+
+    if (teacherMissionSearch) {
+        teacherMissionSearch.addEventListener('input', e => renderTeacherNodeList(e.target.value));
+    }
+
+    if (teacherBroadcastBtn) {
+        teacherBroadcastBtn.addEventListener('click', () => {
+            if (!teacherSelectedNode) return;
+            const unitNum = getUnitNumber(teacherSelectedNode);
+            if (typeof GalaxyMap !== 'undefined') {
+                GalaxyMap.teacherBroadcastMission({
+                    nodeId:    teacherSelectedNode.id,
+                    nodeTitle: teacherSelectedNode.title,
+                    nodeType:  teacherSelectedNode.node_type,
+                    unitNum:   unitNum
+                });
+            }
+        });
+    }
+
+    if (teacherOpenGalaxyBtn) {
+        teacherOpenGalaxyBtn.addEventListener('click', () => {
+            if (tabGalaxy) tabGalaxy.click();
+        });
+    }
+
+    // ── Password Modal ─────────────────────────────────────────────────────────
+    function showTeacherModal() {
+        if (teacherPasswordModal) {
+            teacherPasswordModal.classList.remove('hidden');
+            if (tpmInput) { tpmInput.value = ''; tpmInput.focus(); }
+            if (tpmErrorMsg) tpmErrorMsg.textContent = '';
+        }
+    }
+
+    function hideTeacherModal() {
+        if (teacherPasswordModal) teacherPasswordModal.classList.add('hidden');
+    }
+
+    function tryUnlock() {
+        const val = tpmInput ? tpmInput.value : '';
+        if (val === TEACHER_PASSWORD) {
+            teacherUnlocked = true;
+            if (tabTeacher) {
+                tabTeacher.classList.add('teacher-unlocked');
+                const lockIcon = tabTeacher.querySelector('.teacher-lock-icon');
+                if (lockIcon) { lockIcon.classList.remove('fa-lock'); lockIcon.classList.add('fa-unlock'); }
+            }
+            hideTeacherModal();
+            // Activate teacher mode in galaxy map
+            if (typeof GalaxyMap !== 'undefined') {
+                const hostInput = document.getElementById('ws-server-host');
+                const host = hostInput ? hostInput.value.trim() : '';
+                GalaxyMap.activateTeacherMode(host || undefined);
+            }
+            activateTeacherTab();
+        } else {
+            if (tpmInput) {
+                tpmInput.classList.add('tpm-error');
+                setTimeout(() => tpmInput.classList.remove('tpm-error'), 500);
+            }
+            if (tpmErrorMsg) tpmErrorMsg.textContent = 'Incorrect password. Try again.';
+        }
+    }
+
+    if (tabTeacher) {
+        tabTeacher.addEventListener('click', () => {
+            if (teacherUnlocked) {
+                activateTeacherTab();
+            } else {
+                showTeacherModal();
+            }
+        });
+    }
+
+    if (tpmUnlockBtn) tpmUnlockBtn.addEventListener('click', tryUnlock);
+    if (tpmCancelBtn) tpmCancelBtn.addEventListener('click', hideTeacherModal);
+    if (tpmInput) {
+        tpmInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') tryUnlock();
+            if (e.key === 'Escape') hideTeacherModal();
+        });
+    }
+    // Click outside the card to cancel
+    if (teacherPasswordModal) {
+        teacherPasswordModal.addEventListener('click', e => {
+            if (e.target === teacherPasswordModal) hideTeacherModal();
+        });
+    }
+
+    // ── Mission Toast close button ─────────────────────────────────────────────
+    const missionToastClose = document.getElementById('mission-toast-close');
+    if (missionToastClose) {
+        missionToastClose.addEventListener('click', () => {
+            const toast = document.getElementById('mission-toast');
+            if (toast) toast.classList.remove('visible');
+        });
+    }
 });
+
