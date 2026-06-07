@@ -286,34 +286,7 @@ const GalaxyMap = (() => {
         };
     }
 
-    // ─── Teacher Mode ───────────────────────────────────────────────────────────
-    let isTeacherMode = false;
-    let teacherWsClient = null;           // Separate WS connection for teacher
-    let teacherWsConnected = false;
-    // Global student registry (teacher only): playerId -> record
-    const globalStudents = new Map();
     const studentCompletions = new Map(); // playerId -> Set of completed nodeIds
-
-    // ─── WebSocket Multiplayer (LAN relay) ─────────────────────────────────────
-    // ws:// relay server — defaults to same host, port 3001
-    let wsServerHost = window.location.hostname || 'localhost';
-    let wsClient = null;
-    let wsReconnectTimer = null;
-    let wsConnected = false;
-    let wsReconnectDelay = 1500; // ms, doubles on each failure
-    const WS_PORT = 3001;
-    const WS_MAX_RECONNECT = 12000; // cap backoff at 12s
-
-    // Node configuration
-    const typeConfigs = {
-        "course":    { color: 0x4285F4, size: 10, glow: true },
-        "unit":      { color: 0xEA4335, size: 7,  glow: true },
-        "topic":     { color: 0xFBBC05, size: 4.5,glow: false },
-        "subtopic":  { color: 0x34A853, size: 3,  glow: false },
-        "concept":   { color: 0x8A3FFC, size: 2.2,glow: false },
-        "default":   { color: 0x00FAC6, size: 2,  glow: false }
-    };
-    const defNodeTypes = ["case_study", "example", "activity"];
 
     // ─── Ship Procedural Generator ─────────────────────────────────────────────
     function generateShipSpecs() {
@@ -1046,8 +1019,11 @@ const GalaxyMap = (() => {
         const btnSoloEnter = document.getElementById('btn-solo-enter');
         const btnBackToLobby = document.getElementById('btn-back-to-lobby');
 
+        console.log('[Lobby UI] Setting up listeners. btnCreate:', !!btnCreate, 'btnJoin:', !!btnJoin, 'inputCode:', !!inputCode);
+
         if (btnEnterGalaxy) {
             btnEnterGalaxy.addEventListener('click', () => {
+                console.log('[Lobby UI] Enter Galaxy clicked');
                 const tab = document.getElementById('tab-galaxy');
                 if (tab) tab.click();
             });
@@ -1055,6 +1031,7 @@ const GalaxyMap = (() => {
 
         if (btnSoloEnter) {
             btnSoloEnter.addEventListener('click', () => {
+                console.log('[Lobby UI] Solo Enter clicked');
                 leaveParty(); // solo mode clears party
                 const tab = document.getElementById('tab-galaxy');
                 if (tab) tab.click();
@@ -1063,6 +1040,7 @@ const GalaxyMap = (() => {
 
         if (btnBackToLobby) {
             btnBackToLobby.addEventListener('click', () => {
+                console.log('[Lobby UI] Back to Lobby clicked');
                 const tab = document.getElementById('tab-lobby');
                 if (tab) tab.click();
             });
@@ -1073,6 +1051,7 @@ const GalaxyMap = (() => {
             serverHostInput.value = wsServerHost;
             serverHostInput.addEventListener('change', () => {
                 const val = serverHostInput.value.trim();
+                console.log('[Lobby UI] Server host changed:', val);
                 if (val) {
                     wsServerHost = val;
                     // If already in a party, reconnect
@@ -1083,6 +1062,7 @@ const GalaxyMap = (() => {
 
         if (btnCreate) {
             btnCreate.addEventListener('click', () => {
+                console.log('[Lobby UI] Create Party clicked');
                 const code = 'GALAXY-' + Math.floor(100 + Math.random() * 899);
                 if (inputCode) inputCode.value = code;
                 joinParty(code, true);
@@ -1091,7 +1071,8 @@ const GalaxyMap = (() => {
 
         if (btnJoin) {
             btnJoin.addEventListener('click', () => {
-                const code = inputCode.value.trim().toUpperCase();
+                const code = inputCode ? inputCode.value.trim().toUpperCase() : '';
+                console.log('[Lobby UI] Join Party clicked with code:', code);
                 if (code.length === 0) {
                     alert('Please enter a valid party code!');
                     return;

@@ -26,6 +26,58 @@
 </head>
 
 <body class="dark-theme">
+    <!-- Debug Logger Console Overlay -->
+    <div id="debug-logger-console" style="position: fixed; bottom: 20px; right: 20px; width: 380px; max-height: 300px; background: rgba(10, 10, 20, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-family: monospace; font-size: 11px; color: #fff; display: flex; flex-direction: column; overflow: hidden; transition: all 0.3s ease;">
+        <div style="padding: 8px 12px; background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; font-weight: bold; color: #FBBC05; cursor: pointer;" onclick="const c = document.getElementById('debug-logger-logs'); c.style.display = c.style.display === 'none' ? 'block' : 'none';">
+            <span>🛠️ EIPR DEBUG CONSOLE</span>
+            <span style="font-size: 10px; opacity: 0.6;">(Click to Toggle)</span>
+        </div>
+        <div id="debug-logger-logs" style="padding: 10px; overflow-y: auto; flex-grow: 1; max-height: 250px;">
+            <div style="color: #34A853;">[System] Debug console initialized. Logs will appear here in real-time.</div>
+        </div>
+    </div>
+    <script>
+        (function() {
+            const logsContainer = document.getElementById('debug-logger-logs');
+            function logToOverlay(msg, color = '#fff') {
+                if (!logsContainer) return;
+                const div = document.createElement('div');
+                div.style.color = color;
+                div.style.marginBottom = '4px';
+                div.style.borderBottom = '1px solid rgba(255,255,255,0.03)';
+                div.style.paddingBottom = '2px';
+                div.textContent = msg;
+                logsContainer.appendChild(div);
+                logsContainer.scrollTop = logsContainer.scrollHeight;
+            }
+
+            // Intercept console.log
+            const originalLog = console.log;
+            console.log = function(...args) {
+                originalLog.apply(console, args);
+                logToOverlay('[Log] ' + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' '), '#e0e0e0');
+            };
+
+            // Intercept console.error
+            const originalError = console.error;
+            console.error = function(...args) {
+                originalError.apply(console, args);
+                logToOverlay('[Error] ' + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' '), '#EA4335');
+            };
+
+            // Capture unhandled errors
+            window.onerror = function(message, source, lineno, colno, error) {
+                logToOverlay('[Unhandled Error] ' + message + ' (Line ' + lineno + ' in ' + (source ? source.split('/').pop() : 'unknown') + ')', '#EA4335');
+                return false;
+            };
+
+            // Capture unhandled promise rejections
+            window.onunhandledrejection = function(event) {
+                logToOverlay('[Promise Rejection] ' + (event.reason ? event.reason.message || event.reason : 'unknown'), '#EA4335');
+            };
+        })();
+    </script>
+
     <!-- Background Blur Blobs -->
     <div class="bg-blobs">
         <div class="blob blob-blue"></div>
