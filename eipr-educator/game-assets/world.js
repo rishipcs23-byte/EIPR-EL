@@ -46,7 +46,7 @@ function addCollider(x, y, w, h) {
 }
 
 /* ── Zone Definitions ───────────────────────────── */
-const zones = [
+let zones = [
     { id: "village",  label: "Dreamer's Village",     x: 900,  y: 2050, w: 1200, h: 600,  groundColor: "#5d944c", borderColor: "#7ab34a" },
     { id: "guild",    label: "Entrepreneur's Guild",  x: 900,  y: 1550, w: 1200, h: 400,  groundColor: "#4a7c59", borderColor: "#5a9e6e" },
     { id: "hills",    label: "Startup Hills",         x: 900,  y: 950,  w: 1200, h: 500,  groundColor: "#6b8e5e", borderColor: "#8ab06e" },
@@ -54,9 +54,16 @@ const zones = [
     { id: "vision",   label: "Vision Peak",           x: 1100, y: 80,   w: 800,  h: 230,  groundColor: "#4a5568", borderColor: "#718096" }
 ];
 
+let roads = [
+    { x1: 1500, y1: 2700, x2: 1500, y2: 150, w: 54, dash: true },
+    { x1: 1000, y1: 2380, x2: 2000, y2: 2380, w: 40, dash: false },
+    { x1: 1050, y1: 1720, x2: 1950, y2: 1720, w: 36, dash: false },
+    { x1: 1050, y1: 1120, x2: 1950, y2: 1120, w: 36, dash: false }
+];
+
 /* ── Map Objects ────────────────────────────────── */
-// Village buildings
-const buildings = [
+/* ── Map Objects ────────────────────────────────── */
+let buildings = [
     // Village
     { x:1080, y:2200, w:90, h:70, label:"School",  wallColor:"#d7bc95", roofColor:"#8b3c2a", door:true },
     { x:1300, y:2200, w:90, h:70, label:"Bakery",  wallColor:"#e8c9a0", roofColor:"#7a3020", door:true },
@@ -76,11 +83,34 @@ const buildings = [
     { x:1350, y:100,  w:300, h:150, label:"Fortress", wallColor:"#8090a0", roofColor:"#3a4a5a", door:true }
 ];
 
-// Register building colliders
-buildings.forEach(b => addCollider(b.x, b.y, b.w, b.h));
+let trees = [];
+let scenery = [];
+let pickups = [];    // ground-collectible items: { x, y, icon, name, hint, collected }
+let atmosphere = { fogColor: null, ambientGlow: null };
 
-// Trees — kept away from buildings and roads
-const trees = [];
+function rebuildWorldColliders() {
+    colliders.length = 0;
+    // Add building colliders
+    buildings.forEach(b => addCollider(b.x, b.y, b.w, b.h));
+    // Add tree colliders
+    trees.filter(t => t.r > 22).forEach(t => addCollider(t.x - t.r * 0.6, t.y - t.r * 0.6, t.r * 1.2, t.r * 1.2));
+    // Add scenery colliders
+    scenery.forEach(s => {
+        if (s.type === "lake" || s.type === "pond") {
+            const r = s.r || Math.min(s.w || 120, s.h || 120) / 2 || 50;
+            addCollider(s.x - r, s.y - r, r * 2, r * 2);
+        } else if (s.type === "ruins") {
+            addCollider(s.x, s.y, s.w || 80, s.h || 60);
+        } else if (s.type === "rocks") {
+            const r = s.r || 30;
+            addCollider(s.x - r, s.y - r, r * 2, r * 2);
+        } else if (s.type === "shrine" || s.type === "statue") {
+            addCollider(s.x - 25, s.y - 25, 50, 50);
+        }
+    });
+}
+window.rebuildWorldColliders = rebuildWorldColliders;
+
 (function seedTrees() {
     const noGoZones = [
         { x:1400, y:0, w:200, h:3000 }, // main road
@@ -98,8 +128,7 @@ const trees = [];
             trees.push({ x: tx, y: ty, r: 16 + Math.random() * 10, dark: inMythForest });
         }
     }
-    // Also register dense trees as colliders (sparse — only big ones)
-    trees.filter(t => t.r > 22).forEach(t => addCollider(t.x - t.r * 0.6, t.y - t.r * 0.6, t.r * 1.2, t.r * 1.2));
+    rebuildWorldColliders();
 })();
 
 /* ── Collision Helpers ──────────────────────────── */
@@ -229,46 +258,25 @@ function drawZones() {
 
 function drawRoads() {
     ctx.lineCap = "round";
+    roads.forEach(r => {
+        ctx.strokeStyle = "#b8965a";
+        ctx.lineWidth = r.w;
+        ctx.beginPath();
+        ctx.moveTo(r.x1, r.y1);
+        ctx.lineTo(r.x2, r.y2);
+        ctx.stroke();
 
-    // Main north–south highway
-    ctx.strokeStyle = "#b8965a";
-    ctx.lineWidth = 54;
-    ctx.beginPath();
-    ctx.moveTo(1500, 2700);
-    ctx.lineTo(1500, 150);
-    ctx.stroke();
-
-    // Road markings
-    ctx.strokeStyle = "rgba(255,255,255,0.25)";
-    ctx.lineWidth = 2;
-    ctx.setLineDash([30, 20]);
-    ctx.beginPath();
-    ctx.moveTo(1500, 2700);
-    ctx.lineTo(1500, 150);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // Village horizontal road
-    ctx.strokeStyle = "#b0905a";
-    ctx.lineWidth = 40;
-    ctx.beginPath();
-    ctx.moveTo(1000, 2380);
-    ctx.lineTo(2000, 2380);
-    ctx.stroke();
-
-    // Guild horizontal road
-    ctx.lineWidth = 36;
-    ctx.beginPath();
-    ctx.moveTo(1050, 1720);
-    ctx.lineTo(1950, 1720);
-    ctx.stroke();
-
-    // Hills horizontal road
-    ctx.lineWidth = 36;
-    ctx.beginPath();
-    ctx.moveTo(1050, 1120);
-    ctx.lineTo(1950, 1120);
-    ctx.stroke();
+        if (r.dash) {
+            ctx.strokeStyle = "rgba(255,255,255,0.25)";
+            ctx.lineWidth = 2;
+            ctx.setLineDash([30, 20]);
+            ctx.beginPath();
+            ctx.moveTo(r.x1, r.y1);
+            ctx.lineTo(r.x2, r.y2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+    });
 }
 
 function drawBuildings() {
@@ -389,6 +397,224 @@ function drawPlayer() {
     ctx.textAlign = "left";
 }
 
+function drawScenery() {
+    scenery.forEach(s => {
+        if (s.type === "lake" || s.type === "pond") {
+            const r = s.r || Math.min(s.w || 120, s.h || 120) / 2 || 60;
+            ctx.fillStyle = s.color || "#1e4e89";
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.strokeStyle = "#4ea8de";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            const pulse = Math.sin(Date.now() / 800) * 4;
+            ctx.strokeStyle = "rgba(255,255,255,0.15)";
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, Math.max(5, r - 15 + pulse), 0, Math.PI * 2);
+            ctx.stroke();
+            
+            if (s.label) {
+                ctx.fillStyle = "rgba(255,255,255,0.65)";
+                ctx.font = "bold 10px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText(s.label, s.x, s.y + 4);
+                ctx.textAlign = "left";
+            }
+        } else if (s.type === "ruins") {
+            const w = s.w || 80;
+            const h = s.h || 60;
+            ctx.fillStyle = s.color || "#777c85";
+            ctx.fillRect(s.x, s.y, w, h);
+            
+            ctx.fillStyle = "#52575d";
+            ctx.fillRect(s.x + 8, s.y + 8, 12, 12);
+            ctx.fillRect(s.x + w - 20, s.y + 8, 12, 12);
+            ctx.fillRect(s.x + 8, s.y + h - 20, 12, 12);
+            ctx.fillRect(s.x + w - 20, s.y + h - 20, 12, 12);
+            
+            ctx.strokeStyle = "#3f4247";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(s.x, s.y, w, h);
+            
+            if (s.label) {
+                ctx.fillStyle = "rgba(0,0,0,0.55)";
+                ctx.font = "bold 10px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText(s.label, s.x + w/2, s.y - 6);
+                ctx.textAlign = "left";
+            }
+        } else if (s.type === "campfire") {
+            ctx.fillStyle = "#5c3d24";
+            ctx.fillRect(s.x - 16, s.y - 4, 32, 8);
+            ctx.fillRect(s.x - 4, s.y - 16, 8, 32);
+            
+            const size = 8 + Math.random() * 6;
+            const grad = ctx.createRadialGradient(s.x, s.y, 1, s.x, s.y, 22);
+            grad.addColorStop(0, "#ff4500");
+            grad.addColorStop(0.5, "#ff8c00");
+            grad.addColorStop(1, "rgba(255,215,0,0)");
+            
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y - 4, size + 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = "rgba(255,140,0,0.06)";
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, 75, 0, Math.PI * 2);
+            ctx.fill();
+        } else if (s.type === "shrine") {
+            ctx.fillStyle = "#5c6b73";
+            ctx.beginPath();
+            ctx.roundRect(s.x - 30, s.y - 30, 60, 60, 6);
+            ctx.fill();
+            
+            ctx.fillStyle = "#9db4c0";
+            ctx.beginPath();
+            ctx.roundRect(s.x - 20, s.y - 20, 40, 40, 4);
+            ctx.fill();
+            
+            ctx.fillStyle = "#e0fbfc";
+            ctx.fillRect(s.x - 10, s.y - 10, 20, 20);
+            
+            ctx.strokeStyle = s.color || "#00b4d8";
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(s.x - 10, s.y - 10, 20, 20);
+            
+            if (s.label) {
+                ctx.fillStyle = "rgba(0,0,0,0.6)";
+                ctx.font = "bold 10px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText(s.label, s.x, s.y - 35);
+                ctx.textAlign = "left";
+            }
+        } else if (s.type === "statue") {
+            ctx.fillStyle = "#495057";
+            ctx.fillRect(s.x - 20, s.y - 10, 40, 25);
+            ctx.strokeStyle = "#343a40";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(s.x - 20, s.y - 10, 40, 25);
+            
+            ctx.fillStyle = s.color || "#adb5bd";
+            ctx.beginPath();
+            ctx.arc(s.x, s.y - 28, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillRect(s.x - 12, s.y - 18, 24, 8);
+            
+            ctx.strokeStyle = "#e9ecef";
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(s.x + 12, s.y - 38);
+            ctx.lineTo(s.x + 12, s.y + 10);
+            ctx.stroke();
+            
+            if (s.label) {
+                ctx.fillStyle = "rgba(0,0,0,0.6)";
+                ctx.font = "bold 10px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText(s.label, s.x, s.y - 45);
+                ctx.textAlign = "left";
+            }
+        } else if (s.type === "rocks") {
+            const r = s.r || 30;
+            ctx.fillStyle = s.color || "#6c757d";
+            ctx.beginPath();
+            ctx.arc(s.x - r*0.3, s.y - r*0.2, r*0.7, 0, Math.PI*2);
+            ctx.arc(s.x + r*0.3, s.y + r*0.1, r*0.8, 0, Math.PI*2);
+            ctx.arc(s.x, s.y - r*0.4, r*0.6, 0, Math.PI*2);
+            ctx.fill();
+            
+            ctx.strokeStyle = "#495057";
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(s.x - r*0.3, s.y - r*0.2, r*0.7, 0, Math.PI*2);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(s.x + r*0.3, s.y + r*0.1, r*0.8, 0, Math.PI*2);
+            ctx.stroke();
+        }
+    });
+}
+
+function drawAtmosphere() {
+    if (QuestSystem.getState().session === 99 && atmosphere && atmosphere.fogColor) {
+        ctx.fillStyle = atmosphere.fogColor;
+        ctx.fillRect(camera.x, camera.y, canvas.width, canvas.height);
+    }
+}
+
+/* ── Pickups ─────────────────────────────────────── */
+function drawPickups() {
+    const now = Date.now();
+    pickups.forEach(p => {
+        if (p.collected) return;
+        const bob = Math.sin(now / 600 + p.x) * 5;  // floating bob
+        const pulse = 0.5 + 0.5 * Math.sin(now / 400 + p.y);
+
+        // Glow halo
+        const glow = ctx.createRadialGradient(p.x, p.y + bob, 2, p.x, p.y + bob, 28);
+        glow.addColorStop(0, `rgba(255, 220, 60, ${0.35 * pulse})`);
+        glow.addColorStop(1, "rgba(255, 220, 60, 0)");
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y + bob, 28, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Icon
+        ctx.font = "22px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(p.icon || "📜", p.x, p.y + bob);
+
+        // Name label
+        ctx.fillStyle = "rgba(0,0,0,0.6)";
+        ctx.font = "bold 9px Arial";
+        const labelW = ctx.measureText(p.name).width + 8;
+        ctx.beginPath();
+        ctx.roundRect(p.x - labelW / 2, p.y + bob + 8, labelW, 13, 3);
+        ctx.fill();
+        ctx.fillStyle = "#ffe566";
+        ctx.fillText(p.name, p.x, p.y + bob + 18);
+        ctx.textAlign = "left";
+    });
+}
+
+let nearbyScenery = null;
+
+function checkPickups() {
+    pickups.forEach(p => {
+        if (p.collected) return;
+        const dx = player.x - p.x;
+        const dy = player.y - p.y;
+        if (Math.sqrt(dx * dx + dy * dy) < 38) {
+            p.collected = true;
+            QuestSystem.addItem({ icon: p.icon, name: p.name, hint: p.hint });
+            QuestSystem.addXP(18);
+            QuestSystem.showToast(`✨ Found: ${p.icon} ${p.name}!`);
+            if (p.hint) {
+                setTimeout(() => QuestSystem.showToast(`💡 ${p.hint}`), 1200);
+            }
+        }
+    });
+
+    // Check for nearby scenery to prompt E interaction
+    nearbyScenery = null;
+    for (const s of scenery) {
+        const r = s.r || Math.max(s.w || 60, s.h || 60) / 2;
+        const dx = player.x - s.x;
+        const dy = player.y - s.y;
+        if (Math.sqrt(dx * dx + dy * dy) < r + 55) {
+            nearbyScenery = s;
+            break;
+        }
+    }
+}
+
+window.getNearbyScenery = () => nearbyScenery;
+
 function drawMinimap() {
     const mc = document.getElementById("minimap-canvas");
     const mctx = mc.getContext("2d");
@@ -407,9 +633,32 @@ function drawMinimap() {
         mctx.fillRect(z.x * scaleX, z.y * scaleY, z.w * scaleX, z.h * scaleY);
     });
 
-    // Road
-    mctx.fillStyle = "#b8965a88";
-    mctx.fillRect(1476 * scaleX, 0, 48 * scaleX, mh);
+    // Scenery on minimap
+    scenery.forEach(s => {
+        if (s.type === "lake" || s.type === "pond") {
+            mctx.fillStyle = "#1e4e89aa";
+            const r = s.r || Math.min(s.w || 120, s.h || 120) / 2 || 50;
+            mctx.beginPath();
+            mctx.arc(s.x * scaleX, s.y * scaleY, r * scaleX, 0, Math.PI * 2);
+            mctx.fill();
+        } else {
+            mctx.fillStyle = "#777c85aa";
+            const w = s.w || 60;
+            const h = s.h || 60;
+            mctx.fillRect((s.x - w/2) * scaleX, (s.y - h/2) * scaleY, w * scaleX, h * scaleY);
+        }
+    });
+
+    // Roads
+    mctx.strokeStyle = "#b8965a88";
+    mctx.lineCap = "round";
+    roads.forEach(r => {
+        mctx.lineWidth = Math.max(2, r.w * scaleX);
+        mctx.beginPath();
+        mctx.moveTo(r.x1 * scaleX, r.y1 * scaleY);
+        mctx.lineTo(r.x2 * scaleX, r.y2 * scaleY);
+        mctx.stroke();
+    });
 
     // NPCs (dots)
     npcs.forEach(npc => {
@@ -438,6 +687,7 @@ function drawMinimap() {
 
 /* ── Myth Forest Atmosphere ─────────────────────── */
 function drawMythAtmosphere() {
+    if (QuestSystem.getState().session === 99) return;
     // Purple mist over myth forest zone
     const mythZone = zones.find(z => z.id === "myth");
     if (!mythZone) return;
@@ -472,6 +722,7 @@ function drawMythAtmosphere() {
 
 /* ── Vision Peak Atmosphere ─────────────────────── */
 function drawVisionAtmosphere() {
+    if (QuestSystem.getState().session === 99) return;
     // Mountain silhouette behind Vision Peak
     ctx.fillStyle = "#3a4a5a";
     ctx.beginPath();
@@ -496,6 +747,7 @@ function drawVisionAtmosphere() {
 /* ── Zone Progress Banners ──────────────────────── */
 function drawZoneBanners() {
     const state = QuestSystem.getState();
+    if (state.session === 99) return;
     const banners = [
         { zone: zones[0], done: state.sessionProgress.elderComplete,   label: "✅ Village Completed" },
         { zone: zones[1], done: state.sessionProgress.guildComplete,   label: "✅ Guild Completed" },
@@ -522,6 +774,7 @@ function update(timestamp) {
     updateCamera();
     updateNPCs();
     checkNPCInteraction();
+    checkPickups();
     QuestSystem.tick(timestamp);
 }
 
@@ -530,17 +783,20 @@ function render() {
     ctx.save();
     ctx.translate(-Math.round(camera.x), -Math.round(camera.y));
 
-    // Draw order: ground → roads → zones → atmosphere → trees → buildings → banners → NPCs → player
+    // Draw order: ground → roads → zones → scenery → trees → buildings → pickups → NPCs → player → fog
     drawBackground();
     drawZones();
     drawRoads();
+    drawScenery();
     drawVisionAtmosphere();
     drawMythAtmosphere();
     drawTrees();
     drawBuildings();
     drawZoneBanners();
+    drawPickups();
     drawNPCs();
     drawPlayer();
+    drawAtmosphere();
 
     ctx.restore();
 

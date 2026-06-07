@@ -214,6 +214,9 @@ function closeQuizModal() {
 
 function referBackToConcept() {
     closeQuizModal();
+    if (typeof MetricsTracker !== "undefined") {
+        MetricsTracker.trackReferBack();
+    }
     if (!activeConceptId) return;
     const el = document.getElementById(activeConceptId);
     if (!el) return;
@@ -268,6 +271,7 @@ Output only the Q/A blocks. Begin now:`;
 }
 
 async function callOllama(prompt) {
+    const startTime = Date.now();
     const response = await fetch(QUIZ_CONFIG.ollamaUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -280,6 +284,12 @@ async function callOllama(prompt) {
     });
     if (!response.ok) throw new Error(`Ollama returned HTTP ${response.status}. Is Ollama running?`);
     const data = await response.json();
+    
+    // Track Latency
+    if (typeof MetricsTracker !== "undefined") {
+        MetricsTracker.trackOllamaLatency(Date.now() - startTime);
+    }
+    
     return data.response || '';
 }
 
@@ -514,6 +524,12 @@ function handleAnswer(selectedIndex) {
     if (quizAnswered) return; quizAnswered = true;
     const q = quizQuestions[quizCurrentIndex];
     const isCorrect = selectedIndex === q.correctIndex;
+    
+    // Track Quiz Answer
+    if (typeof MetricsTracker !== "undefined") {
+        MetricsTracker.trackQuizAnswer(isCorrect);
+    }
+    
     const optBtns = quizOptionsContainer.querySelectorAll('.quiz-option-btn');
     optBtns.forEach((btn,i) => {
         btn.disabled = true;

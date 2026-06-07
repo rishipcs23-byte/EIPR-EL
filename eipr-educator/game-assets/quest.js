@@ -173,6 +173,7 @@ const QuestSystem = (() => {
             if (raw) {
                 const loaded = JSON.parse(raw);
                 Object.assign(state, loaded);
+                state.sessionProgress = state.sessionProgress || {};
             }
         } catch(e) {}
     }
@@ -243,7 +244,8 @@ const QuestSystem = (() => {
     }
 
     function markNPCTalked(npcId) {
-        if (state.sessionProgress.hasOwnProperty(npcId)) {
+        state.sessionProgress = state.sessionProgress || {};
+        if (state.session === 99 || state.sessionProgress.hasOwnProperty(npcId)) {
             if (!state.sessionProgress[npcId]) {
                 state.sessionProgress[npcId] = true;
                 addXP(XP_REWARDS.quest_npc);
@@ -258,7 +260,19 @@ const QuestSystem = (() => {
     }
 
     function updateQuestPanel() {
+        state.sessionProgress = state.sessionProgress || {};
         const p = state.sessionProgress;
+        if (state.session === 99) {
+            const activeQuest = QUESTS_DEF.find(q => !state.quests[q.id] && q.session === 99);
+            if (activeQuest) {
+                activeQuest.objectives.forEach(obj => {
+                    const el = document.getElementById("obj-" + obj.id);
+                    if (el) el.classList.toggle("done", !!p[obj.id]);
+                });
+                return;
+            }
+        }
+
         const doneMap = {
             "obj-farmer":   p.farmer,
             "obj-teacher":  p.teacher,
@@ -278,6 +292,7 @@ const QuestSystem = (() => {
     function checkQuestComplete(completingNpcId) {
         const quest = QUESTS_DEF.find(q => q.completeWith === completingNpcId && !state.quests[q.id]);
         if (!quest) return false;
+        state.sessionProgress = state.sessionProgress || {};
         const allDone = quest.objectives.every(obj => state.sessionProgress[obj.id]);
         return allDone ? quest : false;
     }
@@ -313,7 +328,8 @@ const QuestSystem = (() => {
     }
 
     function addItem(item) {
-        state.inventory.push(item);
+        // Preserve all fields including desc/hint from LLM-generated items and pickups
+        state.inventory.push({ icon: item.icon, name: item.name, desc: item.desc || item.hint || null });
         if (state.inventory.length >= 5) awardBadge("collector");
         saveGame();
     }
@@ -364,9 +380,20 @@ const QuestSystem = (() => {
             slot.className = "inv-slot" + (item ? " filled" : "");
             if (item) {
                 slot.innerHTML = `<div class="inv-icon">${item.icon}</div><div class="inv-label">${item.name}</div>`;
+                slot.title = item.desc || item.name;
+                slot.style.cursor = "pointer";
+                slot.addEventListener("click", () => showItemDetail(item));
             }
             grid.appendChild(slot);
         }
+    }
+
+    function showItemDetail(item) {
+        document.getElementById("item-detail-icon").textContent = item.icon || "📦";
+        document.getElementById("item-detail-name").textContent = item.name;
+        document.getElementById("item-detail-desc").textContent =
+            item.desc || item.hint || "A valuable item collected on your journey.";
+        document.getElementById("item-detail-overlay").classList.remove("hidden");
     }
 
     /* ── Render Quest Journal ──────────────────── */
@@ -416,6 +443,9 @@ const QuestSystem = (() => {
             document.getElementById("learnt-close-btn").addEventListener("click", () => {
                 document.getElementById("learnt-popup").classList.add("hidden");
             });
+            document.getElementById("item-detail-close").addEventListener("click", () => {
+                document.getElementById("item-detail-overlay").classList.add("hidden");
+            });
 
             // Press J / B / I shortcuts
             window.addEventListener("keydown", e => {
@@ -423,6 +453,39 @@ const QuestSystem = (() => {
                 if (e.key.toLowerCase() === "b") document.getElementById("btn-badges").click();
                 if (e.key.toLowerCase() === "i") document.getElementById("btn-inventory").click();
             });
+        },
+
+        startProceduralQuest(customQuest, learntItems) {
+            state.session = 99;
+            state.quests[customQuest.id] = null;
+            const idx = QUESTS_DEF.findIndex(q => q.id === customQuest.id);
+            if (idx !== -1) {
+                QUESTS_DEF[idx] = customQuest;
+            } else {
+                QUESTS_DEF.push(customQuest);
+            }
+            LEARNT[customQuest.id] = learntItems;
+            state.sessionProgress = state.sessionProgress || {};
+            customQuest.objectives.forEach(obj => {
+                state.sessionProgress[obj.id] = false;
+            });
+            if (customQuest.completeWith) {
+                state.sessionProgress[customQuest.completeWith + "Complete"] = false;
+            }
+            updateHUD();
+            const titleEl = document.getElementById("quest-title");
+            if (titleEl) titleEl.textContent = customQuest.desc;
+            const listEl = document.getElementById("quest-objectives");
+            if (listEl) {
+                listEl.innerHTML = "";
+                customQuest.objectives.forEach(obj => {
+                    const li = document.createElement("li");
+                    li.id = "obj-" + obj.id;
+                    li.textContent = obj.label;
+                    listEl.appendChild(li);
+                });
+            }
+            saveGame();
         },
 
         tick(ts) { updateDayNight(ts); },
@@ -433,6 +496,7 @@ const QuestSystem = (() => {
         addItem,
         awardBadge,
         showToast,
-        getState: () => state
+        getState: () => state,
+        getQuests: () => QUESTS_DEF
     };
 })();

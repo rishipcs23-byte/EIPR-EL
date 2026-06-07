@@ -412,10 +412,25 @@ function showLine(line) {
         QuestSystem.markNPCTalked(line.isQuestNPC);
     }
 
-    // Handle quest complete trigger — pass the real quest object from dialogue
+    // Handle quest complete trigger — only if ALL objectives are done
     if (line.isQuestComplete) {
         const questId = line.isQuestComplete;
         setTimeout(() => {
+            const state = QuestSystem.getState();
+            // Find the quest definition via the public API (works for both static & procedural quests)
+            const questDef = QuestSystem.getQuests().find(q => q.id === questId);
+
+            if (questDef && questDef.objectives && questDef.objectives.length > 0) {
+                const sp = state.sessionProgress || {};
+                const remaining = questDef.objectives.filter(obj => !sp[obj.id]);
+                if (remaining.length > 0) {
+                    // Not all done — warn the player instead of completing
+                    QuestSystem.showToast(`⚠️ Talk to everyone first! Still need: ${remaining.map(o => o.label).join(", ")}`);
+                    closeDialogue();
+                    return;
+                }
+            }
+
             QuestSystem.completeQuest({ id: questId, reward: { xp: 80 } });
         }, 900);
     }

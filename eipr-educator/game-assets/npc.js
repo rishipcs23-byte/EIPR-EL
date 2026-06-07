@@ -3,7 +3,7 @@
    Wandering AI, interaction detection, quest markers
    ================================================== */
 
-const npcs = [
+let npcs = [
 
     /* ─── ZONE 1: DREAMER'S VILLAGE (y ~2200–2550) ─── */
     {
@@ -196,6 +196,7 @@ function drawNPCs() {
         if (sx < -60 || sx > canvas.width + 60 || sy < -80 || sy > canvas.height + 40) return;
 
         const talked = QuestSystem.getState().sessionProgress[npc.id];
+        const locked = isNPCLocked(npc);
 
         /* Shadow */
         ctx.fillStyle = "rgba(0,0,0,0.18)";
@@ -203,32 +204,44 @@ function drawNPCs() {
         ctx.ellipse(npc.x, npc.y + 32, 14, 5, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        /* Body */
-        ctx.fillStyle = npc.color;
+        /* Body — grey tint if locked */
+        ctx.fillStyle = locked ? "#888" : npc.color;
+        ctx.globalAlpha = locked ? 0.55 : 1.0;
         ctx.beginPath();
         ctx.roundRect(npc.x - 10, npc.y, 20, 30, 5);
         ctx.fill();
 
         /* Head */
-        ctx.fillStyle = "#ffe0bd";
+        ctx.fillStyle = locked ? "#bbb" : "#ffe0bd";
         ctx.beginPath();
         ctx.arc(npc.x, npc.y - 14, 13, 0, Math.PI * 2);
         ctx.fill();
+        ctx.globalAlpha = 1.0;
 
         /* Name plate */
-        ctx.fillStyle = talked ? "rgba(86,255,143,0.85)" : "rgba(0,0,0,0.65)";
+        ctx.fillStyle = talked ? "rgba(86,255,143,0.85)" : locked ? "rgba(60,60,60,0.8)" : "rgba(0,0,0,0.65)";
         const nameW = ctx.measureText(npc.name).width + 12;
         ctx.beginPath();
         ctx.roundRect(npc.x - nameW / 2, npc.y - 46, nameW, 17, 4);
         ctx.fill();
-        ctx.fillStyle = "white";
+        ctx.fillStyle = locked ? "#aaa" : "white";
         ctx.font = "bold 10px Inter, Arial";
         ctx.textAlign = "center";
         ctx.fillText(npc.name, npc.x, npc.y - 34);
         ctx.textAlign = "left";
 
-        /* Quest marker */
-        if (npc.quest && !talked) {
+        /* Marker above NPC */
+        if (locked) {
+            // Padlock icon
+            ctx.fillStyle = "rgba(40,40,40,0.75)";
+            ctx.beginPath();
+            ctx.arc(npc.x, npc.y - 62, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.font = "13px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("🔒", npc.x, npc.y - 57);
+            ctx.textAlign = "left";
+        } else if (npc.quest && !talked) {
             ctx.fillStyle = "#FFD700";
             ctx.beginPath();
             ctx.arc(npc.x, npc.y - 62, 9, 0, Math.PI * 2);
@@ -242,7 +255,6 @@ function drawNPCs() {
             ctx.fillText("!", npc.x, npc.y - 58);
             ctx.textAlign = "left";
         } else if (talked) {
-            // Checkmark
             ctx.fillStyle = "#56ff8f";
             ctx.beginPath();
             ctx.arc(npc.x, npc.y - 62, 8, 0, Math.PI * 2);
@@ -256,13 +268,28 @@ function drawNPCs() {
     });
 }
 
+
 /* ── Interaction ────────────────────────────────── */
 let nearbyNPC = null;
 const interactHint = document.getElementById("interact-hint");
 
+/* Returns true if this NPC is locked because an earlier objective isn't done yet */
+function isNPCLocked(npc) {
+    if (QuestSystem.getState().session !== 99) return false;
+    const quests = QuestSystem.getQuests();
+    const pq = quests.find(q => q.id === "procedural_quest");
+    if (!pq || !pq.objectives) return false;
+    const idx = pq.objectives.findIndex(obj => obj.id === npc.id);
+    if (idx <= 0) return false;   // first NPC never locked
+    const sp = QuestSystem.getState().sessionProgress || {};
+    for (let i = 0; i < idx; i++) {
+        if (!sp[pq.objectives[i].id]) return true;
+    }
+    return false;
+}
+
 function checkNPCInteraction() {
     nearbyNPC = null;
-
     for (const npc of npcs) {
         const dx = player.x - npc.x;
         const dy = player.y - npc.y;
@@ -272,16 +299,42 @@ function checkNPCInteraction() {
         }
     }
 
+    const ns = (typeof getNearbyScenery === "function") ? getNearbyScenery() : null;
+
     if (nearbyNPC && !isDialogueOpen()) {
+        const locked = isNPCLocked(nearbyNPC);
         interactHint.style.display = "block";
-        interactHint.textContent = `Press E to talk to ${nearbyNPC.name}`;
+        interactHint.textContent = locked
+            ? `🔒 ${nearbyNPC.name} — complete the previous challenge first`
+            : `Press E to talk to ${nearbyNPC.name}`;
+    } else if (ns && !isDialogueOpen()) {
+        interactHint.style.display = "block";
+        interactHint.textContent = `Press E to examine the ${ns.label || ns.type}`;
     } else {
         interactHint.style.display = "none";
     }
 }
 
 window.addEventListener("keydown", e => {
-    if (e.key.toLowerCase() === "e" && nearbyNPC && !isDialogueOpen()) {
+    if (e.key.toLowerCase() !== "e") return;
+    if (isDialogueOpen()) return;
+
+    if (nearbyNPC) {
+        if (isNPCLocked(nearbyNPC)) {
+            const quests = QuestSystem.getQuests();
+            const pq = quests.find(q => q.id === "procedural_quest");
+            const idx = pq?.objectives?.findIndex(obj => obj.id === nearbyNPC.id) ?? -1;
+            const prevLabel = pq?.objectives?.[idx - 1]?.label || "the previous NPC";
+            QuestSystem.showToast(`🔒 Complete "${prevLabel}" first!`);
+            return;
+        }
         startDialogue(nearbyNPC.id);
+        return;
+    }
+
+    const ns = (typeof getNearbyScenery === "function") ? getNearbyScenery() : null;
+    if (ns && ns.label) {
+        // Show a scenery lore toast — use the scenery's dialogue hint if it has one
+        QuestSystem.showToast(`📍 ${ns.label}: ${ns.lore || "An interesting landmark of this world."}`);
     }
 });

@@ -452,6 +452,13 @@ kbd {
 }
 .inv-slot:hover { background: rgba(255,220,80,0.1); border-color: rgba(255,220,80,0.3); }
 .inv-slot.filled { border-style: solid; border-color: rgba(255,220,80,0.4); }
+.inv-slot.filled:hover {
+    background: rgba(168,85,247,0.18);
+    border-color: #a855f7;
+    transform: scale(1.06);
+    box-shadow: 0 0 14px rgba(168,85,247,0.35);
+}
+.inv-slot.filled:active { transform: scale(0.97); }
 
 .inv-icon { font-size: 24px; }
 .inv-label { font-size: 10px; color: #bbb; text-align: center; }
@@ -536,3 +543,42 @@ kbd {
     #badge-grid { grid-template-columns: repeat(2,1fr); }
     #inventory-grid { grid-template-columns: repeat(3,1fr); }
 }
+
+/* ── AI QUEST GENERATOR STYLES ───────────────── */
+#btn-ai-generator {
+    background: rgba(168, 85, 247, 0.15);
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.2);
+}
+#btn-ai-generator:hover {
+    background: rgba(168, 85, 247, 0.3);
+    border-color: rgba(168, 85, 247, 0.75);
+    box-shadow: 0 0 14px rgba(168, 85, 247, 0.45);
+}
+
+.ai-form select:focus, .ai-form input:focus {
+    outline: none;
+    border-color: #a855f7 !important;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+}
+
+.ai-form option {
+    background: #0f0a20;
+    color: white;
+}
+
+#ai-generate-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+}
+
+.terminal-log-line {
+    font-size: 11px;
+    font-family: monospace;
+    margin-bottom: 4px;
+    color: #e0f2fe;
+}
+.terminal-log-line.success { color: #4ade80; }
+.terminal-log-line.error { color: #f87171; }
+.terminal-log-line.info { color: #38bdf8; }
+.terminal-log-line.warn { color: #fbbf24; }

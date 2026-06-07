@@ -57,6 +57,7 @@
                     <button class="tab-btn" id="tab-lobby"><i class="fa-solid fa-satellite"></i> Co-op Lobby</button>
                     <button class="tab-btn" id="tab-galaxy"><i class="fa-solid fa-globe"></i> Galaxy Map</button>
                     <button class="tab-btn" id="tab-teacher"><i class="fa-solid fa-chalkboard-user"></i> Teacher<i class="fa-solid fa-lock teacher-lock-icon"></i></button>
+                    <button class="tab-btn" id="tab-metrics"><i class="fa-solid fa-chart-simple"></i> Study Stats</button>
                 </div>
 
                 <div class="search-container">
@@ -640,6 +641,223 @@
                     </div><!-- /teacher-body -->
                 </div><!-- /teacher-container -->
             </div><!-- /teacher-view-container -->
+
+            <!-- Study Stats / Metrics Dashboard Container -->
+            <div id="metrics-container" class="hidden">
+                <div class="metrics-grid">
+                    <!-- Card 1: Syllabus Coverage -->
+                    <div class="metrics-card glass">
+                        <div class="metrics-card-header">
+                            <i class="fa-solid fa-circle-nodes icon-blue"></i>
+                            <h3>Syllabus Coverage</h3>
+                        </div>
+                        <div class="metrics-circle-progress-container">
+                            <svg class="metrics-circle-svg" viewBox="0 0 120 120">
+                                <circle class="ring-bg" cx="60" cy="60" r="50"/>
+                                <circle class="ring-fill" id="metrics-coverage-ring" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="314" stroke="#4285F4"/>
+                            </svg>
+                            <span class="metrics-circle-pct" id="metrics-coverage-pct">0%</span>
+                        </div>
+                        <div class="metrics-card-footer" id="metrics-coverage-text">
+                            0 / 0 concepts explored
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Quiz Accuracy -->
+                    <div class="metrics-card glass">
+                        <div class="metrics-card-header">
+                            <i class="fa-solid fa-graduation-cap icon-red"></i>
+                            <h3>Quiz Performance</h3>
+                        </div>
+                        <div class="metrics-circle-progress-container">
+                            <svg class="metrics-circle-svg" viewBox="0 0 120 120">
+                                <circle class="ring-bg" cx="60" cy="60" r="50"/>
+                                <circle class="ring-fill" id="metrics-quiz-ring" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="314" stroke="#EA4335"/>
+                            </svg>
+                            <span class="metrics-circle-pct" id="metrics-quiz-pct">0%</span>
+                        </div>
+                        <div class="metrics-card-footer" id="metrics-quiz-text">
+                            0 correct of 0 attempts
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Study Mode Time Allocation -->
+                    <div class="metrics-card glass grid-col-span-2">
+                        <div class="metrics-card-header">
+                            <i class="fa-solid fa-clock icon-yellow"></i>
+                            <h3>Study Time Distribution</h3>
+                        </div>
+                        <div class="metrics-bars-container">
+                            <div class="metric-bar-group">
+                                <div class="metric-bar-label"><span>Knowledge Tree</span><span id="time-val-tree">0m</span></div>
+                                <div class="metric-bar-track"><div class="metric-bar-fill fill-blue" id="time-bar-tree" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="metric-bar-group">
+                                <div class="metric-bar-label"><span>Fog of War Explorer</span><span id="time-val-fog">0m</span></div>
+                                <div class="metric-bar-track"><div class="metric-bar-fill fill-red" id="time-bar-fog" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="metric-bar-group">
+                                <div class="metric-bar-label"><span>Textbook Viewer</span><span id="time-val-textbook">0m</span></div>
+                                <div class="metric-bar-track"><div class="metric-bar-fill fill-yellow" id="time-bar-textbook" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="metric-bar-group">
+                                <div class="metric-bar-label"><span>Short Notes Viewer</span><span id="time-val-notes">0m</span></div>
+                                <div class="metric-bar-track"><div class="metric-bar-fill fill-green" id="time-bar-notes" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="metric-bar-group">
+                                <div class="metric-bar-label"><span>Space Explorer 3D</span><span id="time-val-space">0m</span></div>
+                                <div class="metric-bar-track"><div class="metric-bar-fill fill-purple" id="time-bar-space" style="width: 0%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Local AI Coprocessor (Ollama) Stats -->
+                    <div class="metrics-card glass">
+                        <div class="metrics-card-header">
+                            <i class="fa-solid fa-atom icon-green"></i>
+                            <h3>AI Coprocessor Stats</h3>
+                        </div>
+                        <div class="metrics-stat-item">
+                            <span class="stat-number" id="metrics-ai-queries">0</span>
+                            <span class="stat-label">AI Queries Run</span>
+                        </div>
+                        <div class="metrics-stat-item">
+                            <span class="stat-number" id="metrics-ai-latency">0.0s</span>
+                            <span class="stat-label">Avg Local Latency</span>
+                        </div>
+                        <div class="metrics-stat-item">
+                            <span class="stat-number" id="metrics-ai-refer">0</span>
+                            <span class="stat-label">Refer Backs Clicked</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: System Performance Metrics -->
+                <div class="metrics-section-title">
+                    <i class="fa-solid fa-gauge-high"></i> <span>System Performance Metrics</span>
+                </div>
+                <div class="metrics-grid system-performance-grid">
+                    <!-- Column 1: Processing, Rendering & AI Times -->
+                    <div class="metrics-card glass">
+                        <div class="metrics-card-header">
+                            <i class="fa-solid fa-microchip icon-blue"></i>
+                            <h3>Processing & Latency</h3>
+                        </div>
+                        <div class="metrics-stat-item-complex">
+                            <div class="stat-main">
+                                <span class="stat-value" id="sys-val-processing">0.85s</span>
+                                <span class="stat-title">Content Processing Time</span>
+                            </div>
+                            <p class="stat-desc">Time to compile raw note chunks into structured nodes.</p>
+                        </div>
+                        <div class="metrics-stat-item-complex">
+                            <div class="stat-main">
+                                <span class="stat-value" id="sys-val-rendering">12ms</span>
+                                <span class="stat-title">Graph Rendering Time</span>
+                            </div>
+                            <p class="stat-desc">D3 tree-graph redraw latency.</p>
+                        </div>
+                        <div class="metrics-stat-item-complex">
+                            <div class="stat-main">
+                                <span class="stat-value" id="sys-val-ai-response">0.0s</span>
+                                <span class="stat-title">AI Response Time</span>
+                            </div>
+                            <p class="stat-desc">Ollama inference response time.</p>
+                        </div>
+                        <div class="metrics-stat-item-complex">
+                            <div class="stat-main">
+                                <span class="stat-value" id="sys-val-assessment-gen">0.0s</span>
+                                <span class="stat-title">Assessment Gen Time</span>
+                            </div>
+                            <p class="stat-desc">Time taken to construct complete quiz worksheets.</p>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Memory, Storage & Compatibility -->
+                    <div class="metrics-card glass">
+                        <div class="metrics-card-header">
+                            <i class="fa-solid fa-server icon-red"></i>
+                            <h3>System Assets & Memory</h3>
+                        </div>
+                        <div class="metrics-stat-item-complex">
+                            <div class="stat-main">
+                                <span class="stat-value" id="sys-val-storage">42.5%</span>
+                                <span class="stat-title">Storage Efficiency</span>
+                            </div>
+                            <p class="stat-desc">Ratio of actual structured syllabus text to codebase footprint.</p>
+                        </div>
+                        <div class="metrics-stat-item-complex">
+                            <div class="stat-main">
+                                <span class="stat-value" id="sys-val-memory">45.2 MB</span>
+                                <span class="stat-title">Memory Utilization</span>
+                            </div>
+                            <p class="stat-desc">V8 heap allocation used during visual renderings.</p>
+                        </div>
+                        <div class="metrics-stat-item-complex">
+                            <div class="stat-main">
+                                <span class="stat-value" id="sys-val-compatibility">100%</span>
+                                <span class="stat-title">System Compatibility Score</span>
+                            </div>
+                            <p class="stat-desc">Checked HTML5, D3, ThreeJS, Ollama, LocalStorage.</p>
+                        </div>
+                    </div>
+
+                    <!-- Column 3: Reliability, Responsiveness & Scalability -->
+                    <div class="metrics-card glass">
+                        <div class="metrics-card-header">
+                            <i class="fa-solid fa-shield-halved icon-green"></i>
+                            <h3>Stability & Scaling</h3>
+                        </div>
+                        <div class="metrics-stat-item-complex">
+                            <div class="stat-main">
+                                <span class="stat-value" id="sys-val-responsiveness">16ms</span>
+                                <span class="stat-title">UI Responsiveness</span>
+                            </div>
+                            <p class="stat-desc">Average dispatch latency for D3 and Space Explorer mouse steering.</p>
+                        </div>
+                        <div class="metrics-stat-item-complex">
+                            <div class="stat-main">
+                                <span class="stat-value" id="sys-val-reliability">100%</span>
+                                <span class="stat-title">System Reliability</span>
+                            </div>
+                            <p class="stat-desc">Successful study sessions with zero runtime crashes.</p>
+                        </div>
+                        <div class="metrics-stat-item-complex">
+                            <div class="stat-main">
+                                <span class="stat-value" id="sys-val-scalability">100%</span>
+                                <span class="stat-title">Scalability Score</span>
+                            </div>
+                            <p class="stat-desc">Proportion of tested syllabus nodes successfully compiled.</p>
+                        </div>
+                    </div>
+
+                    <!-- Column 4: Weighted Overall Score -->
+                    <div class="metrics-card glass grid-col-span-3">
+                        <div class="metrics-card-header">
+                            <i class="fa-solid fa-chart-line icon-yellow"></i>
+                            <h3>Overall System Performance Score</h3>
+                        </div>
+                        <div class="overall-performance-wrapper">
+                            <div class="overall-progress-circle">
+                                <svg class="metrics-circle-svg" viewBox="0 0 120 120">
+                                    <circle class="ring-bg" cx="60" cy="60" r="50"/>
+                                    <circle class="ring-fill" id="metrics-overall-ring" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="314" stroke="#FBBC05"/>
+                                </svg>
+                                <span class="overall-score-pct" id="metrics-overall-pct">0%</span>
+                            </div>
+                            <div class="overall-performance-details">
+                                <p>This overall score combines weightings across reliability (20%), feature success (20%), compatibility (15%), storage (15%), scalability (15%), and responsiveness (15%).</p>
+                                <div class="overall-score-formula">
+                                    <code>Score = 0.20*(Success) + 0.20*(Reliability) + 0.15*(Compat) + 0.15*(Storage) + 0.15*(Scale) + 0.15*(Resp)</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="metrics-actions-container">
+                    <button class="btn btn-secondary" id="btn-reset-metrics"><i class="fa-solid fa-rotate-left"></i> Reset All Analytics Data</button>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -827,6 +1045,7 @@
 
     <!-- Data and Application Code -->
     <script src="data.js"></script>
+    <script src="metrics.js"></script>
     <script src="fog-guide.js"></script>
     <script src="app.js"></script>
     <script src="quiz.js"></script>

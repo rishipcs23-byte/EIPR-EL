@@ -30,6 +30,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // START STATE: Expand Course (root) only. Keep Units collapsed by default.
     hierarchyData.expanded = true;
 
+    // Initialize MetricsTracker
+    if (typeof MetricsTracker !== "undefined") {
+        MetricsTracker.init(hierarchyData);
+    }
+
     // 2. DOM Elements Selection
     const svg = d3.select("#graph-svg");
     const container = document.getElementById("graph-container");
@@ -801,6 +806,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function showPopup(node, nodeElement) {
         activePopupNode = node;
 
+        // Track node visit
+        if (typeof MetricsTracker !== "undefined") {
+            MetricsTracker.trackNodeVisit(node.id);
+        }
+
         g.selectAll(".node-circle").attr("stroke-width", 2.5);
         g.selectAll(".node-rect").attr("stroke-width", 1.5);
 
@@ -1070,6 +1080,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.add("hidden");
         galaxyContainer.classList.add("hidden");
         lobbyContainer.classList.add("hidden");
+        document.getElementById("metrics-container").classList.add("hidden");
         searchInput.disabled = false;
 
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
@@ -1087,6 +1098,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (typeof GalaxyMap !== "undefined") {
             GalaxyMap.pause();
+        }
+        
+        if (typeof MetricsTracker !== "undefined") {
+            MetricsTracker.changeTab("tree");
         }
         
         closePopup();
@@ -1110,6 +1125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.add("hidden");
         galaxyContainer.classList.add("hidden");
         lobbyContainer.classList.add("hidden");
+        document.getElementById("metrics-container").classList.add("hidden");
         searchInput.disabled = false;
 
         document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.remove("hidden"));
@@ -1130,6 +1146,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (typeof GalaxyMap !== "undefined") {
             GalaxyMap.pause();
+        }
+        
+        if (typeof MetricsTracker !== "undefined") {
+            MetricsTracker.changeTab("fog");
         }
         
         closePopup();
@@ -1162,6 +1182,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.add("hidden");
         galaxyContainer.classList.add("hidden");
         lobbyContainer.classList.add("hidden");
+        document.getElementById("metrics-container").classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
 
@@ -1173,6 +1194,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (typeof GalaxyMap !== "undefined") {
             GalaxyMap.pause();
+        }
+
+        if (typeof MetricsTracker !== "undefined") {
+            MetricsTracker.changeTab("textbook");
         }
 
         renderTextbookTOC();
@@ -1195,6 +1220,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.add("hidden");
         galaxyContainer.classList.add("hidden");
         lobbyContainer.classList.add("hidden");
+        document.getElementById("metrics-container").classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
         
@@ -1213,6 +1239,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (typeof GalaxyMap !== "undefined") {
             GalaxyMap.pause();
+        }
+
+        if (typeof MetricsTracker !== "undefined") {
+            MetricsTracker.changeTab("notes");
         }
 
         initNotesView();
@@ -1235,6 +1265,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.remove("hidden");
         galaxyContainer.classList.add("hidden");
         lobbyContainer.classList.add("hidden");
+        document.getElementById("metrics-container").classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
         
@@ -1255,6 +1286,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (typeof GalaxyMap !== "undefined") {
             GalaxyMap.pause();
         }
+        if (typeof MetricsTracker !== "undefined") {
+            MetricsTracker.changeTab("space");
+        }
     });
 
     tabGalaxy.addEventListener("click", () => {
@@ -1274,6 +1308,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.add("hidden");
         galaxyContainer.classList.remove("hidden");
         lobbyContainer.classList.add("hidden");
+        document.getElementById("metrics-container").classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
         
@@ -1314,6 +1349,7 @@ document.addEventListener("DOMContentLoaded", () => {
         spaceContainer.classList.add("hidden");
         galaxyContainer.classList.add("hidden");
         lobbyContainer.classList.remove("hidden");
+        document.getElementById("metrics-container").classList.add("hidden");
         searchInput.disabled = true;
         closePopup();
         
@@ -1333,6 +1369,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (typeof GalaxyMap !== "undefined") {
             GalaxyMap.init(hierarchyData);
+        }
+    });
+
+    // 10a_ii. Study Stats / Metrics Tab View Handler
+    const tabMetrics = document.getElementById("tab-metrics");
+    const metricsContainer = document.getElementById("metrics-container");
+
+    tabMetrics.addEventListener("click", () => {
+        if (currentView === "metrics") return;
+        currentView = "metrics";
+        tabMetrics.classList.add("active");
+        tabTree.classList.remove("active");
+        tabFog.classList.remove("active");
+        tabTextbook.classList.remove("active");
+        tabNotes.classList.remove("active");
+        tabSpace.classList.remove("active");
+        tabGalaxy.classList.remove("active");
+        tabLobby.classList.remove("active");
+        
+        container.classList.add("hidden");
+        textbookContainer.classList.add("hidden");
+        notesContainer.classList.add("hidden");
+        spaceContainer.classList.add("hidden");
+        galaxyContainer.classList.add("hidden");
+        lobbyContainer.classList.add("hidden");
+        metricsContainer.classList.remove("hidden");
+        searchInput.disabled = true;
+        closePopup();
+        
+        document.querySelectorAll(".graph-actions > button:not(#btn-theme)").forEach(b => b.classList.add("hidden"));
+        document.getElementById("physics-divider").classList.add("hidden");
+
+        // Hide fog dashboard and guide panel
+        const fogDash = document.getElementById("fog-dashboard");
+        if (fogDash) fogDash.classList.add("hidden");
+        const fogGuidePanel = document.getElementById("fog-guide-panel");
+        if (fogGuidePanel) fogGuidePanel.classList.remove("open");
+        container.classList.remove("fog-view-active");
+
+        if (typeof SpaceExplorer !== "undefined") {
+            SpaceExplorer.pause();
+        }
+
+        if (typeof MetricsTracker !== "undefined") {
+            MetricsTracker.changeTab("metrics");
+            MetricsTracker.updateUI();
         }
     });
 
@@ -1524,6 +1606,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const wrapper = document.createElement("div");
             wrapper.style.marginBottom = "30px";
             wrapper.id = `reader-${item.id}`;
+
+            // Track node visit when loaded in reader
+            if (typeof MetricsTracker !== "undefined") {
+                MetricsTracker.trackNodeVisit(item.id);
+            }
 
             let headerTag = "h4";
             let headingClass = "tb-concept-header";
